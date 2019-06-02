@@ -20,5 +20,10 @@ public class UserRestController {
     public List<User> getUserListAll() {
         return userService.getUserListAll();
     }
+    
+    @GetMapping(value="getUserListAllJpa")
+    public List<User> getUserListAllJpa() {
+        return userService.getUserListAllJpa();
+    }
 
 }
