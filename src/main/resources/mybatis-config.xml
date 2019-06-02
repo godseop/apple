@@ -6,10 +6,8 @@
     <settings>
         <setting name="defaultExecutorType" value="REUSE" />
         <setting name="defaultStatementTimeout" value="20000" />
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="callSettersOnNulls" value="true" />
     </settings>
-
-    <typeAliases>
-        <package name="org.godseop.apple.model" />
-    </typeAliases>
 
 </configuration>
