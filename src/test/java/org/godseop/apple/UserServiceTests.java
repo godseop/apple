@@ -2,9 +2,12 @@ package org.godseop.apple;
 
 import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.model.User;
+import org.godseop.apple.repository.UserRepository;
 import org.godseop.apple.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,9 +20,12 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @Transactional
 public class UserServiceTests {
-
+	
     @Autowired
     UserService userService;
+    
+    @Autowired
+    UserRepository userRepository;
 
 
     @Test
@@ -27,5 +33,17 @@ public class UserServiceTests {
         List<User> userList = userService.getUserListAll();
         log.info("users : {}", userList);
     }
+    
+	@Test
+	public void getAllUserJpa() {
+
+		User user = new User();
+		user.setId("ksh");
+		user.setName("김성훈");
+		userRepository.save(user);
+
+		List<User> userList = userRepository.findAll();
+		log.info("users : {}", userList);
+	}
 
 }
