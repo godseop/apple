@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_FILE}/tomcat_log.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+        <maxHistory>30</maxHistory>
+        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>100MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <encoder>
+        <charset>UTF-8</charset>
+        <pattern>%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n</pattern>
+    </encoder>
+</appender>
+
+<!-- 
+하루에 하나씩 생성되는 설정이다. (tomcat_log.2018-07-23-0.log와 같이)
+maxHistory를 30일로 설정해서 30일이 지난 로그들은 삭제된다.
+또한 maxFileSize를 100MB로 설정해서 로그 파일 용량이 100MB를 초과하면 자동으로 인덱스가 증가하면서 새로운 로그 파일이 생성된다. (시작은 0) -->
