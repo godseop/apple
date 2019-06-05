@@ -1,64 +1,42 @@
-function ajaxJson(url, obj, callback, async) {
-    async = (typeof async !== 'undefined' ? async : true);
-
-    $.ajax({
+function ajaxJson(url, object, callback, isLoadingBar=true) {
+    $.post({
         url: url,
-        method: "post",
-        async: async,
         contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(obj),
-        beforeSend: showLoadingBar,
-        complete: hideLoadingBar,
+        data: JSON.stringify(object),
+        beforeSend: isLoadingBar && showLoadingBar,
         success: callback,
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert("[AJAX FAIL]jqXHR: " + JSON.stringify(jqXHR)
-                + "\ntextStatus: " + textStatus
-                + "\nerrorThrown: " + errorThrown);
-        }
+        error: function() {
+            alert("서버로 요청중 에러가 발생했습니다.");
+        },
+        complete: isLoadingBar && hideLoadingBar,
     });
 }
 
-function ajaxEncoded(url, $form, callback, async) {
-    async = (typeof async !== 'undefined' ? async : true);
-
-    $.ajax({
+function ajaxEncoded(url, object, callback, isLoadingBar=true) {
+    $.post({
         url: url,
-        method: "post",
-        async: async,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        data: $form.serialize(),
-        beforeSend: showLoadingBar,
-        complete: hideLoadingBar,
+        data: object,
+        beforeSend: isLoadingBar && showLoadingBar,
         success: callback,
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert("[AJAX FAIL]jqXHR: " + JSON.stringify(jqXHR)
-                + "\ntextStatus: " + textStatus
-                + "\nerrorThrown: " + errorThrown);
-        }
+        error: function() {
+            alert("서버로 요청중 에러가 발생했습니다.");
+        },
+        complete: isLoadingBar && hideLoadingBar,
     });
 }
 
 // 로딩바 보임
-function showLoadingBar(jqXHR, settings) {
+function showLoadingBar() {
     $(".sk-wave").show();
-    console.log("jqXHR: " + JSON.stringify(jqXHR)
-        + "\nsettings: " + JSON.stringify(settings));
 }
 
 // 로딩바 숨김
-function hideLoadingBar(jqXHR, textStatus) {
+function hideLoadingBar() {
     $(".sk-wave").hide();
-    console.log("jqXHR: " + JSON.stringify(jqXHR)
-        + "\ntextStatus: " + textStatus);
 }
 
 
-// millisecond 동안 딜레이 함수
-function delay(millisecond) {
-    let then, now;
-    then = new Date().getTime();
-    now = then;
-    while ((now - then) < millisecond) {
-        now = new Date().getTime();
-    }
+function sleep(millisecond) {
+    return new Promise(resolve => setTimeout(resolve, millisecond));
 }

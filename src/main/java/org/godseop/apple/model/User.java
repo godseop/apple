@@ -1,6 +1,5 @@
 package org.godseop.apple.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -26,6 +25,6 @@ public class User {
     private String name;
     
     @OneToMany(mappedBy="user")
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments;
 
 }
