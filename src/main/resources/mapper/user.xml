@@ -11,7 +11,7 @@
           , ID
           , NAME
         FROM
-          USER
+          USERS
     </select>
 
 </mapper>
