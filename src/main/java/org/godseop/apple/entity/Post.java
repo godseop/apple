@@ -1,5 +1,6 @@
-package org.godseop.apple.model;
+package org.godseop.apple.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,23 +10,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.apache.ibatis.type.Alias;
-import org.godseop.apple.entity.Comment;
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
 @Data
-@Entity(name="users")
-@Alias("user")
-public class User {
-
+@Entity
+public class Post {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer seq;
-    private String id;
-    private String name;
+	private Integer id;
+	
+    private String title;
     
-    @OneToMany(mappedBy="user")
+    private String content;
+    
+    @CreationTimestamp
+    private LocalDateTime createdOn;
+    
+    @OneToMany(mappedBy="post")
     private List<Comment> comments = new ArrayList<>();
-
+    
 }

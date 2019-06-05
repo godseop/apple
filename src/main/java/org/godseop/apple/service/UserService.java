@@ -4,6 +4,7 @@ import org.godseop.apple.model.User;
 import org.godseop.apple.repository.UserDao;
 import org.godseop.apple.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Transactional
 public class UserService {
 
+	@Qualifier("userDaoMybatis")
     @Autowired
     private UserDao userDao;
     

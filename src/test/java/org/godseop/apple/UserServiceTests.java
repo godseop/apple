@@ -3,6 +3,7 @@ package org.godseop.apple;
 import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.model.User;
 import org.godseop.apple.repository.UserRepository;
+import org.godseop.apple.service.PostServiceJooq;
 import org.godseop.apple.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,9 @@ public class UserServiceTests {
     
     @Autowired
     UserRepository userRepository;
+    
+    @Autowired
+    PostServiceJooq postService;
 
 
     @Test
@@ -33,6 +37,13 @@ public class UserServiceTests {
         List<User> userList = userService.getUserListAll();
         log.info("users : {}", userList);
     }
+    
+    @Test
+	public void jooqTest() {
+
+		postService.test();
+	}
+    
     
 	@Test
 	public void getAllUserJpa() {
