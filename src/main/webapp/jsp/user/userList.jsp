@@ -13,19 +13,18 @@
 
     function setEvent() {
         $("#btnSearch").on("click", function() {
-            $.ajax({
-                url: "getUserListAll",
-                type: "get",
-                success : function(data) {
-                    console.log(data);
-                    var li = "";
-                    for (var idx in data) {
-                        li += "<li data-id='" + data[idx].id + "'>" + data[idx].name + "</li>";
-                    }
-                    $("#ulUserList").empty().html(li);
-                },
-            })
-        })
+            ajaxJson("getUserListAll", null, showUserList);
+        });
+    }
+
+    function showUserList(data) {
+        delay(3000);
+        console.log(data);
+        let li = "";
+        for (let idx in data) {
+            li += "<li data-id='" + data[idx].id + "'>" + data[idx].name + "</li>";
+        }
+        $("#ulUserList").empty().html(li);
     }
 
     </script>
