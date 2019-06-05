@@ -16,6 +16,7 @@
 
 <!-- javascript -->
 <script src="${context}/static/js/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="${context}/static/js/jquery.serializeObject-2.0.3.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/common.js" type="text/javascript"></script>
 
 <!-- spinner -->
