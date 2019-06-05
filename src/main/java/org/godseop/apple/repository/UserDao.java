@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Mapper
-@Repository
+@Repository("userDaoMybatis")
 public interface UserDao {
 
     List<User> selectUserListAll();
