@@ -1,6 +1,6 @@
 package org.godseop.apple.service;
 
-import org.godseop.apple.model.User;
+import org.godseop.apple.entity.User;
 import org.godseop.apple.repository.UserDao;
 import org.godseop.apple.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

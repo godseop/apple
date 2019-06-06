@@ -1,7 +1,7 @@
 package org.godseop.apple.service;
 
-import static org.godseop.apple.jooq.tables.Comment.COMMENT;
-import static org.godseop.apple.jooq.tables.Post.POST;
+//import static org.godseop.apple.jooq.tables.Comment.COMMENT;
+//import static org.godseop.apple.jooq.tables.Post.POST;
 
 import javax.transaction.Transactional;
 
@@ -10,7 +10,6 @@ import org.godseop.apple.entity.Post;
 import org.godseop.apple.repository.CommentRepository;
 import org.godseop.apple.repository.PostRepository;
 import org.jooq.DSLContext;
-import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;;
 
@@ -51,21 +50,21 @@ public class PostServiceJooq {
 		 * 
 		 */
 
-		Result<?> result1 = 
-				create
-				.select()
-				.from(POST.join(COMMENT).on(COMMENT.POST_ID.eq(COMMENT.ID)))
-				.fetch();
-		System.out.println(result1);
-
-		Result<?> result2 = 
-				create
-				.select()
-				.from(POST)
-				.join(COMMENT)
-				.on(COMMENT.POST_ID.equal(POST.ID))
-				.fetch();
-		System.out.println(result2);
+//		Result<?> result1 =
+//				create
+//				.select()
+//				.from(POST.join(COMMENT).on(COMMENT.POST_ID.eq(COMMENT.ID)))
+//				.fetch();
+//		System.out.println(result1);
+//
+//		Result<?> result2 =
+//				create
+//				.select()
+//				.from(POST)
+//				.join(COMMENT)
+//				.on(COMMENT.POST_ID.equal(POST.ID))
+//				.fetch();
+//		System.out.println(result2);
 
 	}
 

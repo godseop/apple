@@ -7,7 +7,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -21,7 +20,7 @@ public class DataSourceConfig {
     public SqlSessionFactory getSqlSessionFactory(DataSource datasource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(datasource);
-        sqlSessionFactory.setTypeAliasesPackage("org.godseop.apple.model");
+        sqlSessionFactory.setTypeAliasesPackage("org.godseop.apple.entity");
         sqlSessionFactory.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("classpath:mybatis-config.xml"));
         sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*.xml"));
         return sqlSessionFactory.getObject();
