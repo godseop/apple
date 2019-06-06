@@ -7,7 +7,7 @@
     <%@include file="../include/header.jsp"%>
 
     <script>
-    var user = {
+    let user = {
         seq: 1,
         id: "godseop",
         name: "임행섭",
@@ -19,7 +19,7 @@
     };
 
     $(function() {
-
+        user.comments.push({name:"이름4", email:"이메일4", content:"내용4"});
         setEvent();
     });
 
@@ -46,15 +46,18 @@
 
     function showUserList(data) {
         let li = "";
-        for (let element of data) {
-            li += "<li data-id='" + element.id + "'>" + element.name + "</li>";
+        for (let user of data.userList) {
+            li += "<li data-id='" + user.id + "'>" + user.name + "</li>";
         }
         $("#ulUserList").empty().html(li);
     }
 
+
     function testSuccess(data) {
-        console.log("return data : " + JSON.stringify(data));
+        let li = "<li data-id='" + data.user.id + "'>" + data.user.name + "</li>";
+        $("#ulUserList").empty().html(li);
     }
+
     </script>
 
 </head>
