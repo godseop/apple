@@ -30,6 +30,6 @@ public class Post {
     private LocalDateTime createdOn;
     
     @OneToMany(mappedBy="post")
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments;
     
 }
