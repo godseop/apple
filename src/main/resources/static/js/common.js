@@ -1,64 +1,54 @@
-function ajaxJson(url, obj, callback, async) {
-    async = (typeof async !== 'undefined' ? async : true);
+// input name=a[0].b[0].c 패턴 매칭을 위한 확장
+$.extend(FormSerializer.patterns, {
+    validate: /^[a-z][a-z0-9_]*((?:[\d+])*(?:.[^0-9][\w]*)?)*$/i,
+});
 
-    $.ajax({
-        url: url,
-        method: "post",
-        async: async,
+function ajaxJson(url, object, callback, isLoadingBar=true) {
+    $.post({
+        url:         url,
         contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(obj),
-        beforeSend: showLoadingBar,
-        complete: hideLoadingBar,
-        success: callback,
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert("[AJAX FAIL]jqXHR: " + JSON.stringify(jqXHR)
-                + "\ntextStatus: " + textStatus
-                + "\nerrorThrown: " + errorThrown);
-        }
+        data:        JSON.stringify(object),
+        beforeSend:  isLoadingBar && showLoadingBar,
+        success: function(data) {
+            if (data.result.code !== "0000") {
+                alert("[" + data.result.code + "] " + data.result.message);
+            } else {
+                callback.call(this, data.response);
+            }
+        },
+        error: function() {
+            alert("[9999] 서버로 요청중 에러가 발생했습니다.");
+        },
+        complete:    isLoadingBar && hideLoadingBar,
     });
 }
 
-function ajaxEncoded(url, $form, callback, async) {
-    async = (typeof async !== 'undefined' ? async : true);
-
-    $.ajax({
-        url: url,
-        method: "post",
-        async: async,
+function ajaxEncoded(url, object, callback, isLoadingBar=true) {
+    $.post({
+        url:         url,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        data: $form.serialize(),
-        beforeSend: showLoadingBar,
-        complete: hideLoadingBar,
-        success: callback,
-        error: function(jqXHR, textStatus, errorThrown) {
-            alert("[AJAX FAIL]jqXHR: " + JSON.stringify(jqXHR)
-                + "\ntextStatus: " + textStatus
-                + "\nerrorThrown: " + errorThrown);
-        }
+        data:        object,
+        beforeSend:  isLoadingBar && showLoadingBar,
+        success: function(data) {
+            if (data.result.code !== "0000") {
+                alert("[" + data.result.code + "] " + data.result.message);
+            } else {
+                callback.call(this, data.response);
+            }
+        },
+        error: function() {
+            alert("[9999] 서버로 요청중 에러가 발생했습니다.");
+        },
+        complete:    isLoadingBar && hideLoadingBar,
     });
 }
 
 // 로딩바 보임
-function showLoadingBar(jqXHR, settings) {
-    $(".sk-wave").show();
-    console.log("jqXHR: " + JSON.stringify(jqXHR)
-        + "\nsettings: " + JSON.stringify(settings));
+async function showLoadingBar() {
+    await $(".sk-wave").show();
 }
 
 // 로딩바 숨김
-function hideLoadingBar(jqXHR, textStatus) {
-    $(".sk-wave").hide();
-    console.log("jqXHR: " + JSON.stringify(jqXHR)
-        + "\ntextStatus: " + textStatus);
-}
-
-
-// millisecond 동안 딜레이 함수
-function delay(millisecond) {
-    let then, now;
-    then = new Date().getTime();
-    now = then;
-    while ((now - then) < millisecond) {
-        now = new Date().getTime();
-    }
+async function hideLoadingBar() {
+    await $(".sk-wave").hide();
 }

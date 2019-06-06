@@ -1,15 +1,10 @@
 package org.godseop.apple.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
-import org.godseop.apple.model.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
@@ -27,14 +22,21 @@ public class Comment {
     private String email;
     
     private String content;
-    
+
+
+    @OneToMany(mappedBy="comment")
+    private List<Demo> demos;
+
+
     @CreationTimestamp
     private LocalDateTime createdOn;
-    
+
+
     @ManyToOne
     @JoinColumn(name = "user_seq")
     private User user;
-    
+
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
