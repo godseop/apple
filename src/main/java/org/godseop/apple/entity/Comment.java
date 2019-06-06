@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.godseop.apple.model.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;

@@ -1,11 +1,11 @@
 package org.godseop.apple.controller.rest;
 
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.model.User;
+import org.godseop.apple.model.Result;
+import org.godseop.apple.entity.User;
 import org.godseop.apple.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -26,29 +26,39 @@ public class UserRestController {
 
 
     @PostMapping(value="getUserListAll")
-    public List<User> getUserListAll() throws Exception {
+    public Result getUserListAll() throws Exception {
+        Result result = new Result();
+        result.put("userList", userService.getUserListAll());
         TimeUnit.SECONDS.sleep(3);
-        return userService.getUserListAll();
+        return result;
     }
     
     @PostMapping(value="getUserListAllJpa")
-    public List<User> getUserListAllJpa() throws Exception {
+    public Result getUserListAllJpa() throws Exception {
+        Result result = new Result();
+        result.put("userList", userService.getUserListAllJpa());
         TimeUnit.SECONDS.sleep(3);
-        return userService.getUserListAllJpa();
+        return result;
     }
 
 
     @PostMapping(value="json")
-    public User testJson(@RequestBody User user) throws Exception {
-        TimeUnit.SECONDS.sleep(3);
+    public Result testJson(@RequestBody User user) throws Exception {
+        //throw new AppleException(Error.SYSTEM_EXCEPTION);
+        Result result = new Result();
+
+        result.put("user", user);
         log.info("user : {}", user);
-        return user;
+        return result;
     }
 
     @PostMapping(value="encoded")
-    public User testEncoded(@ModelAttribute User user) {
+    public Result testEncoded(@ModelAttribute User user) {
+        Result result = new Result();
+
+        result.put("user", user);
         log.info("user : {}", user);
-        return user;
+        return result;
     }
 
 }
