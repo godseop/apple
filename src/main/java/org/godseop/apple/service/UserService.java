@@ -29,4 +29,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUser(Integer id) {
+        return userRepository.getOne(id);
+    }
+
 }

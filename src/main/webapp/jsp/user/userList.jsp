@@ -7,7 +7,7 @@
     <%@include file="../include/header.jsp"%>
 
     <script>
-    const user = {
+    var user = {
         seq: 1,
         id: "godseop",
         name: "임행섭",
@@ -19,6 +19,7 @@
     };
 
     $(function() {
+
         setEvent();
     });
 
@@ -30,11 +31,16 @@
         $("#btnJsonTest").on("click", function() {
             let _user = $("#formUser").serializeObject();
             ajaxJson("json", _user, testSuccess);
+            // also you can pass data of javacript object
+            // ajaxJson("json, user, testSuccess);
         });
 
         $("#btnEncodedTest").on("click", function() {
             let _user = $("#formUser").serialize();
             ajaxEncoded("encoded", _user, testSuccess, false);
+
+            // TODO:then how to pass data of javascript object by url-encoded type?
+            // ajaxEncoded("encoded", user, testSuccess, false);
         });
     }
 
@@ -53,8 +59,16 @@
 
 </head>
 <body>
-    <h1>dfdfdf</h1>
-    <p>사용자 리스트</p>
+    <h1>유저 리스트(MODEL)</h1>
+    <ul>
+    <c:forEach var="user" items="${userList}" varStatus="status">
+        <li>
+            ${status.count} : <a href="${context}/user/list/${user.seq}">${user.name}</a>
+        </li>
+    </c:forEach>
+    </ul>
+
+    <p>사용자 리스트(AJAX)</p>
     <button id="btnSearch">조회</button>
     <ul id="ulUserList">
         <!-- 사용자 리스트 출력 -->
