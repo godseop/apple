@@ -1,6 +1,8 @@
 package org.godseop.apple.service;
 
-import org.godseop.apple.model.User;
+import org.godseop.apple.entity.User;
+import org.godseop.apple.exception.AppleException;
+import org.godseop.apple.model.Error;
 import org.godseop.apple.repository.UserDao;
 import org.godseop.apple.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +31,15 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUser(Integer id) {
+        return userRepository.getOne(id);
+    }
+
+    public void registerUser(User user) {
+        try {
+            userRepository.save(user);
+        } catch(Exception e) {
+            throw new AppleException(Error.DUPLICATE_USER_ID);
+        }
+    }
 }
