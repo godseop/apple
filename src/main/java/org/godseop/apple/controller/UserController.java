@@ -36,4 +36,13 @@ public class UserController {
         return modelAndView;
     }
 
+    @GetMapping(value="/reg")
+    public ModelAndView viewUserRegPage() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("user/userReg");
+
+        return modelAndView;
+    }
+
 }

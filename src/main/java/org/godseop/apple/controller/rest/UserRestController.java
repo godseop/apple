@@ -61,4 +61,13 @@ public class UserRestController {
         return result;
     }
 
+
+    @PostMapping(value="reg")
+    public Result registerUser(@RequestBody User user) throws Exception {
+        Result result = new Result();
+
+        userService.registerUser(user);
+
+        return result;
+    }
 }
