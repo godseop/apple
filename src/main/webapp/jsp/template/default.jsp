@@ -8,6 +8,9 @@
 
     <script>
     // JAVASCRIPT HERE
+    $(function() {
+
+    });
     </script>
 </head>
 <body>
