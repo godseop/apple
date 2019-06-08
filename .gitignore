@@ -30,3 +30,9 @@ mvnw.cmd
 
 ### VS Code ###
 .vscode/
+
+### log file ###
+log/**/*.log
+
+
+application.properties
