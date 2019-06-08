@@ -42,6 +42,8 @@ public class MemberService {
     public void registerMember(Member member) {
         if (memberRepository.findByUid(member.getUid()) != null) {
             throw new AppleException(Error.DUPLICATE_MEMBER_UID);
+        } else if (memberRepository.findByNickname(member.getNickname()) != null) {
+            throw new AppleException(Error.DUPLICATE_MEMBER_NICKNAME);
         } else {
             memberRepository.save(member);
         }

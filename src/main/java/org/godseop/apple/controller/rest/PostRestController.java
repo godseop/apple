@@ -16,7 +16,7 @@ public class PostRestController {
     }
 
     @GetMapping(value="test")
-    public void jooqTest() {
+    public void test() {
         postService.test();
     }
     
