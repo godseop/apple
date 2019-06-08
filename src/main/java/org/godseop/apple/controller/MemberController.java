@@ -23,7 +23,7 @@ public class MemberController {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("member/memberList");
-        modelAndView.addObject("memberList", memberService.getMemberList());
+        modelAndView.addObject("memberList", memberService.getMemberListAll());
 
         return modelAndView;
     }

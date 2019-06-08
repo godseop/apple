@@ -60,7 +60,7 @@
     <ul>
     <c:forEach var="member" items="${memberList}" varStatus="status">
         <li>
-            ${status.count} : <a href="${context}/member/list/${member.uid}">${member.nickname}</a>
+            ${status.count} : <a href="${context}/member/detail/${member.uid}">${member.nickname}</a>
         </li>
     </c:forEach>
     </ul>
