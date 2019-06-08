@@ -16,30 +16,48 @@ import java.util.List;
 @Transactional
 public class MemberService {
 
+    private MemberMapper memberMapper;
+
+    private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
     @Autowired
     @Qualifier("memberMapper")
-    private MemberMapper memberMapper;
-    
-    @Autowired
-    private MemberRepository memberRepository;
-
-    public List<Member> getMemberListAll() {
-        return memberMapper.selectMemberListAll();
+    public void setMemberMapper(MemberMapper memberMapper) {
+        this.memberMapper = memberMapper;
     }
-    
-    public List<Member> getMemberListAllJpa() {
+
+
+    public List<Member> getMemberList() {
         return memberRepository.findAll();
     }
 
-    public Member getMember(Integer id) {
-        return memberRepository.getOne(id);
+    public Member getMember(String uid) {
+        return memberRepository.findByUid(uid);
     }
 
     public void registerMember(Member member) {
-        try {
+        if (memberRepository.findByUid(member.getUid()) != null) {
+            throw new AppleException(Error.DUPLICATE_MEMBER_UID);
+        } else {
             memberRepository.save(member);
-        } catch(Exception e) {
-            throw new AppleException(Error.DUPLICATE_USER_ID);
         }
     }
+
+    public void modifyMember(Member member) {
+        if (!memberRepository.existsById(member.getId())) {
+            throw new AppleException(Error.MEMBER_NOT_EXISTS);
+        } else {
+            memberRepository.save(member);
+        }
+    }
+
+    // mapper
+    public List<Member> getMemberListAll() {
+        return memberMapper.selectMemberListAll();
+    }
+
 }

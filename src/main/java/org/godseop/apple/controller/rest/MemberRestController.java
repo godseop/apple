@@ -8,11 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.TimeUnit;
-
 @Slf4j
 @RestController
-@RequestMapping(value="/user")
+@RequestMapping(value="/member")
 public class MemberRestController {
 
     private final MemberService memberService;
@@ -21,51 +19,53 @@ public class MemberRestController {
         this.memberService = memberService;
     }
 
-
-    @PostMapping(value="getUserListAll")
-    public ResponseEntity<Result> getUserListAll() throws Exception {
+    @PostMapping(value="list")
+    public ResponseEntity<Result> getUserList() {
         Result result = new Result();
-        result.put("userList", memberService.getMemberListAll());
-        TimeUnit.SECONDS.sleep(3);
+        result.put("memberList", memberService.getMemberList());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
-    @PostMapping(value="getUserListAllJpa")
-    public ResponseEntity<Result> getUserListAllJpa() throws Exception {
+
+    @PostMapping(value="all")
+    public ResponseEntity<Result> getUserListAll() {
         Result result = new Result();
-        result.put("userList", memberService.getMemberListAllJpa());
-        TimeUnit.SECONDS.sleep(3);
+        result.put("memberList", memberService.getMemberListAll());
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
-    @PostMapping(value="json")
-    public ResponseEntity<Result> testJson(@RequestBody Member member) {
-        //throw new AppleException(Error.SYSTEM_EXCEPTION);
+    @PostMapping(value = "profile")
+    public ResponseEntity<Result> getMember(@RequestBody Member member) {
         Result result = new Result();
+        result.put("memberList", memberService.getMember(member.getUid()));
 
-        result.put("member", member);
-        log.info("member : {}", member);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="encoded")
-    public ResponseEntity<Result> testEncoded(@ModelAttribute Member member) {
-        Result result = new Result();
-
-        result.put("member", member);
-        log.info("member : {}", member);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-
-    @PostMapping(value="reg")
+    @PostMapping(value="register")
     public ResponseEntity<Result> registerUser(@RequestBody Member member) {
         Result result = new Result();
-
         memberService.registerMember(member);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping(value="modify")
+    public ResponseEntity<Result> modifyUser(@RequestBody Member member) {
+        Result result = new Result();
+        memberService.modifyMember(member);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value = "withdraw")
+    public ResponseEntity<Result> withdrawUser(@RequestBody Member member) {
+        Result result = new Result();
+        log.warn("member request to withdraw... {}", member);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

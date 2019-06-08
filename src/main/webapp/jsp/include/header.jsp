@@ -3,21 +3,26 @@
 
 <!-- global jstl variable -->
 <c:set var="context" value="${pageContext.request.contextPath}"/>
+<!-- //global jstl variable -->
 
 <meta charset="UTF-8">
 <title>Apple Project</title>
 
 <!-- favicon -->
 <link rel="icon" type="image/png" href="${context}/static/favicon.ico"/>
+<!-- //favicon -->
 
 <!-- css -->
 <link rel="stylesheet" href="${context}/static/css/common.css">
 <link rel="stylesheet" href="${context}/static/css/spinkit.css">
+<!-- //css -->
 
 <!-- javascript -->
+
 <script src="${context}/static/js/jquery-3.4.1.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/jquery.serializeObject.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/common.js" type="text/javascript"></script>
+<!-- //javascript -->
 
 <!-- spinner -->
 <div class="sk-wave" style="display: none;">
