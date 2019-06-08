@@ -1,41 +1,28 @@
 package org.godseop.apple.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import javax.persistence.*;
 
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
+import javax.persistence.*;
+
 @Data
-@Entity
+@Entity(name = "T_COMMENT")
+@EqualsAndHashCode(of = "id")
 public class Comment {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	    
-    private String name;
-    
-    private String email;
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String content;
 
-
-    @OneToMany(mappedBy="comment")
-    private List<Demo> demos;
-
-
     @CreationTimestamp
-    private LocalDateTime createdOn;
-
-
-    @ManyToOne
-    @JoinColumn(name = "user_seq")
-    private User user;
-
+    private LocalDateTime regDate;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
