@@ -1,14 +1,16 @@
 package org.godseop.apple.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "T_MEMBER_ROLE")
 @EqualsAndHashCode(of = "id")
-public class MemberRole {
+@ToString
+public class MemberRole implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +18,12 @@ public class MemberRole {
 
     private String roleName;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @Override
+    public String getAuthority() {
+        return this.roleName;
+    }
 }

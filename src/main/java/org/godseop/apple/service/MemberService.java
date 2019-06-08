@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class MemberService {
 
     private MemberMapper memberMapper;
@@ -39,6 +38,7 @@ public class MemberService {
         return memberRepository.findByUid(uid);
     }
 
+    @Transactional
     public void registerMember(Member member) {
         if (memberRepository.findByUid(member.getUid()) != null) {
             throw new AppleException(Error.DUPLICATE_MEMBER_UID);
@@ -49,6 +49,7 @@ public class MemberService {
         }
     }
 
+    @Transactional
     public void modifyMember(Member member) {
         if (!memberRepository.existsById(member.getId())) {
             throw new AppleException(Error.MEMBER_NOT_EXISTS);

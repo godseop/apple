@@ -3,16 +3,16 @@ package org.godseop.apple.entity;
 import java.time.LocalDateTime;
 
 
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
-import lombok.Data;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "T_COMMENT")
 @EqualsAndHashCode(of = "id")
+@ToString
 public class Comment {
 
     @Id

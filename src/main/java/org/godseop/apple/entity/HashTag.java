@@ -1,13 +1,14 @@
 package org.godseop.apple.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "T_HASHTAG")
 @EqualsAndHashCode(of = "id")
+@ToString
 public class HashTag {
 
     @Id

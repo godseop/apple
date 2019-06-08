@@ -4,6 +4,6 @@
     <title>Apple Project</title>
 </head>
 <body>
-    <p>Hello, world</p>
+    <p>HOME</p>
 </body>
 </html>

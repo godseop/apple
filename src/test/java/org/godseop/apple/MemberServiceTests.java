@@ -77,5 +77,4 @@ public class MemberServiceTests {
         memberService.registerMember(member);
     }
 
-
 }
