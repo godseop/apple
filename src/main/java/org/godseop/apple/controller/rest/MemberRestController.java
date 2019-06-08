@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.entity.Member;
 import org.godseop.apple.model.Result;
 import org.godseop.apple.service.MemberService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
@@ -13,11 +15,6 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value="/user")
 public class MemberRestController {
 
-    // NOT RECOMMENDED : Field Dependency Injection
-    //@Autowired
-    //private UserService userService;
-
-    // SpringTeam RECOMMENDED : Constructor Dependency Injection
     private final MemberService memberService;
 
     public MemberRestController(MemberService memberService) {
@@ -26,48 +23,49 @@ public class MemberRestController {
 
 
     @PostMapping(value="getUserListAll")
-    public Result getUserListAll() throws Exception {
+    public ResponseEntity<Result> getUserListAll() throws Exception {
         Result result = new Result();
         result.put("userList", memberService.getMemberListAll());
         TimeUnit.SECONDS.sleep(3);
-        return result;
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
     @PostMapping(value="getUserListAllJpa")
-    public Result getUserListAllJpa() throws Exception {
+    public ResponseEntity<Result> getUserListAllJpa() throws Exception {
         Result result = new Result();
         result.put("userList", memberService.getMemberListAllJpa());
         TimeUnit.SECONDS.sleep(3);
-        return result;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
     @PostMapping(value="json")
-    public Result testJson(@RequestBody Member member) throws Exception {
+    public ResponseEntity<Result> testJson(@RequestBody Member member) {
         //throw new AppleException(Error.SYSTEM_EXCEPTION);
         Result result = new Result();
 
         result.put("member", member);
         log.info("member : {}", member);
-        return result;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(value="encoded")
-    public Result testEncoded(@ModelAttribute Member member) {
+    public ResponseEntity<Result> testEncoded(@ModelAttribute Member member) {
         Result result = new Result();
 
         result.put("member", member);
         log.info("member : {}", member);
-        return result;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
     @PostMapping(value="reg")
-    public Result registerUser(@RequestBody Member member) throws Exception {
+    public ResponseEntity<Result> registerUser(@RequestBody Member member) {
         Result result = new Result();
 
         memberService.registerMember(member);
 
-        return result;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
