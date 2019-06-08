@@ -3,7 +3,7 @@ package org.godseop.apple;
 import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.entity.Member;
 import org.godseop.apple.repository.MemberRepository;
-import org.godseop.apple.service.PostServiceJooq;
+import org.godseop.apple.service.PostService;
 import org.godseop.apple.service.MemberService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ public class MemberServiceTests {
 	MemberRepository memberRepository;
     
     @Autowired
-    PostServiceJooq postService;
+    PostService postService;
 
 
     @Test

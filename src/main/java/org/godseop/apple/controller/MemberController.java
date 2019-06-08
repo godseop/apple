@@ -1,7 +1,6 @@
 package org.godseop.apple.controller;
 
 import org.godseop.apple.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,29 +8,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value="/user")
+@RequestMapping(value="/member")
 public class MemberController {
 
+    private final MemberService memberService;
 
-    @Autowired
-    private MemberService memberService;
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
+
 
     @GetMapping(value="/list")
     public ModelAndView viewUserListPage() {
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName("user/userList");
-        modelAndView.addObject("userList", memberService.getMemberListAll());
+        modelAndView.setViewName("member/memberList");
+        modelAndView.addObject("memberList", memberService.getMemberList());
 
         return modelAndView;
     }
 
-    @GetMapping(value="/list/{id}")
-    public ModelAndView viewUserDetailPage(@PathVariable("id") Integer id) {
+    @GetMapping(value="/detail/{uid}")
+    public ModelAndView viewUserDetailPage(@PathVariable("uid") String uid) {
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName("user/userDetail");
-        modelAndView.addObject("user", memberService.getMember(id));
+        modelAndView.setViewName("member/memberDetail");
+        modelAndView.addObject("member", memberService.getMember(uid));
 
         return modelAndView;
     }
@@ -40,7 +42,7 @@ public class MemberController {
     public ModelAndView viewUserRegPage() {
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName("user/userReg");
+        modelAndView.setViewName("member/memberReg");
 
         return modelAndView;
     }

@@ -6,7 +6,8 @@ public enum Error {
 
     API_NOT_FOUND("0001", "지원하지않는 API입니다."),
     DATABASE_ERROR("0002", "데이터베이스 오류가 발생했습니다."),
-    DUPLICATE_USER_ID("0003", "사용자 아이디 중복입니다."),
+    DUPLICATE_MEMBER_UID("0003", "사용자 아이디 중복입니다."),
+    MEMBER_NOT_EXISTS("0004", "사용자가 존재하지 않습니다"),
 
     SYSTEM_EXCEPTION("5000", "서버오류 입니다."),
 

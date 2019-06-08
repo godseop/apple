@@ -25,8 +25,8 @@
 <h1>사용자 등록</h1>
 
 <form id="formUser">
-    아이디 : <input type="text" name="id"/><br/>
-    이름 : <input type="text" name="name"/>
+    아이디 : <input type="text" name="uid"/><br/>
+    이름 : <input type="text" name="nickname"/>
 </form>
 
 <button type="button" id="btnReg">등록</button>
