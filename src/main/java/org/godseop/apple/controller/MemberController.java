@@ -38,13 +38,5 @@ public class MemberController {
         return modelAndView;
     }
 
-    @GetMapping(value="/reg")
-    public ModelAndView viewUserRegPage() {
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.setViewName("member/memberReg");
-
-        return modelAndView;
-    }
 
 }

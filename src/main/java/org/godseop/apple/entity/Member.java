@@ -1,18 +1,20 @@
 package org.godseop.apple.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 
-import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Data
+@Getter
+@Setter
 @Alias("member")
 @Entity(name = "T_MEMBER")
 @EqualsAndHashCode(of = "uid")
@@ -43,11 +45,11 @@ public class Member {
     @UpdateTimestamp
     private LocalDateTime modDate;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="uid")
-    private List<MemberRole> roleList;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<MemberRole> roleSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Post> postList;
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<Post> postList = new LinkedList<>();
 
 }

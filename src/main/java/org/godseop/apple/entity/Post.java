@@ -1,28 +1,25 @@
 package org.godseop.apple.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "T_POST")
 @EqualsAndHashCode(of = "id")
+@ToString
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "uid")
-    private Member member;
 
     @Column(nullable = false)
     private String title;
@@ -36,9 +33,13 @@ public class Post {
     private LocalDateTime modDate;
 
     @OneToMany(mappedBy = "post")
-    private List<Comment> commentList;
+    private List<Comment> commentList = new LinkedList<>();
 
     @OneToMany(mappedBy = "post")
-    private List<HashTag> hashTagList;
+    private Set<HashTag> hashTagSet = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 }

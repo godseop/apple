@@ -8,28 +8,24 @@
 
     <script>
     $(function() {
-        $("#btnReg").on("click", function() {
-            let _user = $("#formUser").serializeObject();
-            ajaxJson("reg", _user, testSuccess);
-        });
     });
-
-    function testSuccess() {
-
-    }
-
     </script>
 
 </head>
 <body>
 <h1>사용자 등록</h1>
 
-<form id="formUser">
+<form id="formJoin" action="${context}/member/register" method="post">
     아이디 : <input type="text" name="uid"/><br/>
-    이름 : <input type="text" name="nickname"/>
+    별명 : <input type="text" name="nickname"/><br/>
+    비밀번호 : <input type="password" name="password"/><br/>
+
+    이메일 : <input type="text" name="email"/><br/>
+    지역 : <input type="text" name="location"/><br/>
+
+    <input type="submit" value="등록"/>
 </form>
 
-<button type="button" id="btnReg">등록</button>
 
 </body>
 
