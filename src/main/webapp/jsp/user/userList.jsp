@@ -7,7 +7,7 @@
     <%@include file="../include/header.jsp"%>
 
     <script>
-    let user = {
+    let member = {
         seq: 1,
         id: "godseop",
         name: "임행섭",
@@ -19,20 +19,20 @@
     };
 
     $(function() {
-        user.comments.push({name:"이름4", email:"이메일4", content:"내용4"});
+        member.comments.push({name:"이름4", email:"이메일4", content:"내용4"});
         setEvent();
     });
 
     function setEvent() {
         $("#btnSearch").on("click", function() {
-            ajaxJson("getUserListAll", null, showUserList);
+            ajaxJson("getMemberListAll", null, showUserList);
         });
 
         $("#btnJsonTest").on("click", function() {
             let _user = $("#formUser").serializeObject();
             ajaxJson("json", _user, testSuccess);
             // also you can pass data of javacript object
-            // ajaxJson("json, user, testSuccess);
+            // ajaxJson("json, member, testSuccess);
         });
 
         $("#btnEncodedTest").on("click", function() {
@@ -40,21 +40,21 @@
             ajaxEncoded("encoded", _user, testSuccess, false);
 
             // TODO:then how to pass data of javascript object by url-encoded type?
-            // ajaxEncoded("encoded", user, testSuccess, false);
+            // ajaxEncoded("encoded", member, testSuccess, false);
         });
     }
 
     function showUserList(data) {
         let li = "";
-        for (let user of data.userList) {
-            li += "<li data-id='" + user.id + "'>" + user.name + "</li>";
+        for (let member of data.memberList) {
+            li += "<li data-id='" + member.id + "'>" + member.name + "</li>";
         }
         $("#ulUserList").empty().html(li);
     }
 
 
     function testSuccess(data) {
-        let li = "<li data-id='" + data.user.id + "'>" + data.user.name + "</li>";
+        let li = "<li data-id='" + data.member.id + "'>" + data.member.name + "</li>";
         $("#ulUserList").empty().html(li);
     }
 
@@ -64,9 +64,9 @@
 <body>
     <h1>유저 리스트(MODEL)</h1>
     <ul>
-    <c:forEach var="user" items="${userList}" varStatus="status">
+    <c:forEach var="member" items="${memberList}" varStatus="status">
         <li>
-            ${status.count} : <a href="${context}/user/list/${user.seq}">${user.name}</a>
+            ${status.count} : <a href="${context}/member/list/${member.seq}">${member.name}</a>
         </li>
     </c:forEach>
     </ul>
