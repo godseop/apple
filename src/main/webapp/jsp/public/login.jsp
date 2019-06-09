@@ -17,7 +17,7 @@
     <h1>로그인</h1>
 
     <form id="formLogin" method="post">
-        <input type ="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <sec:csrfInput />
         <div class="row">
             <div>
                 <label for="uid">ID</label>

@@ -5,6 +5,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
 
@@ -13,11 +15,11 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Getter
-@Setter
+@Data
 @Alias("member")
 @Entity(name = "T_MEMBER")
-@EqualsAndHashCode(of = "uid")
+@EqualsAndHashCode(of = "id")
+@JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer"})
 public class Member {
 
     @Id
@@ -45,8 +47,9 @@ public class Member {
     @UpdateTimestamp
     private LocalDateTime modDate;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
     private Set<MemberRole> roleSet = new HashSet<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)

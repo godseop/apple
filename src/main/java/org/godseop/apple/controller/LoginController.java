@@ -34,10 +34,19 @@ public class LoginController {
 
 
     @GetMapping(value="/join")
-    public ModelAndView viewUserRegPage() {
+    public ModelAndView viewMemberJoinPage() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("public/join");
+
+        return modelAndView;
+    }
+
+    @GetMapping(value="/home")
+    public ModelAndView viewHomePage() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("home/home");
 
         return modelAndView;
     }

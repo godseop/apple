@@ -1,14 +1,15 @@
 package org.godseop.apple.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
 @Entity(name = "T_HASHTAG")
 @EqualsAndHashCode(of = "id")
-@ToString
+@ToString(exclude = {"post"})
+@JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer"})
 public class HashTag {
 
     @Id

@@ -1,16 +1,19 @@
 package org.godseop.apple.service;
 
 import org.godseop.apple.entity.Member;
+import org.godseop.apple.entity.MemberRole;
 import org.godseop.apple.exception.AppleException;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.repository.mapper.MemberMapper;
 import org.godseop.apple.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MemberService {
@@ -45,6 +48,17 @@ public class MemberService {
         } else if (memberRepository.findByNickname(member.getNickname()) != null) {
             throw new AppleException(Error.DUPLICATE_MEMBER_NICKNAME);
         } else {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            member.setPassword(encoder.encode(member.getPassword()));
+
+            //고아객체 삭제(delete일어남)
+            //member.getRoleSet().clear();
+
+            MemberRole memberRole = new MemberRole();
+            memberRole.setMember(member);
+            memberRole.setRoleName("ROLE_BASIC");
+            member.setRoleSet(Set.of(memberRole));
+
             memberRepository.save(member);
         }
     }

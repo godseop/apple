@@ -15,9 +15,9 @@
 <h1>사용자 상세</h1>
 
 <form id="formUser">
-    번호 : <input type="text" name="seq" value="${member.id}" disabled/><br/>
-    아이디 : <input type="text" name="id" value="${member.uid}"/><br/>
-    이름 : <input type="text" name="name" value="${member.nickname}"/>
+    <label for="id">번호</label><input type="text" id="id" name="id" value="${member.id}" disabled/><br/>
+    <label for="uid">아이디</label><input type="text" id="uid" name="uid" value="${member.uid}"/><br/>
+    <label for="nickname">별명</label><input type="text" id="nickname" name="nickname" value="${member.nickname}"/>
 </form>
 
 <button type="button" id="btnSave">저장</button>
