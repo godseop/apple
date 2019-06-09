@@ -5,16 +5,17 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Getter
-@Setter
+@Data
 @Entity(name = "T_POST")
 @EqualsAndHashCode(of = "id")
-@ToString
+@ToString(exclude = {"member"})
+@JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer"})
 public class Post {
 
     @Id

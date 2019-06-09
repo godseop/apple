@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Setter
 @Entity(name = "T_MEMBER_ROLE")
 @EqualsAndHashCode(of = "id")
-@ToString
 public class MemberRole implements GrantedAuthority {
 
     @Id
@@ -24,6 +23,11 @@ public class MemberRole implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
+        return this.roleName;
+    }
+
+    @Override
+    public String toString() {
         return this.roleName;
     }
 }

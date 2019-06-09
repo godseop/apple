@@ -14,6 +14,7 @@
     };
 
     $(function() {
+        console.log(member);
         setEvent();
     });
 

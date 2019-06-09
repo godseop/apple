@@ -8,7 +8,16 @@
 
     <script>
     $(function() {
+        $("#btnJoin").on("click", function() {
+            let data = $("#formJoin").serializeObject();
+            console.log(data)
+            ajaxJson("${context}/member/register", data, successJoin);
+        });
     });
+
+    function successJoin(data) {
+        console.log(data);
+    }
     </script>
 
 </head>
@@ -22,10 +31,9 @@
 
     이메일 : <input type="text" name="email"/><br/>
     지역 : <input type="text" name="location"/><br/>
-
-    <input type="submit" value="등록"/>
 </form>
 
+<button type="button" id="btnJoin">등록</button>
 
 </body>
 

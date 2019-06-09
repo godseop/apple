@@ -4,22 +4,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%@include file="include/header.jsp"%>
+    <%@include file="../include/header.jsp"%>
 
     <script>
         // JAVASCRIPT HERE
         $(function() {
-            setEvent();
-        });
 
-        function setEvent() {
-            location.href = "${context}/login";
-        }
+        });
     </script>
 </head>
 <body>
-    <h1>WELCOME TO APPLE PROJECT</h1>
+    <p>HOME</p>
 
-    <button type="button" id="btnLogin">로그인</button>
+    <form id="formLogout" action="${context}/logout" method="get">
+        <input type="submit" value="로그아웃"/>
+    </form>
 </body>
 </html>
