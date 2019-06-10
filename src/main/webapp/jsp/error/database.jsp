@@ -7,6 +7,7 @@
     <%@include file="../include/header.jsp"%>
 </head>
 <body>
-    <h1>403 Forbidden</h1>
+    <h1>DATABASE ERROR</h1>
+    <p>${pageContext.request.getAttribute("exception")}</p>
 </body>
 </html>

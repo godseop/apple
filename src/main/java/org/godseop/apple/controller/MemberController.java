@@ -23,7 +23,7 @@ public class MemberController {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("member/memberList");
-        modelAndView.addObject("memberList", memberService.getMemberListAll());
+        modelAndView.addObject("memberList", memberService.getMemberList());
 
         return modelAndView;
     }
@@ -33,7 +33,7 @@ public class MemberController {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("member/memberDetail");
-        modelAndView.addObject("member", memberService.getMember(uid));
+        modelAndView.addObject("member", memberService.findMember(uid));
 
         return modelAndView;
     }

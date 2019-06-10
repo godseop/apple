@@ -13,9 +13,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity(name = "T_POST")
-@EqualsAndHashCode(of = "id")
-@ToString(exclude = {"member"})
-@JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer"})
+@ToString(exclude = {"hashTagSet", "commentList"})
+@JsonIgnoreProperties(value = {"member"})
 public class Post {
 
     @Id
@@ -33,14 +32,15 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime modDate;
 
-    @OneToMany(mappedBy = "post")
-    private List<Comment> commentList = new LinkedList<>();
-
-    @OneToMany(mappedBy = "post")
-    private Set<HashTag> hashTagSet = new HashSet<>();
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList;
+
+    @OneToMany(mappedBy = "post")
+    private Set<HashTag> hashTagSet;
+
 
 }

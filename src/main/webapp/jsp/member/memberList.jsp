@@ -20,7 +20,7 @@
 
     function setEvent() {
         $("#btnSearch").on("click", function() {
-            ajaxJson("list", null, showUserList);
+            ajaxJson("all", null, showUserList);
         });
 
         $("#btnJsonTest").on("click", function() {
@@ -76,6 +76,7 @@
     <button type="button" id="btnEncodedTest">ajaxEncoded 테스트</button>
 
     <form id="formUser">
+        <sec:csrfInput/>
         <input type="hidden" name="id" value="3"/>
         <input type="hidden" name="uid" value="hahaha"/>
         <input type="hidden" name="nickname" value="하하하"/>

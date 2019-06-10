@@ -14,6 +14,8 @@ public enum Error {
 
     AUTH_NOT_GRANTED("9990", "권한이 없습니다."),
     LOGIN_FAIL("9996", "로그인에 실패했습니다."),
+
+    INTERNAL_SERVER_ERROR("9999", "서버에러입니다. 관리자에게 문의해주세요.")
     ;
 
     private final String code;

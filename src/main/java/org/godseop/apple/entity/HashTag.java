@@ -7,9 +7,7 @@ import javax.persistence.*;
 
 @Data
 @Entity(name = "T_HASHTAG")
-@EqualsAndHashCode(of = "id")
-@ToString(exclude = {"post"})
-@JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer"})
+@JsonIgnoreProperties(value = {"post"})
 public class HashTag {
 
     @Id

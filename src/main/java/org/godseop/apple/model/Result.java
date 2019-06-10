@@ -15,6 +15,10 @@ public class Result extends HashMap<String, Object> {
         this.put(Error.OK);
     }
 
+    public Result(Error error) {
+        this.put(error);
+    }
+
     public Object put(String key, Object value) {
         responseMap.put(key, value);
         super.put("response", this.responseMap);
