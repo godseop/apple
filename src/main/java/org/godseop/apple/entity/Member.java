@@ -5,21 +5,17 @@ import java.util.*;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Alias("member")
 @Entity(name = "T_MEMBER")
-@EqualsAndHashCode(of = "id")
-@JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer"})
+@ToString(exclude = {"roleSet", "postList"})
 public class Member {
 
     @Id
@@ -47,12 +43,10 @@ public class Member {
     @UpdateTimestamp
     private LocalDateTime modDate;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonIgnore
-    private Set<MemberRole> roleSet = new HashSet<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<MemberRole> roleSet;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<Post> postList = new LinkedList<>();
+    private List<Post> postList;
 
 }

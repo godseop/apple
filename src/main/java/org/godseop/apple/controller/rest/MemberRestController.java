@@ -38,7 +38,7 @@ public class MemberRestController {
     @PostMapping(value = "profile")
     public ResponseEntity<Result> getMember(@RequestBody Member member) {
         Result result = new Result();
-        result.put("memberList", memberService.getMember(member.getUid()));
+        result.put("memberList", memberService.findMember(member.getUid()));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

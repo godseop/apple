@@ -1,5 +1,6 @@
 package org.godseop.apple.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.entity.Member;
 import org.godseop.apple.entity.MemberRole;
 import org.godseop.apple.exception.AppleException;
@@ -12,9 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class MemberService {
 
@@ -37,13 +40,13 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Member getMember(String uid) {
+    public Member findMember(String uid) {
         return memberRepository.findByUid(uid);
     }
 
     @Transactional
     public void registerMember(Member member) {
-        if (memberRepository.findByUid(member.getUid()) != null) {
+        if (memberRepository.getByUid(member.getUid()) != null) {
             throw new AppleException(Error.DUPLICATE_MEMBER_UID);
         } else if (memberRepository.findByNickname(member.getNickname()) != null) {
             throw new AppleException(Error.DUPLICATE_MEMBER_NICKNAME);
@@ -51,13 +54,14 @@ public class MemberService {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             member.setPassword(encoder.encode(member.getPassword()));
 
-            //고아객체 삭제(delete일어남)
-            //member.getRoleSet().clear();
-
-            MemberRole memberRole = new MemberRole();
-            memberRole.setMember(member);
-            memberRole.setRoleName("ROLE_BASIC");
-            member.setRoleSet(Set.of(memberRole));
+            MemberRole adminRole = new MemberRole("ROLE_ADMIN", member);
+            MemberRole basicRole = new MemberRole("ROLE_BASIC", member);
+            MemberRole authorRole = new MemberRole("ROLE_AUTUOR", member);
+            Set<MemberRole> roleSet = new HashSet<>();
+            roleSet.add(adminRole);
+            roleSet.add(basicRole);
+            roleSet.add(authorRole);
+            member.setRoleSet(roleSet);
 
             memberRepository.save(member);
         }

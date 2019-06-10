@@ -1,5 +1,6 @@
 package org.godseop.apple.config;
 
+import org.godseop.apple.security.CustomLogoutSuccessHandler;
 import org.godseop.apple.security.MemberAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -35,17 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .loginPage("/login")
-                //.loginProcessingUrl("/login")
                 .defaultSuccessUrl("/home")
                 .usernameParameter("uid")
-                .passwordParameter("password")
-                .permitAll()
-                .failureUrl("/login").and().logout(); // default
+                .passwordParameter("password");
 
         http.logout()
-                .logoutUrl("/logout") // default
-                .logoutSuccessUrl("/login")
-                .permitAll();
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
     }
 
     @Override
@@ -61,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler();
     }
 }

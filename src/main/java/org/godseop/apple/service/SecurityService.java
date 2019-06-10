@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Transactional
 public class SecurityService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
@@ -24,9 +25,8 @@ public class SecurityService implements UserDetailsService {
     }
 
 
-    @Transactional
     public Member authenticate(String uid, String password) {
-        Member member = memberRepository.findByUid(uid);
+        Member member = memberRepository.getByUid(uid);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -41,7 +41,7 @@ public class SecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uid) {
-        Member member = memberRepository.findByUid(uid);
+        Member member = memberRepository.getByUid(uid);
 
         if (member == null) {
             throw new AppleException(Error.MEMBER_NOT_EXISTS);

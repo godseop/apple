@@ -2,11 +2,15 @@ package org.godseop.apple.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @Controller
@@ -24,12 +28,15 @@ public class LoginController {
     }
 
     @GetMapping(value="/logout")
-    public ModelAndView viewLogoutPage() {
-        ModelAndView modelAndView = new ModelAndView();
+    public String viewLogoutPage(HttpServletRequest request, HttpServletResponse response) {
 
-        modelAndView.setViewName("public/login");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return modelAndView;
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+
+        return "redirect:/login";
     }
 
 

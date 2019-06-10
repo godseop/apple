@@ -1,4 +1,4 @@
-// input name=a[0].b[0].c 패턴 매칭을 위한 확장
+// input name= _a[0].b[0].c 패턴 매칭을 위한 확장
 $.extend(FormSerializer.patterns, {
     validate: /^[_]*[a-z][a-z0-9_]*((?:[\d+])*(?:.[^0-9][\w]*)?)*$/i,
 });
@@ -17,8 +17,8 @@ function ajaxJson(url, object, callback, isLoadingBar=true) {
                 callback.call(this, data.response);
             }
         },
-        error: function() {
-            alert("[9999] 서버로 요청중 에러가 발생했습니다.");
+        error: function(data) {
+            alert("[" + data.result.code + "] " + data.result.message);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });
@@ -38,7 +38,7 @@ function ajaxEncoded(url, object, callback, isLoadingBar=true) {
             }
         },
         error: function() {
-            alert("[9999] 서버로 요청중 에러가 발생했습니다.");
+            alert("[" + data.result.code + "] " + data.result.message);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });

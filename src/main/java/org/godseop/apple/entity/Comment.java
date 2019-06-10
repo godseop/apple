@@ -2,7 +2,6 @@ package org.godseop.apple.entity;
 
 import java.time.LocalDateTime;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,9 +10,7 @@ import javax.persistence.*;
 
 @Data
 @Entity(name = "T_COMMENT")
-@EqualsAndHashCode(of = "id")
-@ToString(exclude = {"post"})
-@JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer"})
+@JsonIgnoreProperties(value = {"post"})
 public class Comment {
 
     @Id

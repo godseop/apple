@@ -40,7 +40,7 @@ public class MemberServiceTests {
 
     @Test
     public void getMember() {
-        Member member = memberService.getMember("godseop");
+        Member member = memberService.findMember("godseop");
         log.info("member : {}", member);
     }
 
