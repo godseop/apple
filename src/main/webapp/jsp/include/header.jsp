@@ -24,3 +24,7 @@
 <script src="${context}/static/js/common.js" type="text/javascript"></script>
 <!-- //javascript -->
 
+<script>
+$.support.cors = true; // CORS 설정
+</script>
+

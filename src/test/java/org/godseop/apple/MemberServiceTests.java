@@ -58,10 +58,10 @@ public class MemberServiceTests {
     @Test
     public void registerDuplicateUid() {
         Member member = new Member();
-        member.setUid("godseop");
-        member.setNickname("테스트");
+        member.setUid("aaa");
+        member.setNickname("알파");
         member.setPassword("1234");
-        member.setEmail("test@email.com");
+        member.setEmail("aaa@email.com");
 
         memberService.registerMember(member);
     }
@@ -69,10 +69,10 @@ public class MemberServiceTests {
     @Test
     public void registerDuplicateNickname() {
         Member member = new Member();
-        member.setUid("test");
-        member.setNickname("행삽");
+        member.setUid("aaa");
+        member.setNickname("알파");
         member.setPassword("1234");
-        member.setEmail("test@email.com");
+        member.setEmail("aaa@email.com");
 
         memberService.registerMember(member);
     }

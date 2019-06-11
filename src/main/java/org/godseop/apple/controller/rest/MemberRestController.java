@@ -43,14 +43,6 @@ public class MemberRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="register")
-    public ResponseEntity<Result> registerUser(@RequestBody Member member) {
-        Result result = new Result();
-        memberService.registerMember(member);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @PostMapping(value="modify")
     public ResponseEntity<Result> modifyUser(@RequestBody Member member) {
         Result result = new Result();

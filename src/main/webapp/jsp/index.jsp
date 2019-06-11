@@ -13,13 +13,23 @@
         });
 
         function setEvent() {
-            location.href = "${context}/login";
+
         }
     </script>
 </head>
 <body>
     <h1>WELCOME TO APPLE PROJECT</h1>
 
-    <button type="button" id="btnLogin">로그인</button>
+    <sec:authorize access="isAnonymous()">
+        <a href="${context}/login">로그인하러가기</a>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+        <form action="${context}/logout" method="POST">
+            <sec:csrfInput/>
+            <button type="submit">로그아웃</button>
+        </form>
+    </sec:authorize>
+
+
 </body>
 </html>
