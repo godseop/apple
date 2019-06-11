@@ -5,7 +5,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
 
@@ -26,6 +27,7 @@ public class Member {
     private String uid;
 
     @Column(nullable = false, length = 200)
+    @JsonProperty(access = Access.WRITE_ONLY) // JSON Serialize Only (for only setter!)
     private String password;
 
     @Column(nullable = false, unique = true, length = 50)

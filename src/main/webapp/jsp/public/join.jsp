@@ -11,12 +11,14 @@
         $("#btnJoin").on("click", function() {
             let data = $("#formJoin").serializeObject();
             console.log(data)
-            ajaxJson("${context}/member/register", data, successJoin);
+            ajaxJson("${context}/join", data, successJoin);
         });
     });
 
     function successJoin(data) {
         console.log(data);
+        alert("등록되었습니다. 로그인하러갑시다^^");
+        location.href = "${context}/";
     }
     </script>
 
@@ -24,7 +26,7 @@
 <body>
 <h1>사용자 등록</h1>
 
-<form id="formJoin" action="${context}/member/register" method="post">
+<form id="formJoin">
     아이디 : <input type="text" name="uid"/><br/>
     별명 : <input type="text" name="nickname"/><br/>
     비밀번호 : <input type="password" name="password"/><br/>

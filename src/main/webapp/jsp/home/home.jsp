@@ -35,6 +35,9 @@
 
     </a>
 
-    <a href="${context}/logout">로그아웃</a>
+    <form action="${context}/logout" method="POST">
+        <sec:csrfInput/>
+        <button type="submit">로그아웃</button>
+    </form>
 </body>
 </html>

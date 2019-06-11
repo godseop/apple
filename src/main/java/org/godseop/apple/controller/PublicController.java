@@ -1,20 +1,30 @@
 package org.godseop.apple.controller;
 
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.godseop.apple.entity.Member;
+import org.godseop.apple.model.Result;
+import org.godseop.apple.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @Controller
-public class LoginController {
+public class PublicController {
+
+    private MemberService memberService;
+
+    @Autowired
+    public void setMemberService(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     @GetMapping(value="/login")
     public ModelAndView viewLoginPage(HttpServletRequest request) {
@@ -27,19 +37,6 @@ public class LoginController {
         return modelAndView;
     }
 
-    @GetMapping(value="/logout")
-    public String viewLogoutPage(HttpServletRequest request, HttpServletResponse response) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null) {
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
-
-        return "redirect:/login";
-    }
-
-
     @GetMapping(value="/join")
     public ModelAndView viewMemberJoinPage() {
         ModelAndView modelAndView = new ModelAndView();
@@ -47,6 +44,14 @@ public class LoginController {
         modelAndView.setViewName("public/join");
 
         return modelAndView;
+    }
+
+    @PostMapping(value="join")
+    public ResponseEntity<Result> registerUser(@RequestBody Member member) {
+        Result result = new Result();
+        memberService.registerMember(member);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping(value="/home")
