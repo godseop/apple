@@ -3,7 +3,10 @@ package org.godseop.apple.config;
 import org.godseop.apple.security.AppleLogoutSuccessHandler;
 import org.godseop.apple.security.MemberAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,9 +19,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
+@ComponentScan("org.godseop.apple")
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MemberAuthenticationProvider memberAuthenticationProvider;
@@ -30,8 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // TODO Redis에 세션을 저장
     // TODO Remember me를 이용한 자동로그인 구현
 
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         //fucking security
         //http.authorizeRequests().anyRequest().permitAll();
         //http.csrf().disable();
@@ -39,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 //.antMatchers("/**").hasIpAddress("1.1.1.1") // IP주소 한정 접근허용
                 //.antMatchers("/**").anonymous() // 인증되지않은 사용자만 접근
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은 인증처리 안함
                 .antMatchers( "/", "/login", "/join", "/error/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/member/**").hasAnyRole("ADMIN", "AUTHOR")
@@ -49,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
             .cors()
-                //.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()) // 디폴트 CORS 설정
+           //     //.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()) // 디폴트 CORS 설정
+                .configurationSource(corsConfigurationSource())
 
                 .and()
 
@@ -89,8 +97,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.exceptionHandling().accessDeniedPage("/error/403");
 
-        http.authenticationProvider(memberAuthenticationProvider);
-
     }
 
     @Override
@@ -99,6 +105,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/static/**");
     }
 
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(memberAuthenticationProvider);
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -114,11 +124,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
-        configuration.addAllowedHeader("*");
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "x-csrf-token", "X-Requested-With"));
+        configuration.setExposedHeaders(Collections.singletonList("X-Custom-Header"));
         configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
+        configuration.setMaxAge(300L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
