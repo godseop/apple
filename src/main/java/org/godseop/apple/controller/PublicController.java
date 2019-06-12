@@ -32,6 +32,7 @@ public class PublicController {
 
         String referer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referer);
+        log.info("REFERER : {}", referer); // 주소 직접 입력 or 즐겨찾기로 접근시 NULL
         modelAndView.setViewName("public/login");
 
         return modelAndView;

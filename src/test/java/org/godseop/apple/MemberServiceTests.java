@@ -21,7 +21,7 @@ import java.util.List;
 public class MemberServiceTests {
 
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
 
     @Test
     public void getMemberList() {
