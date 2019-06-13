@@ -44,6 +44,30 @@ function ajaxEncoded(url, object, callback, isLoadingBar=true) {
     });
 }
 
+function ajaxMultipart(url, formData, callback, isLoadingBar=true) {
+    $.post({
+        url:         url,
+        contentType: false,
+        cache:       false,
+        processData: false,
+        timeout:     600000,
+        enctype:     "multipart/form-data",
+        data:        formData,
+        beforeSend:  isLoadingBar && showLoadingBar,
+        success: function(data) {
+            if (data.result.code !== "0000") {
+                alert("[" + data.result.code + "] " + data.result.message);
+            } else {
+                callback.call(this, data.response);
+            }
+        },
+        error: function() {
+            alert("[" + data.result.code + "] " + data.result.message);
+        },
+        complete:    isLoadingBar && hideLoadingBar,
+    });
+}
+
 // 로딩바 보임
 async function showLoadingBar() {
     await $(".sk-wave").show();
