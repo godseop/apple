@@ -50,13 +50,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers( "/", "/login", "/join", "/error/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/member/**").hasAnyRole("ADMIN", "AUTHOR")
-                .antMatchers("/**").hasRole("BASIC")
+                .antMatchers("/home/**").hasAnyRole("ADMIN", "AUTHOR", "BASIC")
                 .anyRequest().authenticated()
 
                 .and()
 
             .cors()
-           //     //.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()) // 디폴트 CORS 설정
+                //.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()) // 디폴트 CORS 설정
                 .configurationSource(corsConfigurationSource())
 
                 .and()
