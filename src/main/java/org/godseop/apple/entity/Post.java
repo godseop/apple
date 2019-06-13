@@ -1,28 +1,25 @@
 package org.godseop.apple.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity(name = "T_POST")
-@EqualsAndHashCode(of = "id")
+@ToString(exclude = {"hashTagSet", "commentList"})
+@JsonIgnoreProperties(value = {"member"})
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "uid")
-    private Member member;
 
     @Column(nullable = false)
     private String title;
@@ -35,10 +32,15 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime modDate;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToMany(mappedBy = "post")
     private List<Comment> commentList;
 
     @OneToMany(mappedBy = "post")
-    private List<HashTag> hashTagList;
+    private Set<HashTag> hashTagSet;
+
 
 }

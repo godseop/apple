@@ -1,12 +1,13 @@
-// input name=a[0].b[0].c 패턴 매칭을 위한 확장
+// input name= _a[0].b[0].c 패턴 매칭을 위한 확장
 $.extend(FormSerializer.patterns, {
-    validate: /^[a-z][a-z0-9_]*((?:[\d+])*(?:.[^0-9][\w]*)?)*$/i,
+    validate: /^[_]*[a-z][a-z0-9_]*((?:[\d+])*(?:.[^0-9][\w]*)?)*$/i,
 });
 
 function ajaxJson(url, object, callback, isLoadingBar=true) {
     $.post({
         url:         url,
         contentType: "application/json; charset=UTF-8",
+        headers:     buildHeaders(),
         data:        JSON.stringify(object),
         beforeSend:  isLoadingBar && showLoadingBar,
         success: function(data) {
@@ -16,8 +17,8 @@ function ajaxJson(url, object, callback, isLoadingBar=true) {
                 callback.call(this, data.response);
             }
         },
-        error: function() {
-            alert("[9999] 서버로 요청중 에러가 발생했습니다.");
+        error: function(data) {
+            alert("[" + data.result.code + "] " + data.result.message);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });
@@ -37,7 +38,31 @@ function ajaxEncoded(url, object, callback, isLoadingBar=true) {
             }
         },
         error: function() {
-            alert("[9999] 서버로 요청중 에러가 발생했습니다.");
+            alert("[" + data.result.code + "] " + data.result.message);
+        },
+        complete:    isLoadingBar && hideLoadingBar,
+    });
+}
+
+function ajaxMultipart(url, formData, callback, isLoadingBar=true) {
+    $.post({
+        url:         url,
+        contentType: false,
+        cache:       false,
+        processData: false,
+        timeout:     600000,
+        enctype:     "multipart/form-data",
+        data:        formData,
+        beforeSend:  isLoadingBar && showLoadingBar,
+        success: function(data) {
+            if (data.result.code !== "0000") {
+                alert("[" + data.result.code + "] " + data.result.message);
+            } else {
+                callback.call(this, data.response);
+            }
+        },
+        error: function() {
+            alert("[" + data.result.code + "] " + data.result.message);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });
@@ -51,4 +76,14 @@ async function showLoadingBar() {
 // 로딩바 숨김
 async function hideLoadingBar() {
     await $(".sk-wave").hide();
+}
+
+function buildHeaders() {
+    //var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    var headers = {};
+    headers[csrfHeader] = csrfToken;
+
+    return headers;
 }
