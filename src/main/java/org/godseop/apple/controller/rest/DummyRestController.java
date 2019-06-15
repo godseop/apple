@@ -69,4 +69,13 @@ public class DummyRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping(value="s3list")
+    public ResponseEntity<Result> testS3list() {
+        Result result = new Result();
+
+        result.put("list", s3Service.listing("static"));
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

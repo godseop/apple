@@ -42,6 +42,10 @@
             let _formData = new FormData($("#formMultipart")[0]);
             ajaxMultipart("${context}/dummy/multipart", _formData, uploadSuccess, false);
         });
+
+        $("#btnS3Test").on("click", function() {
+            ajaxJson("${context}/dummy/s3list", null, listSuccess, true);
+        });
     }
 
     function showUserList(data) {
@@ -59,7 +63,11 @@
     }
 
     function uploadSuccess(data) {
+        console.log(data);
+    }
 
+    function listSuccess(data) {
+        console.log(data);
     }
 
     </script>
@@ -84,6 +92,7 @@
     <button type="button" id="btnJsonTest">ajaxJSON 테스트</button>
     <button type="button" id="btnEncodedTest">ajaxEncoded 테스트</button>
     <button type="button" id="btnMultipartTest">ajaxMultipart 테스트</button>
+    <button type="button" id="btnS3Test">S3 목록조회 테스트</button>
 
     <form id="formUser">
         <sec:csrfInput/>
