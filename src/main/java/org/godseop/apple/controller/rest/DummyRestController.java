@@ -28,8 +28,8 @@ public class DummyRestController {
     @PostMapping(value="json")
     public ResponseEntity<Result> testJson(@RequestBody Member member) {
         Result result = new Result();
+        log.error("MEMBER INFO : {}", member);
         result.put("member", member);
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -38,6 +38,8 @@ public class DummyRestController {
         Result result = new Result();
         result.put("member", member);
 
+        log.error("MEMBER INFO : {}", member);
+        log.error("POST LIST : {}", member.getPostList());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -49,8 +51,9 @@ public class DummyRestController {
 
         Result result = new Result();
 
-        log.info("Member info : {}", member);
+        log.info("MEMBER INFO : {}", member);
         result.put("member", member);
+        log.info("POST LIST : {}", member.getPostList());
 
         String uploadPath = s3Service.upload(file, "static");
         result.put("uploadPath", uploadPath);

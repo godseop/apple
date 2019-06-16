@@ -18,7 +18,6 @@
 <!-- //css -->
 
 <!-- javascript -->
-
 <script src="${context}/static/js/jquery-3.4.1.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/jquery.serializeObject.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/common.js" type="text/javascript"></script>
@@ -26,5 +25,6 @@
 
 <script>
 $.support.cors = true; // CORS 설정
+var context = "${context}";
 </script>
 

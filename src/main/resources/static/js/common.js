@@ -4,8 +4,9 @@ $.extend(FormSerializer.patterns, {
 });
 
 function ajaxJson(url, object, callback, isLoadingBar=true) {
+    console.log(context);
     $.post({
-        url:         url,
+        url:         context + url,
         contentType: "application/json; charset=UTF-8",
         headers:     buildHeaders(),
         data:        JSON.stringify(object),
@@ -26,8 +27,9 @@ function ajaxJson(url, object, callback, isLoadingBar=true) {
 
 function ajaxEncoded(url, object, callback, isLoadingBar=true) {
     $.post({
-        url:         url,
+        url:         context + url,
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        headers:     buildHeaders(),
         data:        object,
         beforeSend:  isLoadingBar && showLoadingBar,
         success: function(data) {
@@ -37,7 +39,7 @@ function ajaxEncoded(url, object, callback, isLoadingBar=true) {
                 callback.call(this, data.response);
             }
         },
-        error: function() {
+        error: function(data) {
             alert("[" + data.result.code + "] " + data.result.message);
         },
         complete:    isLoadingBar && hideLoadingBar,
@@ -46,8 +48,9 @@ function ajaxEncoded(url, object, callback, isLoadingBar=true) {
 
 function ajaxMultipart(url, formData, callback, isLoadingBar=true) {
     $.post({
-        url:         url,
+        url:         context + url,
         contentType: false,
+        headers:     buildHeaders(),
         cache:       false,
         processData: false,
         timeout:     600000,
@@ -61,7 +64,7 @@ function ajaxMultipart(url, formData, callback, isLoadingBar=true) {
                 callback.call(this, data.response);
             }
         },
-        error: function() {
+        error: function(data) {
             alert("[" + data.result.code + "] " + data.result.message);
         },
         complete:    isLoadingBar && hideLoadingBar,
@@ -78,6 +81,7 @@ async function hideLoadingBar() {
     await $(".sk-wave").hide();
 }
 
+// csrf 헤더 만들기
 function buildHeaders() {
     //var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
     var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -86,4 +90,21 @@ function buildHeaders() {
     headers[csrfHeader] = csrfToken;
 
     return headers;
+}
+
+// jascript object ==> urlencoded string (e.g a=1&b=2&c[0].a=3&c[0].b=4&c[1].a=5 ...)
+function serializeUrlEncoded(obj, prefix) {
+    var str = [], p;
+
+    for (p in obj) {
+        if (obj.hasOwnProperty(p)) {
+            var k = isNaN(p) ? (prefix ? prefix + "." + p : p) : (prefix ? prefix + "[" + p + "]" : p);
+            var v = obj[p];
+
+            str.push((v !== null && typeof v === "object") ?
+                serializeUrlEncoded(v, k) :
+                encodeURIComponent(k) + "=" + encodeURIComponent(v));
+        }
+    }
+    return str.join("&");
 }
