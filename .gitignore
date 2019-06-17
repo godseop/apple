@@ -36,3 +36,5 @@ log/**/*.log
 
 
 application.properties
+aws.properties
+
