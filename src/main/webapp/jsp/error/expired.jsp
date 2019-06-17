@@ -7,6 +7,6 @@
     <%@include file="../include/header.jsp"%>
 </head>
 <body>
-    <h1>404 NOT FOUND</h1>
+<h1>YOUR SESSION IS EXPIRED...</h1>
 </body>
 </html>

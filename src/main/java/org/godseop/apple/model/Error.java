@@ -13,7 +13,9 @@ public enum Error {
     SYSTEM_EXCEPTION("5000", "서버오류 입니다."),
 
     AUTH_NOT_GRANTED("9990", "권한이 없습니다."),
-    LOGIN_FAIL("9996", "로그인에 실패했습니다.\n아이디, 비밀번호를 확인해주세요."),
+    LOGIN_FAIL("9996", "로그인에 실패했습니다."),
+
+    INTERNAL_SERVER_ERROR("9999", "서버에러입니다. 관리자에게 문의해주세요.")
     ;
 
     private final String code;

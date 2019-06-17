@@ -2,14 +2,18 @@ package org.godseop.apple.aop;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.godseop.apple.exception.AppleException;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.model.Result;
+import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,39 +23,70 @@ import java.sql.SQLException;
 @ControllerAdvice
 public class ExceptionAdvice {
 
-    // DB에러 예외처리
-    @ExceptionHandler({SQLException.class, DataAccessException.class})
-    public @ResponseBody ResponseEntity<Result> handleDatabaseException(
+    // 비즈니스 예외처리
+    @ExceptionHandler({AppleException.class})
+    public @ResponseBody ResponseEntity<Result> handleAppleException(
             final HttpServletRequest request,
-            final HttpServletResponse response) {
+            final HttpServletResponse response,
+            final AppleException appleException) {
         Result result = new Result();
-        result.put(Error.DATABASE_ERROR);
+        result.put(appleException);
 
-        return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
-    // 서버에러 예외처리
-    @ExceptionHandler({Exception.class, RuntimeException.class})
-    public @ResponseBody ResponseEntity<Result> handleException(
+    // DB에러 예외처리
+    @ExceptionHandler({DataAccessException.class, SQLException.class})
+    public ModelAndView handleDatabaseException(
             final HttpServletRequest request,
             final HttpServletResponse response,
             final Exception exception) {
-        printException(request, exception);
 
-        Result result = new Result();
-        result.put(exception);
+        log.error("Database Error occured... {}", exception.getMessage());
 
-        return new ResponseEntity<>(result, HttpStatus.SERVICE_UNAVAILABLE);
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (isAjaxRequest(request)) {
+            modelAndView.setViewName("jsonView");
+            modelAndView.addObject("result", new Result(Error.DATABASE_ERROR).get("result"));
+        } else {
+            modelAndView.setViewName("/error/database");
+            modelAndView.addObject("message", exception.getMessage());
+        }
+
+        return modelAndView;
     }
 
-    private void printException(HttpServletRequest request, Exception exception) {
-        log.error("Request : " + request.getRequestURL() + " error occured " + exception);
-        log.error("Parameters : {}", request.getParameterMap());
+    // 서버에러 예외처리
+    @ExceptionHandler({Exception.class})
+    public ModelAndView handleException(
+            final HttpServletRequest request,
+            final HttpServletResponse response,
+            final Exception exception) {
 
-        for (StackTraceElement element : exception.getStackTrace()) {
-            log.warn("{}", element);
+        log.error("Intenal Server Error occured... {}", exception.getMessage());
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (isAjaxRequest(request)) {
+            modelAndView.setViewName("jsonView");
+            modelAndView.addObject("result", new Result(Error.INTERNAL_SERVER_ERROR).get("result"));
+        } else {
+            modelAndView.setViewName("/error/500");
+            request.setAttribute("message", exception.getMessage());
         }
+
+        return modelAndView;
+    }
+
+    private boolean isAjaxRequest(HttpServletRequest request) {
+        String requestedWithHeader = request.getHeader("X-Requested-With");
+        return "XMLHttpRequest".equals(requestedWithHeader);
+    }
+
+    @Bean
+    public MappingJackson2JsonView jsonView(){
+        return new MappingJackson2JsonView();
     }
 
 }

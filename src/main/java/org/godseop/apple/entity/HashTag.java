@@ -1,13 +1,13 @@
 package org.godseop.apple.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @Entity(name = "T_HASHTAG")
-@EqualsAndHashCode(of = "id")
+@JsonIgnoreProperties(value = {"post"})
 public class HashTag {
 
     @Id
