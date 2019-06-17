@@ -1,21 +1,22 @@
 package org.godseop.apple.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 
-import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Alias("member")
 @Entity(name = "T_MEMBER")
-@EqualsAndHashCode(of = "uid")
+@ToString(exclude = {"roleSet", "postList"})
 public class Member {
 
     @Id
@@ -26,6 +27,7 @@ public class Member {
     private String uid;
 
     @Column(nullable = false, length = 200)
+    @JsonProperty(access = Access.WRITE_ONLY) // JSON Serialize Only (for only setter!)
     private String password;
 
     @Column(nullable = false, unique = true, length = 50)
@@ -43,11 +45,10 @@ public class Member {
     @UpdateTimestamp
     private LocalDateTime modDate;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="uid")
-    private List<MemberRole> roleList;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<MemberRole> roleSet;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Post> postList;
 
 }

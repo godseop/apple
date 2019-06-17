@@ -7,6 +7,6 @@
     <%@include file="../include/header.jsp"%>
 </head>
 <body>
-    <h1>404 NOT FOUND</h1>
+    <h1>403 Forbidden</h1>
 </body>
 </html>
