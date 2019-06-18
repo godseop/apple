@@ -20,10 +20,13 @@
 <!-- javascript -->
 <script src="${context}/static/js/jquery-3.4.1.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/jquery.serializeObject.min.js" type="text/javascript"></script>
+<script src="${context}/static/js/moment-2.24.0.min.js" type="text/javascript"></script>
+<script src="${context}/static/js/moment-with-locales.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/common.js" type="text/javascript"></script>
 <!-- //javascript -->
 
 <script>
+moment.locale('ko');
 $.support.cors = true; // CORS 설정
 var context = "${context}";
 </script>

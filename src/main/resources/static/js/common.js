@@ -84,9 +84,9 @@ async function hideLoadingBar() {
 // csrf 헤더 만들기
 function buildHeaders() {
     //var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
-    var csrfToken = $("meta[name='_csrf']").attr("content");
-    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-    var headers = {};
+    let csrfToken = $("meta[name='_csrf']").attr("content");
+    let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    let headers = {};
     headers[csrfHeader] = csrfToken;
 
     return headers;
@@ -94,12 +94,12 @@ function buildHeaders() {
 
 // jascript object ==> urlencoded string (e.g a=1&b=2&c[0].a=3&c[0].b=4&c[1].a=5 ...)
 function serializeUrlEncoded(obj, prefix) {
-    var str = [], p;
+    let str = [], p;
 
     for (p in obj) {
         if (obj.hasOwnProperty(p)) {
-            var k = isNaN(p) ? (prefix ? prefix + "." + p : p) : (prefix ? prefix + "[" + p + "]" : p);
-            var v = obj[p];
+            let k = isNaN(p) ? (prefix ? prefix + "." + p : p) : (prefix ? prefix + "[" + p + "]" : p);
+            let v = obj[p];
 
             str.push((v !== null && typeof v === "object") ?
                 serializeUrlEncoded(v, k) :
@@ -107,4 +107,12 @@ function serializeUrlEncoded(obj, prefix) {
         }
     }
     return str.join("&");
+}
+
+function getTodayStamp() {
+    return moment().format("YYYY-MM-DD HH:mm:ss");
+}
+
+function getTimeStamp(milliseconds) {
+    return moment(milliseconds).format("YYYY-MM-DD HH:mm:ss");
 }
