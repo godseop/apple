@@ -9,4 +9,47 @@
         SELECT * FROM T_MEMBER
     </select>
 
+    <insert id="insertMember" parameterType="member"> <!-- MySQL : useGeneratedKeys="true" keyProperty="id" -->
+        INSERT INTO
+            T_MEMBER
+        VALUES (
+            #{id}
+          , #{email}
+          , #{location}
+          , SYSDATE
+          , #{nickname}
+          , #{password}
+          , SYSDATE
+          , #{uid}
+        )
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT MEMBER_SEQ.nextval FROM DUAL
+        </selectKey>
+    </insert>
+
+    <!-- ORACLE MERGE QUERY EXAMPLE -->
+    <update id="mergeMember" parameterType="member">
+        MERGE INTO T_MEMBER M
+        USING DUAL
+        ON (
+            M.UID = #{uid}
+        )
+        WHEN MATCHED THEN
+            UPDATE SET
+                M.MOD_DATE = SYSDATE
+            AND M.EMAIL = #{email}
+        WHEN NOT MATCHED THEN
+            INSERT
+            VALUES (
+                MEMBER_SEQ.nextval
+              , #{email}
+              , #{location}
+              , SYSDATE
+              , #{nickname}
+              , #{password}
+              , SYSDATE
+              , #{uid}
+            )
+    </update>
+
 </mapper>
