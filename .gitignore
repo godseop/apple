@@ -32,7 +32,7 @@ mvnw.cmd
 .vscode/
 
 ### log file ###
-log/**/*.log
+log/*.log
 
 
 application.properties
