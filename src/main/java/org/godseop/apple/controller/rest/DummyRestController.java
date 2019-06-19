@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class DummyRestController {
     public ResponseEntity<Result> testMultipart(
             @ModelAttribute Member member,  // can't use @RequestBody cuz it means use of JSON or XML data
             @RequestPart("fileMultiple") MultipartFile[] fileArray,
-            @RequestPart("fileOne") MultipartFile file) throws IOException {
+            @RequestPart("fileOne") MultipartFile file) {
 
         Result result = new Result();
 
@@ -55,7 +54,7 @@ public class DummyRestController {
         result.put("member", member);
         log.info("POST LIST : {}", member.getPostList());
 
-        String uploadPath = s3Service.upload(file, "static");
+        String uploadPath = s3Service.uploadBucket(file);
         result.put("uploadPath", uploadPath);
 
         Stream.concat(Arrays.stream(fileArray), Stream.of(file)).forEach(x -> {
@@ -76,7 +75,7 @@ public class DummyRestController {
     public ResponseEntity<Result> testS3list() {
         Result result = new Result();
 
-        result.put("list", s3Service.listing("static"));
+        result.put("list", s3Service.getFileListOnBucket("static"));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
