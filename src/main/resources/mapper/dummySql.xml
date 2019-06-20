@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.godseop.apple.repository.mapper.DummyMapper">
+
+    <sql id="sort">
+        ORDER BY ${orderKey} ${orderSort}
+    </sql>
+
+    <sql id="pagingTop">
+        SELECT
+            T.*
+        FROM (
+            SELECT
+                ROW_NUMBER() OVER(<include refid="sort"/>) AS RNUM
+              , A.*
+             FROM (
+    </sql>
+
+    <sql id="pagingBottom">
+    <![CDATA[
+             ) A WHERE RNUM <= #{endRow}
+        ) T WHERE T.RNUM >= #{startRow}
+    ]]>
+    </sql>
+
+    <select id="selectDummyList" resultType="dummy">
+        SELECT
+            D.ID
+            D.KEY
+            D.VALUE
+        FROM
+            T_DUMMY D
+        <include refid="dummyListCondition"/>
+    </select>
+
+    <select id="selectDummyListCount" resultType="int">
+        SELECT COUNT(*) FROM T_DUMMY
+    </select>
+
+    <sql id="dummyListCondition">
+
+    </sql>
+
+</mapper>
