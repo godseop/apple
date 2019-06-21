@@ -1,10 +1,9 @@
-// input name= _a[0].b[0].c 패턴 매칭을 위한 확장
+// jquert.serializeObject > input name= _a[0].b[0].c 패턴 매칭을 위한 확장
 $.extend(FormSerializer.patterns, {
     validate: /^[_]*[a-z][a-z0-9_]*((?:[\d+])*(?:.[^0-9][\w]*)?)*$/i,
 });
 
 function ajaxJson(url, object, callback, isLoadingBar=true) {
-    console.log(context);
     $.post({
         url:         context + url,
         contentType: "application/json; charset=UTF-8",
@@ -109,10 +108,25 @@ function serializeUrlEncoded(obj, prefix) {
     return str.join("&");
 }
 
-function getTodayStamp() {
-    return moment().format("YYYY-MM-DD HH:mm:ss");
+
+function getDateStamp(offset) {
+    offset = (Number.isInteger(offset) ? offset : 0);
+    return moment().add(offset, 'days').format("YYYY-MM-DD");
 }
 
-function getTimeStamp(milliseconds) {
+function getDateTimeStamp(offset) {
+    offset = (Number.isInteger(offset) ? offset : 0);
+    return moment().add(offset, 'days').format("YYYY-MM-DD HH:mm:ss");
+}
+
+
+function getDateTimeStampByMillis(milliseconds) {
     return moment(milliseconds).format("YYYY-MM-DD HH:mm:ss");
 }
+
+$.fn.extend({
+    pagination: function(page) {
+        var pageView = "";
+        this.empty().append(pageView);
+    },
+});

@@ -2,10 +2,12 @@ package org.godseop.apple.entity;
 
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,15 +19,14 @@ public class Dummy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String key;
+    private Integer count;
 
-    private String value;
+    private String name;
 
-    @CreationTimestamp
-    private LocalDateTime regDate;
+    private LocalDateTime time;
 
-    @UpdateTimestamp
-    private LocalDateTime modDate;
+    private Boolean bool;
+
+    private Character yn;
 
 }

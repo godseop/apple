@@ -6,28 +6,30 @@ import org.godseop.apple.model.Page;
 
 public class PageUtils {
 
-    public static Page getPage(int pageNumber, int pageSize, int pageCount, int totalCount) {
+    private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final int DEFAULT_PAGE_COUNT = 10;
 
+    public static Page getPage(int pageNumber, int totalCount) {
         Page page = new Page();
 
-        page.setPageSize(pageSize);
+        page.setPageSize(DEFAULT_PAGE_SIZE);
         page.setPageNumber(pageNumber);
-        page.setPageCount(pageCount);
+        page.setPageCount(DEFAULT_PAGE_COUNT);
         page.setTotalCount(totalCount);
 
-        int startRowNumber = (pageNumber - 1) * pageSize;
-        int endRowNumber = pageNumber * pageSize;
+        int startRowNumber = (pageNumber - 1) * DEFAULT_PAGE_SIZE;
+        int endRowNumber = pageNumber * DEFAULT_PAGE_SIZE;
 
         page.setStartRowNumber(startRowNumber);
         page.setEndRowNumber(endRowNumber);
 
-        int totalPage = (totalCount - 1) / pageSize + 1;
+        int totalPage = (totalCount - 1) / DEFAULT_PAGE_SIZE + 1;
         totalPage = totalPage == 0 ? 1 : totalPage;
 
         page.setTotalPage(totalPage);
 
-        int startPageNumber = (pageCount * (pageNumber - 1) / pageCount) + 1;
-        int endPageNumber = startPageNumber + pageCount - 1;
+        int startPageNumber = (DEFAULT_PAGE_COUNT * (pageNumber - 1) / DEFAULT_PAGE_COUNT) + 1;
+        int endPageNumber = startPageNumber + DEFAULT_PAGE_COUNT - 1;
         endPageNumber = endPageNumber > totalPage ? totalPage : endPageNumber;
 
         page.setStartPageNumber(startPageNumber);
@@ -37,7 +39,6 @@ public class PageUtils {
     }
 
     public static Page getPage(Condition condition) {
-
         Page page = new Page();
 
         int pageSize = condition.getPageSize();

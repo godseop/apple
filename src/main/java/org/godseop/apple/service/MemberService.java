@@ -69,11 +69,15 @@ public class MemberService {
 
     @Transactional
     public void modifyMember(Member member) {
-        if (!memberRepository.existsById(member.getId())) {
+        // TODO DynamicUPDATE 할수 있는 방법좀... 어노테이션 안먹음
+        Member existsMember = memberRepository.getOne(member.getId());
+
+        if (existsMember == null)
             throw new AppleException(Error.MEMBER_NOT_EXISTS);
-        } else {
-            memberRepository.save(member);
-        }
+
+        existsMember.setNickname(member.getNickname());
+
+        memberRepository.save(existsMember);
     }
 
     // mapper

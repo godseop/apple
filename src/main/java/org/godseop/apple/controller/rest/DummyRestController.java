@@ -32,33 +32,32 @@ public class DummyRestController {
     private final DummyService dummyService;
 
     @PostMapping(value="json")
-    public ResponseEntity<Result> testJson(@RequestBody Member member) {
+    public ResponseEntity<Result> testJson(@RequestBody Dummy dummy) {
         Result result = new Result();
-        log.error("MEMBER INFO : {}", member);
-        result.put("member", member);
+
+        log.error("Dummy => {}", dummy);
+        result.put("dummy", dummy);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(value="encoded")
-    public ResponseEntity<Result> testEncoded(@ModelAttribute Member member) {
+    public ResponseEntity<Result> testEncoded(@ModelAttribute Dummy dummy) {
         Result result = new Result();
-        result.put("member", member);
 
-        log.error("MEMBER INFO : {}", member);
-        log.error("POST LIST : {}", member.getPostList());
+        log.error("Dummy => {}", dummy);
+        result.put("dummy", dummy);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(value="multipart")
     public ResponseEntity<Result> testMultipart(
-            @ModelAttribute Member member,  // can't use @RequestBody cuz it means use of JSON or XML data
+            @ModelAttribute Dummy dummy,  // can't use @RequestBody cuz it means use of JSON or XML data
             @RequestPart("fileMultiple") MultipartFile[] fileArray,
             @RequestPart("fileOne") MultipartFile file) {
         Result result = new Result();
 
-        log.info("MEMBER INFO : {}", member);
-        result.put("member", member);
-        log.info("POST LIST : {}", member.getPostList());
+        log.error("Dummy => {}", dummy);
+        result.put("dummy", dummy);
 
         String uploadPath = s3Service.uploadBucket(file);
         result.put("uploadPath", uploadPath);
@@ -73,7 +72,6 @@ public class DummyRestController {
             result.put(name, map);
         });
 
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -81,12 +79,13 @@ public class DummyRestController {
     public ResponseEntity<Result> testPaging(@RequestBody Condition condition) {
         Result result = new Result();
 
-        int totalCount = dummyService.selectDummyListCount();
+        int totalCount = dummyService.selectDummyListCount(condition);
         condition.setTotalCount(totalCount);
         List<Dummy> dummyList = dummyService.selectDummyList(condition);
 
         result.put("list", dummyList);
         result.put("page", PageUtils.getPage(condition));
+        //result.put("page", PageUtils.getPage(pageNumber, totalCount));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -96,7 +95,6 @@ public class DummyRestController {
         Result result = new Result();
 
         result.put("list", s3Service.getFileListOnBucket("static"));
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

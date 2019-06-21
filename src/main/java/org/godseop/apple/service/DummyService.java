@@ -16,8 +16,8 @@ public class DummyService {
 
     private final DummyMapper dummyMapper;
 
-    public int selectDummyListCount() {
-        return dummyMapper.selectDummyListCount();
+    public int selectDummyListCount(Condition condition) {
+        return dummyMapper.selectDummyListCount(condition);
     }
 
     public List<Dummy> selectDummyList(Condition condition) {

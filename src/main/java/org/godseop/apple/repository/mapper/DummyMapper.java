@@ -12,7 +12,7 @@ import java.util.List;
 @Repository("dummyMapper")
 public interface DummyMapper {
 
-    int selectDummyListCount();
+    int selectDummyListCount(Condition condition);
 
     List<Dummy> selectDummyList(Condition condition);
 }

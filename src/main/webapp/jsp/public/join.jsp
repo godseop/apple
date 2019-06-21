@@ -8,12 +8,16 @@
 
     <script>
     $(function() {
+        setEvent();
+
+    });
+
+    function setEvent() {
         $("#btnJoin").on("click", function() {
             let data = $("#formJoin").serializeObject();
-            console.log(data)
-            ajaxJson("${context}/join", data, successJoin);
+            ajaxJson("/join", data, successJoin);
         });
-    });
+    }
 
     function successJoin(data) {
         console.log(data);

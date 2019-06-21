@@ -44,10 +44,7 @@ public class S3Service {
     public File uploadLocal(MultipartFile multipartFile) {
         checkFileValidation(multipartFile);
 
-        File file = writeFile(multipartFile)
-                .orElseThrow(SystemException::new);
-
-        return file;
+        return writeFile(multipartFile).orElseThrow(SystemException::new);
     }
 
     public String uploadBucket(MultipartFile multipartFile) {
@@ -100,12 +97,8 @@ public class S3Service {
 
 
     private boolean deleteLocalFile(String filePath) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            file.delete();
-            return true;
-        }
-        return false;
+        return new File(filePath).delete();
+
     }
 
     private boolean checkFileValidation(MultipartFile multipartFile) {
