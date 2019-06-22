@@ -40,7 +40,7 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Member findMember(String uid) {
+    public Member getMember(String uid) {
         return memberRepository.findByUid(uid);
     }
 

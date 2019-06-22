@@ -16,11 +16,15 @@ public class DummyService {
 
     private final DummyMapper dummyMapper;
 
-    public int selectDummyListCount(Condition condition) {
+    public int getDummyListCount(Condition condition) {
         return dummyMapper.selectDummyListCount(condition);
     }
 
-    public List<Dummy> selectDummyList(Condition condition) {
+    public List<Dummy> getDummyList(Condition condition) {
         return dummyMapper.selectDummyList(condition);
+    }
+
+    public Dummy getDummy(Long id) {
+        return dummyMapper.selectDummy(id);
     }
 }

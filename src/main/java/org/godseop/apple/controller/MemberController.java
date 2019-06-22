@@ -1,5 +1,6 @@
 package org.godseop.apple.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.godseop.apple.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,18 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value="/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
-
-
     @GetMapping(value="/list")
-    public ModelAndView viewUserListPage() {
+    public ModelAndView viewMemberListPage() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("member/memberList");
@@ -29,11 +26,11 @@ public class MemberController {
     }
 
     @GetMapping(value="/detail/{uid}")
-    public ModelAndView viewUserDetailPage(@PathVariable("uid") String uid) {
+    public ModelAndView viewMemberDetailPage(@PathVariable("uid") String uid) {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("member/memberDetail");
-        modelAndView.addObject("member", memberService.findMember(uid));
+        modelAndView.addObject("member", memberService.getMember(uid));
 
         return modelAndView;
     }

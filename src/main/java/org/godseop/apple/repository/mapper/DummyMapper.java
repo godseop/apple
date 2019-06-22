@@ -15,4 +15,6 @@ public interface DummyMapper {
     int selectDummyListCount(Condition condition);
 
     List<Dummy> selectDummyList(Condition condition);
+
+    Dummy selectDummy(Long id);
 }

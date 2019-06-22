@@ -17,6 +17,10 @@ public class Condition {
 
     private int startRowNumber;
 
+    private String orderKey;
+
+    private String orderSort;
+
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
         this.startRowNumber = (this.pageNumber - 1) * this.pageSize;

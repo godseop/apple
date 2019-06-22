@@ -3,10 +3,7 @@ package org.godseop.apple.entity;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -25,6 +22,7 @@ public class Dummy {
 
     private LocalDateTime time;
 
+    @Column(columnDefinition = "bit(1) default true")
     private Boolean bool;
 
     private Character yn;

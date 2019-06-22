@@ -108,6 +108,10 @@ function serializeUrlEncoded(obj, prefix) {
     return str.join("&");
 }
 
+function formatLocalDateTime(localDateTime) {
+    // localDateTime likely '2019-06-22T06:35:59'
+    return moment(localDateTime).format("YYYY-MM-DD HH:mm");
+}
 
 function getDateStamp(offset) {
     offset = (Number.isInteger(offset) ? offset : 0);
@@ -116,17 +120,30 @@ function getDateStamp(offset) {
 
 function getDateTimeStamp(offset) {
     offset = (Number.isInteger(offset) ? offset : 0);
-    return moment().add(offset, 'days').format("YYYY-MM-DD HH:mm:ss");
+    return moment().add(offset, 'days').format("YYYY-MM-DD HH:mm");
 }
 
 
 function getDateTimeStampByMillis(milliseconds) {
-    return moment(milliseconds).format("YYYY-MM-DD HH:mm:ss");
+    return moment(milliseconds).format("YYYY-MM-DD HH:mm");
 }
 
 $.fn.extend({
-    pagination: function(page) {
-        var pageView = "";
-        this.empty().append(pageView);
+    render: function(list) {
+        let source = this.html();
+        return Handlebars.compile(source)({list : list});
+    },
+
+    paginate: function(page) {
+        let source = $("#page-template").html();
+
+        let pageList = [];
+        for (i = page.startPageNumber; i <= page.endPageNumber; i++) {
+            pageList.push(i);
+        }
+        page["pageList"] = pageList;
+
+        let html = Handlebars.compile(source)(page);
+        this.empty().append(html);
     },
 });

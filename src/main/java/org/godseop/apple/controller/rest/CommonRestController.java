@@ -19,7 +19,7 @@ public class CommonRestController {
 
     private final CommonService commonService;
 
-    @PostMapping(value="now")
+    @PostMapping(value="/now")
     public ResponseEntity<Result> now() {
         Result result = new Result();
         result.put("now", commonService.getServerTime());

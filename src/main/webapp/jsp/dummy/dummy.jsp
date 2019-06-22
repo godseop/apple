@@ -48,6 +48,16 @@
             $("#btnBucket").on("click", function() {
                 ajaxJson("/dummy/s3list", null, s3listSuccess);
             });
+
+            $("#btnPaging").on("click", function() {
+                let _data = {};
+                ajaxJson("/dummy/paging", _data, function(data) {
+                    let html = $("#dummy-template").render(data.list);
+                    $("#ulDummy").empty().append(html);
+
+                    $("#divPage").paginate(data.page);
+                });
+            });
         }
 
         function testSuccess(data) {
@@ -61,6 +71,18 @@
         function s3listSuccess(data) {
             console.log(data);
         }
+
+        Handlebars.registerHelper({
+            helpEmpty : function() {
+                return "";
+            },
+            helpTime : function(time) {
+                return formatLocalDateTime(time);
+            },
+            helpUse : function(yn) {
+                return yn === "Y" ? "사용" : "사용안함";
+            }
+        });
 
     </script>
 
@@ -78,12 +100,25 @@
 
 
     <h1>테스트를 해볼까?</h1>
-        <button type="button" id="btnJsonTest">ajaxJSON 테스트</button>
-        <button type="button" id="btnEncodedTest">ajaxEncoded 테스트</button>
-        <button type="button" id="btnMultipartTest">ajaxMultipart 테스트</button>
-        <button type="button" id="btnBucket">S3 버킷목록조회 테스트</button>
+    <button type="button" id="btnJsonTest">ajaxJSON 테스트</button>
+    <button type="button" id="btnEncodedTest">ajaxEncoded 테스트</button>
+    <button type="button" id="btnMultipartTest">ajaxMultipart 테스트</button>
+    <button type="button" id="btnBucket">S3 버킷목록조회 테스트</button>
+    <button type="button" id="btnPaging">페이징 테스트</button>
 
-        <ul id="ulDummy"></ul>
+
+    <ul id="ulDummy"></ul>
+    <script id="dummy-template" type="text/x-handlebars-template">
+        {{#helpEmpty}}{{/helpEmpty}}
+
+        {{#each list}}
+        <li>
+            {{@key}} : {{id}} - {{bool}} - {{count}} - {{name}} - {{helpTime time}} - {{helpUse yn}}
+        </li>
+        {{/each}}
+    </script>
+    <div id="divPage"></div>
+
     <hr/>
 
     <h1>멀티파트 AJAX 업로드</h1>

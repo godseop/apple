@@ -17,6 +17,7 @@ public class ErrorController {
     public ModelAndView viewForbiddenErrorPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/403");
+
         return modelAndView;
     }
 
@@ -24,6 +25,7 @@ public class ErrorController {
     public ModelAndView viewNotFoundErrorPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/404");
+
         return modelAndView;
     }
 
@@ -32,6 +34,7 @@ public class ErrorController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/500");
         modelAndView.addObject("exception", exception);
+
         return modelAndView;
     }
 
@@ -40,13 +43,14 @@ public class ErrorController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/database");
         modelAndView.addObject("message", message);
+
         return modelAndView;
     }
 
     @GetMapping(value="/test")
     public void testResponseStatusException() {
         try {
-            // some code here...
+            log.error("some code here that exception throwable...");
         } catch(Exception exception) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "Testing ResponseStatusException", exception);

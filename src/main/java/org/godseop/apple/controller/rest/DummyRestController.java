@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.godseop.apple.entity.Dummy;
-import org.godseop.apple.entity.Member;
 import org.godseop.apple.model.Condition;
 import org.godseop.apple.model.Result;
 import org.godseop.apple.service.DummyService;
@@ -31,16 +30,16 @@ public class DummyRestController {
 
     private final DummyService dummyService;
 
-    @PostMapping(value="json")
+    @PostMapping(value="/json")
     public ResponseEntity<Result> testJson(@RequestBody Dummy dummy) {
         Result result = new Result();
 
         log.error("Dummy => {}", dummy);
-        result.put("dummy", dummy);
+        result.put("dummy", dummyService.getDummy(dummy.getId()));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="encoded")
+    @PostMapping(value="/encoded")
     public ResponseEntity<Result> testEncoded(@ModelAttribute Dummy dummy) {
         Result result = new Result();
 
@@ -49,7 +48,7 @@ public class DummyRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="multipart")
+    @PostMapping(value="/multipart")
     public ResponseEntity<Result> testMultipart(
             @ModelAttribute Dummy dummy,  // can't use @RequestBody cuz it means use of JSON or XML data
             @RequestPart("fileMultiple") MultipartFile[] fileArray,
@@ -75,13 +74,13 @@ public class DummyRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="paging")
+    @PostMapping(value="/paging")
     public ResponseEntity<Result> testPaging(@RequestBody Condition condition) {
         Result result = new Result();
 
-        int totalCount = dummyService.selectDummyListCount(condition);
+        int totalCount = dummyService.getDummyListCount(condition);
         condition.setTotalCount(totalCount);
-        List<Dummy> dummyList = dummyService.selectDummyList(condition);
+        List<Dummy> dummyList = dummyService.getDummyList(condition);
 
         result.put("list", dummyList);
         result.put("page", PageUtils.getPage(condition));
@@ -90,7 +89,7 @@ public class DummyRestController {
     }
 
 
-    @PostMapping(value="s3list")
+    @PostMapping(value="/s3list")
     public ResponseEntity<Result> testS3list() {
         Result result = new Result();
 

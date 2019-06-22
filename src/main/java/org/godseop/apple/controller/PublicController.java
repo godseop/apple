@@ -33,8 +33,8 @@ public class PublicController {
         String referer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referer);
         log.info("REFERER : {}", referer); // 주소 직접 입력 or 즐겨찾기로 접근시 NULL
-        modelAndView.setViewName("public/login");
 
+        modelAndView.setViewName("public/login");
         return modelAndView;
     }
 
@@ -43,15 +43,14 @@ public class PublicController {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("public/join");
-
         return modelAndView;
     }
 
-    @PostMapping(value="join")
-    public ResponseEntity<Result> registerUser(@RequestBody Member member) {
+    @PostMapping(value="/join")
+    public ResponseEntity<Result> registMember(@RequestBody Member member) {
         Result result = new Result();
-        memberService.registerMember(member);
 
+        memberService.registerMember(member);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -60,7 +59,6 @@ public class PublicController {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("home/home");
-
         return modelAndView;
     }
 

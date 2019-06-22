@@ -20,6 +20,7 @@
 <!-- javascript -->
 <script src="${context}/static/js/jquery-3.4.1.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/jquery.serializeObject.min.js" type="text/javascript"></script>
+<script src="${context}/static/js/handlebars-v4.1.2.js" type="text/javascript"></script>
 <script src="${context}/static/js/moment-2.24.0.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/moment-with-locales.min.js" type="text/javascript"></script>
 <script src="${context}/static/js/common.js" type="text/javascript"></script>
@@ -31,3 +32,14 @@ $.support.cors = true; // CORS 설정
 var context = "${context}";
 </script>
 
+<script id="page-template" type="text/x-handlebars-template">
+    <ul>
+        <li>처음으로</li>
+        <li>이전페이지</li>
+        {{#each pageList}}
+            <li>goto {{this}} page</li>
+        {{/each}}
+        <li>다음페이지</li>
+        <li>끝으로</li>
+    </ul>
+</script>
