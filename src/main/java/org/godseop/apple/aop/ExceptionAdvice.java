@@ -1,7 +1,6 @@
 package org.godseop.apple.aop;
 
 import lombok.extern.slf4j.Slf4j;
-
 import org.godseop.apple.exception.AppleException;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.model.Result;
@@ -28,10 +27,10 @@ public class ExceptionAdvice {
     public @ResponseBody ResponseEntity<Result> handleAppleException(
             final HttpServletRequest request,
             final HttpServletResponse response,
-            final AppleException appleException) {
+            final AppleException exception) {
         Result result = new Result();
-        result.put(appleException);
-
+        result.put(exception);
+        exception.printStackTrace();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -43,6 +42,7 @@ public class ExceptionAdvice {
             final Exception exception) {
 
         log.error("Database Error occured... {}", exception.getMessage());
+        exception.printStackTrace();
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -65,6 +65,7 @@ public class ExceptionAdvice {
             final Exception exception) {
 
         log.error("Intenal Server Error occured... {}", exception.getMessage());
+        exception.printStackTrace();
 
         ModelAndView modelAndView = new ModelAndView();
 

@@ -44,7 +44,7 @@ public class S3Service {
     public File uploadLocal(MultipartFile multipartFile) {
         checkFileValidation(multipartFile);
 
-        return writeFile(multipartFile).orElseThrow(SystemException::new);
+        return writeFile(multipartFile).get();
     }
 
     public String uploadBucket(MultipartFile multipartFile) {
@@ -112,7 +112,7 @@ public class S3Service {
 
     private String setFileNameWithPath(MultipartFile multipartFile) {
         // TODO 파일타입이나 용도에 따른 경로 설정로직을 여기에 작성하세요
-        return "static/" + DateUtils.getDateTimeStamp() + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+        return DateUtils.getFileNameStamp() + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
     }
 
 
@@ -130,11 +130,12 @@ public class S3Service {
 
         try {
             File localFile = new File(localPath + fileName);
-            multipartFile.transferTo(localFile);
+            if (localFile.createNewFile())
+                multipartFile.transferTo(localFile);
 
             return Optional.of(localFile);
-        } catch (IOException exception) {
-            throw new AppleException(Error.FILE_UPLOAD_TO_LOCAL_FAIL);
+        } catch (Exception exception) {
+            throw new SystemException(exception);
         }
     }
 
