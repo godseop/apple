@@ -77,7 +77,7 @@ public class DummyRestController {
     @PostMapping(value="/paging")
     public ResponseEntity<Result> testPaging(@RequestBody Condition condition) {
         Result result = new Result();
-
+        log.error("condition => {}", condition);
         int totalCount = dummyService.getDummyListCount(condition);
         condition.setTotalCount(totalCount);
         List<Dummy> dummyList = dummyService.getDummyList(condition);

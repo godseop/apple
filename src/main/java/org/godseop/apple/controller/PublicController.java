@@ -1,5 +1,6 @@
 package org.godseop.apple.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.entity.Member;
 import org.godseop.apple.model.Result;
@@ -16,15 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class PublicController {
 
-    private MemberService memberService;
-
-    @Autowired
-    public void setMemberService(MemberService memberService) {
-        this.memberService = memberService;
-    }
+    private final MemberService memberService;
 
     @GetMapping(value="/login")
     public ModelAndView viewLoginPage(HttpServletRequest request) {

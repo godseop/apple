@@ -7,11 +7,11 @@ import org.apache.ibatis.type.Alias;
 @Alias("condition")
 public class Condition {
 
-    private int pageSize = 5;
-
     private int pageNumber = 1;
 
-    private int pageCount = 5;
+    private int pageSize = 3;
+
+    private int pageCount = 3;
 
     private int totalCount;
 

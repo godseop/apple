@@ -30,16 +30,27 @@
 moment.locale('ko');
 $.support.cors = true; // CORS 설정
 var context = "${context}";
+
+Handlebars.registerHelper({
+    helpActive : function(current, active) {
+        if (current === active)
+            return "active";
+    },
+});
 </script>
 
+<style>
+    button.paging.active {
+        background-color: darkred;
+    }
+</style>
+
 <script id="page-template" type="text/x-handlebars-template">
-    <ul>
-        <li>처음으로</li>
-        <li>이전페이지</li>
-        {{#each pageList}}
-            <li>goto {{this}} page</li>
-        {{/each}}
-        <li>다음페이지</li>
-        <li>끝으로</li>
-    </ul>
+    <button type="button" class="paging" data-page-number="1">처음으로</button>
+    <button type="button" class="paging" data-page-number="{{prevPageNumber}}">이전페이지</button>
+    {{#each pageList}}
+        <button type="button" class="paging {{#helpActive this ../pageNumber}}{{/helpActive}}" data-page-number="{{this}}">{{this}}페이지</button>
+    {{/each}}
+    <button type="button" class="paging" data-page-number="{{nextPageNumber}}">다음페이지</button>
+    <button type="button" class="paging" data-page-number="{{totalPage}}">끝으로</button>
 </script>

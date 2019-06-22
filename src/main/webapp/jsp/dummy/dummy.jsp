@@ -9,10 +9,10 @@
     <script>
         var dummy = {
             id    : 1,
-            bool  : 0,
+            bool  : false,
             count : 10,
             name  : "더미",
-            time  : "20190622045013",
+            time  : "2019-06-22 11:21:49",
             yn    : "Y",
         };
 
@@ -23,11 +23,11 @@
         function setEvent() {
             $("#btnJsonTest").on("click", function() {
                 // you can pass data of js-object
-                ajaxJson("/dummy/json", dummy, testSuccess, false);
+                //ajaxJson("/dummy/json", dummy, testSuccess, false);
 
                 // also you can pass data of serializeObject form data
-                //let _data = $("#formDummy").serializeObject();
-                //ajaxJson("/dummy/json", _data, testSuccess);
+                let _data = $("#formDummy").serializeObject();
+                ajaxJson("/dummy/json", _data, testSuccess);
             });
 
             $("#btnEncodedTest").on("click", function() {
@@ -36,7 +36,7 @@
                 //ajaxEncoded("/dummy/encoded", _data, testSuccess, false);
 
                 // also you can pass data of url encoded js-object
-                let _data = serializeUrlEncoded(dummy);
+                let _data = $(dummy).serializeUrlEncoded();
                 ajaxEncoded("/dummy/encoded", _data, testSuccess);
             });
 
@@ -50,13 +50,17 @@
             });
 
             $("#btnPaging").on("click", function() {
-                let _data = {};
-                ajaxJson("/dummy/paging", _data, function(data) {
-                    let html = $("#dummy-template").render(data.list);
-                    $("#ulDummy").empty().append(html);
+                searchDummyList();
+            });
+        }
 
-                    $("#divPage").paginate(data.page);
-                });
+        function searchDummyList(pageNumber=1) {
+            let _data = {pageNumber: pageNumber};
+            ajaxJson("/dummy/paging", _data, function(data) {
+                let html = $("#dummy-template").render(data.list);
+                $("#ulDummy").empty().append(html);
+
+                $("#divPage").paginate(data.page, searchDummyList);
             });
         }
 
@@ -91,10 +95,10 @@
 
     <form id="formDummy">
         <input type="hidden" name="id" value="1"/>
-        <input type="hidden" name="bool" value="0"/>
+        <input type="hidden" name="bool" value="false"/>
         <input type="hidden" name="count" value="10"/>
         <input type="hidden" name="name" value="더미"/>
-        <input type="hidden" name="time" value="20190622045013"/>
+        <input type="hidden" name="time" value="2019-06-22 11:21:49"/>
         <input type="hidden" name="yn" value="Y"/>
     </form>
 

@@ -52,4 +52,22 @@
 <!--            )-->
 <!--    </update>-->
 
+
+<!--    <sql id="pagingTop">-->
+<!--        SELECT-->
+<!--            T.*-->
+<!--        FROM (-->
+<!--            SELECT-->
+<!--                ROW_NUMBER() OVER(<include refid="sort"/>) AS RNUM-->
+<!--              , A.*-->
+<!--            FROM (-->
+<!--    </sql>-->
+
+<!--    <sql id="pagingBottom">-->
+<!--    <![CDATA[-->
+<!--            ) A WHERE RNUM <= #{endRow}-->
+<!--        ) T WHERE T.RNUM >= #{startRow}-->
+<!--    ]]>-->
+<!--    </sql>-->
+
 </mapper>

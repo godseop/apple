@@ -30,7 +30,6 @@
     <sql id="dummyListCondition">
         WHERE
             1 = 1
-        AND D.bool = true
     </sql>
 
 
@@ -49,36 +48,18 @@
     </select>
 
 
-
-
-
+    <!-- int에 대해 startRowNumber != '' 테스트하지말것 0일때 예상치못한 결과가 나옴 -->
     <sql id="paging">
-        <if test="startRowNumber != null and startRowNumber != ''">
+        <if test="startRowNumber != null and startRowNumber gte 0">
         LIMIT #{startRowNumber}, #{pageSize}
         </if>
     </sql>
 
+
     <sql id="sorting">
-        <if test="orderKey != null and orderKey != ''">
+        <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(orderKey)">
         ORDER BY ${orderKey} ${orderSort}
         </if>
     </sql>
-
-<!--    <sql id="pagingTop">-->
-<!--        SELECT-->
-<!--            T.*-->
-<!--        FROM (-->
-<!--            SELECT-->
-<!--                ROW_NUMBER() OVER(<include refid="sort"/>) AS RNUM-->
-<!--              , A.*-->
-<!--            FROM (-->
-<!--    </sql>-->
-
-<!--    <sql id="pagingBottom">-->
-<!--    <![CDATA[-->
-<!--            ) A WHERE RNUM <= #{endRow}-->
-<!--        ) T WHERE T.RNUM >= #{startRow}-->
-<!--    ]]>-->
-<!--    </sql>-->
 
 </mapper>
