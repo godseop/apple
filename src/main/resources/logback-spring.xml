@@ -1,34 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <include resource="log/console.xml" />
-    <include resource="log/file.xml" />
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <property name="LOG_PATH" value="./log"/>
 
     <!-- CONSOLE APPENDER -->
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>
-        </encoder>
-
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                <!--<pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>-->
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+            </pattern>
+        </layout>
     </appender>
 
     <!-- FILE APPENDER(DAILY) -->
     <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <!--<pattern>%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level -&#45;&#45; [%thread] %logger{35} : %msg %n</pattern>-->
+            <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+        </encoder>
+
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_FILE}/tomcat_log.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/apple-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>100MB</maxFileSize>
+                <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n</pattern>
-        </encoder>
+
     </appender>
 
-    <!-- ERROR < WARN < INFO < DEBUG < TRACE -->
 
+    <!-- log everything at info level -->
+    <root level="info">
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="dailyRollingFileAppender"/>
+    </root>
+
+    <!-- ERROR < WARN < INFO < DEBUG < TRACE -->
     <logger name="jdbc" level="OFF" />
     <logger name="jdbc.sqlonly" level="OFF" />
     <logger name="jdbc.sqltiming" level="DEBUG" />
@@ -37,9 +47,5 @@
     <logger name="jdbc.resultsettable" level="DEBUG" />
     <logger name="jdbc.connection" level="OFF" />
 
-    <root level="debug">
-        <appender-ref ref="consoleAppender"/>
-        <appender-ref ref="dailyRollingFileAppender"/>
-    </root>
 
 </configuration>

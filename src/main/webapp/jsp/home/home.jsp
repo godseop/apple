@@ -9,6 +9,12 @@
     <script>
         // JAVASCRIPT HERE
         $(function() {
+            $("#btnNow").on("click", function() {
+                ajaxJson("/common/now", null, function(data) {
+                    console.log(data.now * 1000);
+                    alert("현재시간은 " + getTimeStamp(data.now * 1000));
+                });
+            });
 
         });
     </script>
@@ -39,5 +45,7 @@
         <sec:csrfInput/>
         <button type="submit">로그아웃</button>
     </form>
+
+    <button id="btnNow">현재시간은?</button>
 </body>
 </html>

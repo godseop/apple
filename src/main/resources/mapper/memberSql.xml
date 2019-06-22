@@ -9,4 +9,65 @@
         SELECT * FROM T_MEMBER
     </select>
 
+<!--    <insert id="insertMember" parameterType="member"> &lt;!&ndash; MySQL : useGeneratedKeys="true" keyProperty="id" &ndash;&gt;-->
+<!--        INSERT INTO-->
+<!--            T_MEMBER-->
+<!--        VALUES (-->
+<!--            #{id}-->
+<!--          , #{email}-->
+<!--          , #{location}-->
+<!--          , SYSDATE-->
+<!--          , #{nickname}-->
+<!--          , #{password}-->
+<!--          , SYSDATE-->
+<!--          , #{uid}-->
+<!--        )-->
+<!--        <selectKey resultType="long" keyProperty="id" order="AFTER">-->
+<!--            SELECT MEMBER_SEQ.nextval FROM DUAL-->
+<!--        </selectKey>-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash; ORACLE MERGE QUERY EXAMPLE &ndash;&gt;-->
+<!--    <update id="mergeMember" parameterType="member">-->
+<!--        MERGE INTO T_MEMBER M-->
+<!--        USING DUAL-->
+<!--        ON (-->
+<!--            M.UID = #{uid}-->
+<!--        )-->
+<!--        WHEN MATCHED THEN-->
+<!--            UPDATE SET-->
+<!--                M.MOD_DATE = SYSDATE-->
+<!--            AND M.EMAIL = #{email}-->
+<!--        WHEN NOT MATCHED THEN-->
+<!--            INSERT-->
+<!--            VALUES (-->
+<!--                MEMBER_SEQ.nextval-->
+<!--              , #{email}-->
+<!--              , #{location}-->
+<!--              , SYSDATE-->
+<!--              , #{nickname}-->
+<!--              , #{password}-->
+<!--              , SYSDATE-->
+<!--              , #{uid}-->
+<!--            )-->
+<!--    </update>-->
+
+
+<!--    <sql id="pagingTop">-->
+<!--        SELECT-->
+<!--            T.*-->
+<!--        FROM (-->
+<!--            SELECT-->
+<!--                ROW_NUMBER() OVER(<include refid="sort"/>) AS RNUM-->
+<!--              , A.*-->
+<!--            FROM (-->
+<!--    </sql>-->
+
+<!--    <sql id="pagingBottom">-->
+<!--    <![CDATA[-->
+<!--            ) A WHERE RNUM <= #{endRow}-->
+<!--        ) T WHERE T.RNUM >= #{startRow}-->
+<!--    ]]>-->
+<!--    </sql>-->
+
 </mapper>

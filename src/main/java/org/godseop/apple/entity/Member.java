@@ -45,7 +45,7 @@ public class Member {
     @UpdateTimestamp
     private LocalDateTime modDate;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // , orphanRemoval = true
     private Set<MemberRole> roleSet;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)

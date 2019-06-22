@@ -3,17 +3,20 @@ package org.godseop.apple.controller.rest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.godseop.apple.entity.Member;
+import org.godseop.apple.entity.Dummy;
+import org.godseop.apple.model.Condition;
 import org.godseop.apple.model.Result;
+import org.godseop.apple.service.DummyService;
 import org.godseop.apple.service.S3Service;
+import org.godseop.apple.util.PageUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -25,37 +28,37 @@ public class DummyRestController {
 
     private final S3Service s3Service;
 
-    @PostMapping(value="json")
-    public ResponseEntity<Result> testJson(@RequestBody Member member) {
+    private final DummyService dummyService;
+
+    @PostMapping(value="/json")
+    public ResponseEntity<Result> testJson(@RequestBody Dummy dummy) {
         Result result = new Result();
-        log.error("MEMBER INFO : {}", member);
-        result.put("member", member);
+
+        log.error("Dummy => {}", dummy);
+        result.put("dummy", dummyService.getDummy(dummy.getId()));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="encoded")
-    public ResponseEntity<Result> testEncoded(@ModelAttribute Member member) {
+    @PostMapping(value="/encoded")
+    public ResponseEntity<Result> testEncoded(@ModelAttribute Dummy dummy) {
         Result result = new Result();
-        result.put("member", member);
 
-        log.error("MEMBER INFO : {}", member);
-        log.error("POST LIST : {}", member.getPostList());
+        log.error("Dummy => {}", dummy);
+        result.put("dummy", dummy);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="multipart")
+    @PostMapping(value="/multipart")
     public ResponseEntity<Result> testMultipart(
-            @ModelAttribute Member member,  // can't use @RequestBody cuz it means use of JSON or XML data
+            @ModelAttribute Dummy dummy,  // can't use @RequestBody cuz it means use of JSON or XML data
             @RequestPart("fileMultiple") MultipartFile[] fileArray,
-            @RequestPart("fileOne") MultipartFile file) throws IOException {
-
+            @RequestPart("fileOne") MultipartFile file) {
         Result result = new Result();
 
-        log.info("MEMBER INFO : {}", member);
-        result.put("member", member);
-        log.info("POST LIST : {}", member.getPostList());
+        log.error("Dummy => {}", dummy);
+        result.put("dummy", dummy);
 
-        String uploadPath = s3Service.upload(file, "static");
+        String uploadPath = s3Service.uploadBucket(file);
         result.put("uploadPath", uploadPath);
 
         Stream.concat(Arrays.stream(fileArray), Stream.of(file)).forEach(x -> {
@@ -68,16 +71,29 @@ public class DummyRestController {
             result.put(name, map);
         });
 
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="s3list")
+    @PostMapping(value="/paging")
+    public ResponseEntity<Result> testPaging(@RequestBody Condition condition) {
+        Result result = new Result();
+        log.error("condition => {}", condition);
+        int totalCount = dummyService.getDummyListCount(condition);
+        condition.setTotalCount(totalCount);
+        List<Dummy> dummyList = dummyService.getDummyList(condition);
+
+        result.put("list", dummyList);
+        result.put("page", PageUtils.getPage(condition));
+        //result.put("page", PageUtils.getPage(pageNumber, totalCount));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value="/s3list")
     public ResponseEntity<Result> testS3list() {
         Result result = new Result();
 
-        result.put("list", s3Service.listing("static"));
-
+        result.put("list", s3Service.getFileListOnBucket("static"));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
