@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class S3Service {
     public File uploadLocal(MultipartFile multipartFile) {
         checkFileValidation(multipartFile);
 
-        return writeFile(multipartFile).get();
+        return writeFile(multipartFile);
     }
 
     public String uploadBucket(MultipartFile multipartFile) {
@@ -54,7 +55,8 @@ public class S3Service {
 
         try {
             amazonS3.putObject(
-                    new PutObjectRequest(appleBucket,
+                    new PutObjectRequest(
+                            appleBucket,
                             fileName,
                             multipartFile.getInputStream(),
                             getObjectMetadata(multipartFile))
@@ -77,8 +79,13 @@ public class S3Service {
                     .withS3Client(amazonS3)
                     .build();
 
-            Upload upload = transferManager.upload(appleBucket, fileName, multipartFile.getInputStream(), getObjectMetadata(multipartFile));
+            Upload upload = transferManager.upload(
+                                appleBucket,
+                                fileName,
+                                multipartFile.getInputStream(),
+                                getObjectMetadata(multipartFile));
 
+            // wait for upload complete
             upload.waitForCompletion();
 
             return amazonS3.getUrl(appleBucket, fileName).toString();
@@ -88,7 +95,8 @@ public class S3Service {
     }
 
     public List<String> getFileListOnBucket(String dirName) {
-        List<S3ObjectSummary> summaryList =  amazonS3.listObjects(appleBucket, dirName).getObjectSummaries();
+        List<S3ObjectSummary> summaryList =
+                amazonS3.listObjects(appleBucket, dirName).getObjectSummaries();
 
         return summaryList.stream()
                 .map(S3ObjectSummary::getKey)
@@ -96,18 +104,28 @@ public class S3Service {
     }
 
 
-    private boolean deleteLocalFile(String filePath) {
-        return new File(filePath).delete();
+    public List<String> getFileListOnLocal(String dirName) {
+        File localFile = new File(localPath + dirName);
 
+        File[] files = localFile.listFiles(file -> !file.isDirectory());
+
+        assert files != null;
+        return Arrays.stream(files)
+                .filter(File::exists)
+                .map(File::getAbsolutePath)
+                .collect(Collectors.toList());
     }
 
-    private boolean checkFileValidation(MultipartFile multipartFile) {
+//    private boolean deleteLocalFile(String filePath) {
+//        return new File(filePath).delete();
+//    }
+
+    private void checkFileValidation(MultipartFile multipartFile) {
         Optional.ofNullable(multipartFile)
                 .orElseThrow(() -> new AppleException(Error.MULTIPART_FILE_NOT_EXISTS));
 
         // TODO file content-type 정합성 체크로직을 여기에 작성하세요
-        String contentType = multipartFile.getContentType();
-        return true;
+        //String contentType = multipartFile.getContentType();
     }
 
     private String setFileNameWithPath(MultipartFile multipartFile) {
@@ -125,7 +143,7 @@ public class S3Service {
     }
 
 
-    private Optional<File> writeFile(MultipartFile multipartFile) {
+    private File writeFile(MultipartFile multipartFile) {
         String fileName = setFileNameWithPath(multipartFile);
 
         try {
@@ -133,7 +151,7 @@ public class S3Service {
             if (localFile.createNewFile())
                 multipartFile.transferTo(localFile);
 
-            return Optional.of(localFile);
+            return localFile;
         } catch (Exception exception) {
             throw new SystemException(exception);
         }

@@ -38,11 +38,11 @@ public class ErrorController {
         return modelAndView;
     }
 
-    @GetMapping(value="/database")
-    public ModelAndView viewDatabaseErrorPage(@RequestAttribute("message") String message) {
+    @GetMapping(value="/503")
+    public ModelAndView viewServiceUnavailableErrorPage(@RequestAttribute("exception") String exception) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("error/database");
-        modelAndView.addObject("message", message);
+        modelAndView.setViewName("error/503");
+        modelAndView.addObject("exception", exception);
 
         return modelAndView;
     }

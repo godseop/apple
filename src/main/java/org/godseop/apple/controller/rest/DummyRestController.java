@@ -49,13 +49,15 @@ public class DummyRestController {
     public ResponseEntity<Result> testMultipart(
             @ModelAttribute Dummy dummy,  // can't use @RequestBody cuz it means use of JSON or XML data
             @RequestPart("fileMultiple") List<MultipartFile> fileList,
-            @RequestPart("fileOne") MultipartFile file) throws Exception {
+            @RequestPart("fileOne") MultipartFile file) throws InterruptedException {
         Result result = new Result();
 
         log.error("Dummy => {}", dummy);
         dummyService.mergeDummy(dummy);
         result.put("dummy", dummy);
 
+        //멀티-단일파일 병합(concat)후 처리
+        //Stream.concat(Arrays.stream(fileArray), Stream.of(file)).forEach(x-> {});
         if (!file.isEmpty()) {
             String uploadPath = s3Service.uploadBucket(file);
             result.put(file.getOriginalFilename(), uploadPath);
@@ -67,11 +69,23 @@ public class DummyRestController {
             TimeUnit.MILLISECONDS.sleep(500);
             result.put(multipartFile.getOriginalFilename(), localFile.getAbsolutePath());
         }
-        //멀티-단일파일 병합처리
-        //Stream.concat(Arrays.stream(fileArray), Stream.of(file)).forEach(x-> {});
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping(value="/bigfile")
+    public ResponseEntity<Result> testBigfile(
+            @RequestPart("file") MultipartFile file) {
+        Result result = new Result();
+
+        if (!file.isEmpty()) {
+            String uploadPath = s3Service.uploadBigBucket(file);
+            result.put(file.getOriginalFilename(), uploadPath);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
     @PostMapping(value="/paging")
     public ResponseEntity<Result> testPaging(@RequestBody Condition condition) {
@@ -87,6 +101,13 @@ public class DummyRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping(value="/locallist")
+    public ResponseEntity<Result> testLocallist() {
+        Result result = new Result();
+
+        result.put("list", s3Service.getFileListOnLocal(""));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     @PostMapping(value="/s3list")
     public ResponseEntity<Result> testS3list() {

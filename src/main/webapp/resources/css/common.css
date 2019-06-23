@@ -1,0 +1,4 @@
+/** for active page **/
+button.paging.active {
+    background-color: darkred;
+}

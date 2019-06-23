@@ -33,7 +33,7 @@
         <input type="submit" value="로그인" />
     </form>
 
-    <form id="formRegister" action="${context}/join">
+    <form id="formRegister" action="join">
         <input type="submit" value="가입하기" />
     </form>
 

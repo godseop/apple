@@ -15,6 +15,7 @@
         $("#btnSave").on("click", function() {
             let _data = $("#formMember").serializeObject();
             ajaxJson("/member/modify", _data, function(data) {
+                console.log(data);
                 alert("저장되었습니다.");
             });
         });

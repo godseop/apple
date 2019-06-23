@@ -49,6 +49,10 @@
                 ajaxJson("/dummy/s3list", null, s3listSuccess);
             });
 
+            $("#btnLocal").on("click", function() {
+                ajaxJson("/dummy/locallist", null, locallistSuccess);
+            });
+
             $("#btnPaging").on("click", function() {
                 searchDummyList();
             });
@@ -80,6 +84,10 @@
         }
 
         function s3listSuccess(data) {
+            console.log(data);
+        }
+
+        function locallistSuccess(data) {
             console.log(data);
         }
 
@@ -115,6 +123,7 @@
     <button type="button" id="btnEncodedTest">ajaxEncoded 테스트</button>
     <button type="button" id="btnMultipartTest">ajaxMultipart 테스트</button>
     <button type="button" id="btnBucket">S3 버킷목록조회 테스트</button>
+    <button type="button" id="btnLocal">서버 로컬목록조회 테스트</button>
     <button type="button" id="btnPaging">페이징 테스트</button>
 
 
