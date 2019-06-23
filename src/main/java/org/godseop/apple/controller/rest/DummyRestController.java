@@ -2,7 +2,6 @@ package org.godseop.apple.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.godseop.apple.entity.Dummy;
 import org.godseop.apple.model.Condition;
 import org.godseop.apple.model.Result;
@@ -14,11 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.File;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -51,28 +48,44 @@ public class DummyRestController {
     @PostMapping(value="/multipart")
     public ResponseEntity<Result> testMultipart(
             @ModelAttribute Dummy dummy,  // can't use @RequestBody cuz it means use of JSON or XML data
-            @RequestPart("fileMultiple") MultipartFile[] fileArray,
-            @RequestPart("fileOne") MultipartFile file) {
+            @RequestPart("fileMultiple") List<MultipartFile> fileList,
+            @RequestPart("fileOne") MultipartFile file) throws InterruptedException {
         Result result = new Result();
 
         log.error("Dummy => {}", dummy);
+        dummyService.mergeDummy(dummy);
         result.put("dummy", dummy);
 
-        String uploadPath = s3Service.uploadBucket(file);
-        result.put("uploadPath", uploadPath);
+        //멀티-단일파일 병합(concat)후 처리
+        //Stream.concat(Arrays.stream(fileArray), Stream.of(file)).forEach(x-> {});
+        if (!file.isEmpty()) {
+            String uploadPath = s3Service.uploadBucket(file);
+            result.put(file.getOriginalFilename(), uploadPath);
+        }
 
-        Stream.concat(Arrays.stream(fileArray), Stream.of(file)).forEach(x -> {
-            Map<String, Object> map = new HashMap<>();
-            String name = x.getOriginalFilename();
-            map.put("name", name);
-            map.put("extension", FilenameUtils.getExtension(name));
-            map.put("size", x.getSize());
-            map.put("type", x.getContentType());
-            result.put(name, map);
-        });
+        for (MultipartFile multipartFile : fileList) {
+            if (multipartFile.isEmpty()) continue;
+            File localFile = s3Service.uploadLocal(multipartFile);
+            TimeUnit.MILLISECONDS.sleep(500);
+            result.put(multipartFile.getOriginalFilename(), localFile.getAbsolutePath());
+        }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping(value="/bigfile")
+    public ResponseEntity<Result> testBigfile(
+            @RequestPart("file") MultipartFile file) {
+        Result result = new Result();
+
+        if (!file.isEmpty()) {
+            String uploadPath = s3Service.uploadBigBucket(file);
+            result.put(file.getOriginalFilename(), uploadPath);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
     @PostMapping(value="/paging")
     public ResponseEntity<Result> testPaging(@RequestBody Condition condition) {
@@ -88,12 +101,19 @@ public class DummyRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping(value="/locallist")
+    public ResponseEntity<Result> testLocallist() {
+        Result result = new Result();
+
+        result.put("list", s3Service.getFileListOnLocal(""));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     @PostMapping(value="/s3list")
     public ResponseEntity<Result> testS3list() {
         Result result = new Result();
 
-        result.put("list", s3Service.getFileListOnBucket("static"));
+        result.put("list", s3Service.getFileListOnBucket(""));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

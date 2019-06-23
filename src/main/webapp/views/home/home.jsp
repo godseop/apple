@@ -12,7 +12,7 @@
             $("#btnNow").on("click", function() {
                 ajaxJson("/common/now", null, function(data) {
                     console.log(data.now * 1000);
-                    alert("현재시간은 " + getTimeStamp(data.now * 1000));
+                    alert("현재시간은 " + getDateTimeStampByMillis(data.now * 1000));
                 });
             });
 
@@ -38,8 +38,6 @@
     <sec:authorize access="hasAnyRole('AUTHOR', 'BASIC')">
         <p>준회원&정회원에게 보입니다</p>
     </sec:authorize>
-
-    </a>
 
     <form action="${context}/logout" method="POST">
         <sec:csrfInput/>

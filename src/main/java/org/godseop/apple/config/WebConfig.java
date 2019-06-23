@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.support.MultipartFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.List;
 
@@ -45,6 +47,12 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(htmlEscapingConveter());
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/webapp/resources/")
+                .addResourceLocations("/css/**", "js/**", "images/**");
+    }
+
     @Bean
     public HttpMessageConverter<?> htmlEscapingConveter() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -59,6 +67,11 @@ public class WebConfig implements WebMvcConfigurer {
         converter.setObjectMapper(objectMapper);
 
         return converter;
+    }
+
+    @Bean
+    public MappingJackson2JsonView jsonView(){
+        return new MappingJackson2JsonView();
     }
 
 

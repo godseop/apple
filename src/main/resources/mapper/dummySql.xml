@@ -47,6 +47,63 @@
             D.id = #{id}
     </select>
 
+    <insert id="insertDummy" parameterType="dummy" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO T_DUMMY (
+            bool
+          , count
+          , name
+          , time
+          , yn
+        ) VALUES (
+            #{bool}
+          , #{count}
+          , #{name}
+          , #{time}
+          , #{yn}
+        )
+    </insert>
+
+    <update id="updateDummy" parameterType="dummy">
+        UPDATE T_DUMMY
+        SET
+            bool = #{bool}
+          , count = #{count}
+          , name = #{name}
+          , time = #{time}
+          , yn = #{yn}
+        WHERE
+            id = #{id}
+    </update>
+
+    <update id="upsertDummy" parameterType="dummy" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO T_DUMMY (
+            id
+          , bool
+          , count
+          , name
+          , time
+          , yn
+        ) VALUES (
+            #{id}
+          , #{bool}
+          , #{count}
+          , NULLIF(#{name}, '')
+          , #{time}
+          , #{yn}
+        ) ON DUPLICATE KEY UPDATE
+            bool = #{bool}
+          , count = #{count}
+          , name = NULLIF(#{name}, '')
+          , time = #{time}
+          , yn = #{yn}
+    </update>
+
+    <delete id="deleteDummy" parameterType="long">
+        DELETE FROM T_DUMMY
+        WHERE
+            id = #{id}
+    </delete>
+
 
     <!-- int에 대해 startRowNumber != '' 테스트하지말것 0일때 예상치못한 결과가 나옴 -->
     <sql id="paging">

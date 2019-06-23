@@ -22,8 +22,8 @@ public class Dummy {
 
     private String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // for modelattribute serialize
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul") // for responsebody
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") // for modelattribute serialize
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul") // for responsebody
     private LocalDateTime time;
 
     @Column(columnDefinition = "bit(1) default true")

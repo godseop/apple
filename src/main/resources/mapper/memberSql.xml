@@ -9,7 +9,7 @@
         SELECT * FROM T_MEMBER
     </select>
 
-<!--    <insert id="insertMember" parameterType="member"> &lt;!&ndash; MySQL : useGeneratedKeys="true" keyProperty="id" &ndash;&gt;-->
+<!--    <insert id="insertMember" parameterType="member">-->
 <!--        INSERT INTO-->
 <!--            T_MEMBER-->
 <!--        VALUES (-->
