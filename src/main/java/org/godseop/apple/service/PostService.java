@@ -2,6 +2,7 @@ package org.godseop.apple.service;
 
 import javax.transaction.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import org.godseop.apple.entity.Comment;
 import org.godseop.apple.entity.Post;
 import org.godseop.apple.repository.CommentRepository;
@@ -9,17 +10,13 @@ import org.godseop.apple.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class PostService {
 
     private final PostRepository postRepository;
 
     private final CommentRepository commentRepository;
-
-    public PostService(PostRepository postRepository, CommentRepository commentRepository) {
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-    }
 
     public void test() {
         commentRepository.deleteAll();

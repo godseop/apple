@@ -6,7 +6,15 @@
 <head>
     <%@include file="../include/header.jsp"%>
 
-    <script>
+    <style type="text/css">
+         input:read-only {
+            border: 0;
+            background-color: transparent;
+            outline: none;
+        }
+    </style>
+
+    <script type="text/javascript">
         var dummy = {
             id    : 1,
             bool  : false,
@@ -57,21 +65,37 @@
                 searchDummyList();
             });
 
+            $("#btnSerial").on("click", function() {
+                var _data = $("#formDummyList").serializeTable();
+                console.log(_data);
+            });
+
             $(".date").flatpickr();
 
             $(".datetime").flatpickr({
                 enableTime: true,
             });
 
+            $("#chkAll").on("click", function() {
+                $("input[name=chk]").prop("checked", this.checked)
+                    .closest("tr").toggleClass("selected", this.checked);
+            });
+        }
+
+        function setRefreshEvent() {
+            $("input:checkbox[name=chk]").on("click", function() {
+                $(this).closest("tr").toggleClass("selected");
+            });
         }
 
         function searchDummyList(pageNumber=1) {
             let _data = {pageNumber: pageNumber};
             ajaxJson("/dummy/paging", _data, function(data) {
                 let html = $("#dummy-template").render(data.list);
-                $("#ulDummy").empty().append(html);
+                $("#tbodyDummy").empty().append(html).promise().then(setRefreshEvent);
 
                 $("#divPage").paginate(data.page, searchDummyList);
+
             });
         }
 
@@ -92,8 +116,13 @@
         }
 
         Handlebars.registerHelper({
-            helpEmpty : function() {
-                return "";
+            helpEmpty : function(data) {    // listing helper
+                console.log(data);
+                if (data.list.length === 0) {
+                    return "<tr><td colspan='8'>OOPS! NOTHING HERE...</td></tr>";
+                } else {
+                    return "";
+                }
             },
             helpTime : function(time) {
                 return formatLocalDateTime(time);
@@ -125,19 +154,60 @@
     <button type="button" id="btnBucket">S3 버킷목록조회 테스트</button>
     <button type="button" id="btnLocal">서버 로컬목록조회 테스트</button>
     <button type="button" id="btnPaging">페이징 테스트</button>
+    <button type="button" id="btnSerial">직렬화 테스트</button>
 
+    <form id="formDummyList">
+    <table>
+        <colgroup>
+            <col style="width: 50px; text-align: center;"/>
+            <col style="width: auto; text-align: center;"/>
+            <col style="width: auto; text-align: center;"/>
+            <col style="width: auto; text-align: center;"/>
+            <col style="width: auto; text-align: center;"/>
+            <col style="width: auto; text-align: center;"/>
+            <col style="width: auto; text-align: center;"/>
+            <col style="width: auto; text-align: center;"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <td><input type="checkbox" id="chkAll"/></td>
+                <td>순번</td>
+                <td>아이디</td>
+                <td>참거짓</td>
+                <td>카운트</td>
+                <td>이름</td>
+                <td>시간</td>
+                <td>사용여부</td>
+            </tr>
+        </thead>
 
-    <ul id="ulDummy"></ul>
-    <script id="dummy-template" type="text/x-handlebars-template">
-        {{#helpEmpty}}{{/helpEmpty}}
+        <tbody id="tbodyDummy">
+            <tr>
+                <td colspan="8">OOPS! NOTHING HERE...</td>
+            </tr>
+        </tbody>
 
-        {{#each list}}
-        <li>
-            {{@key}} : {{id}} - {{bool}} - {{count}} - {{name}} - {{helpTime time}} - {{helpUse yn}}
-        </li>
-        {{/each}}
-    </script>
+        <script id="dummy-template" type="text/x-handlebars-template">
+            {{#helpEmpty this}}{{/helpEmpty}}
+
+            {{#each list}}
+            <tr>
+                <td><input type="checkbox" id="chk{{@key}}" name="chk"/></td>
+                <td>{{@key}}</td>
+                <td>{{id}}</td>
+                <td>{{bool}}</td>
+                <td>{{count}}</td>
+                <td><input type="text" name="name" value="{{name}}" readonly/></td>
+                <td>{{helpTime time}}</td>
+                <td>{{helpUse yn}}</td>
+            </tr>
+            {{/each}}
+        </script>
+    </table>
+    </form>
     <div id="divPage"></div>
+
+
 
     <hr/>
 

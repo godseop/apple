@@ -44,8 +44,8 @@
         moment.locale('ko');    // moment localization
         $.support.cors = true;  // permit cors
 
-        Handlebars.registerHelper({     // paging helper
-            helpActivePage : function(current, active) {
+        Handlebars.registerHelper({
+            helpActivePage : function(current, active) {    // paging helper
                 if (current === active)
                     return "active";
             },

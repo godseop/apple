@@ -82,7 +82,7 @@ async function hideLoadingBar() {
 
 // csrf 헤더 만들기
 function buildHeaders() {
-    //var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
+    //let csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
     let csrfToken = $("meta[name='_csrf']").attr("content");
     let csrfHeader = $("meta[name='_csrf_header']").attr("content");
     let headers = {};
@@ -130,7 +130,7 @@ $.fn.extend({
     },
     // jascript object ==> urlencoded string (e.g a=1&b=2&c[0].a=3&c[0].b=4&c[1].a=5 ...)
     serializeUrlEncoded: function(prefix) {
-        var obj = this[0];
+        let obj = this[0];
         if (obj == null || typeof obj !== "object")
             return;
 
@@ -146,5 +146,17 @@ $.fn.extend({
             }
         }
         return str.join("&");
+    },
+
+    // table tbody element serialize... ==> {list: [{tr1...}, {tr2...}]}
+    serializeTable: function() {
+        $(this).find("input select").each(function(index) {
+            $(tr).serializeObject();
+            // TODO 내일은 여기부터
+        });
+
+
+
+        return {list: }
     },
 });

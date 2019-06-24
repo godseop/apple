@@ -2,3 +2,22 @@
 button.paging.active {
     background-color: darkred;
 }
+
+/** for table **/
+table {
+    width: 100%;
+    border: 1px solid #333333;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #333333;
+    padding: 10px;
+}
+
+tr.selected {
+    background-color: moccasin;
+}
+
+tbody > tr:hover {
+    background-color: cornsilk;
+}

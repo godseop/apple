@@ -1,5 +1,6 @@
 package org.godseop.apple.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.entity.Member;
 import org.godseop.apple.entity.MemberRole;
@@ -19,15 +20,12 @@ import java.util.Set;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MemberService {
-
-    private MemberMapper memberMapper;
 
     private final MemberRepository memberRepository;
 
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
+    private MemberMapper memberMapper;
 
     @Autowired
     @Qualifier("memberMapper")
