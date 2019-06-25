@@ -13,6 +13,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.List;
@@ -49,8 +50,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/webapp/resources/")
-                .addResourceLocations("/css/**", "js/**", "images/**");
+        registry
+            .addResourceHandler("/webapp/resources/**")
+            .addResourceLocations("/css", "/js", "/images")
+            .setCachePeriod(3600)
+            .resourceChain(true)
+            .addResolver(pathResourceResolver());
     }
 
     @Bean
@@ -74,6 +79,10 @@ public class WebConfig implements WebMvcConfigurer {
         return new MappingJackson2JsonView();
     }
 
+    @Bean
+    public PathResourceResolver pathResourceResolver() {
+        return new PathResourceResolver();
+    }
 
 
 

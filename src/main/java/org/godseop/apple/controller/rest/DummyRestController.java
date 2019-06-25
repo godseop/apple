@@ -117,4 +117,13 @@ public class DummyRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping(value="/dummylist")
+    public ResponseEntity<Result> testDummyLitParameter(@RequestBody List<Dummy> dummyList) {
+        Result result = new Result();
+
+        log.error("dummyList : {}", dummyList);
+        result.put("list", dummyList);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

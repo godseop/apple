@@ -66,8 +66,8 @@
             });
 
             $("#btnSerial").on("click", function() {
-                var _data = $("#formDummyList").serializeTable();
-                console.log(_data);
+                let _data = $("#tbodyDummy").serializeTable();
+                ajaxJson("/dummy/dummylist", _data, dummylistSuccess);
             });
 
             $(".date").flatpickr();
@@ -83,8 +83,13 @@
         }
 
         function setRefreshEvent() {
-            $("input:checkbox[name=chk]").on("click", function() {
+            $("input:checkbox[name=chk]").on("click", function () {
                 $(this).closest("tr").toggleClass("selected");
+            });
+
+            $(".datetime").flatpickr({
+                enableTime: true,
+                //allowInput: true,
             });
         }
 
@@ -92,10 +97,10 @@
             let _data = {pageNumber: pageNumber};
             ajaxJson("/dummy/paging", _data, function(data) {
                 let html = $("#dummy-template").render(data.list);
-                $("#tbodyDummy").empty().append(html).promise().then(setRefreshEvent);
+                $("#tbodyDummy").empty().append(html)
+                    .promise().then(setRefreshEvent);
 
                 $("#divPage").paginate(data.page, searchDummyList);
-
             });
         }
 
@@ -115,20 +120,26 @@
             console.log(data);
         }
 
+        function dummylistSuccess(data) {
+            console.log(data);
+        }
+
         Handlebars.registerHelper({
-            helpEmpty : function(data) {    // listing helper
-                console.log(data);
+            helpEmpty: function(data) {    // listing helper
                 if (data.list.length === 0) {
                     return "<tr><td colspan='8'>OOPS! NOTHING HERE...</td></tr>";
                 } else {
                     return "";
                 }
             },
-            helpTime : function(time) {
+            helpTime: function(time) {
                 return formatLocalDateTime(time);
             },
-            helpUse : function(yn) {
-                return yn === "Y" ? "사용" : "사용안함";
+            helpUse: function(yn) {
+                return yn === "Y" ? "selected" : "";
+            },
+            helpChecked: function(checked) {
+                return Boolean(checked) ? "checked" : "";
             }
         });
 
@@ -156,7 +167,6 @@
     <button type="button" id="btnPaging">페이징 테스트</button>
     <button type="button" id="btnSerial">직렬화 테스트</button>
 
-    <form id="formDummyList">
     <table>
         <colgroup>
             <col style="width: 50px; text-align: center;"/>
@@ -194,17 +204,26 @@
             <tr>
                 <td><input type="checkbox" id="chk{{@key}}" name="chk"/></td>
                 <td>{{@key}}</td>
-                <td>{{id}}</td>
-                <td>{{bool}}</td>
-                <td>{{count}}</td>
-                <td><input type="text" name="name" value="{{name}}" readonly/></td>
-                <td>{{helpTime time}}</td>
-                <td>{{helpUse yn}}</td>
+                <td><input type="text" name="id" value="{{id}}" readonly/></td>
+                <td>
+                    <input type="checkbox" name="bool" value="{{bool}}" {{#helpChecked bool}}{{/helpChecked}} />
+                </td>
+                <td><input type="number" name="count" value="{{count}}"/></td>
+                <td><input type="text" name="name" value="{{name}}" maxlength="30"/></td>
+                <td>
+                    <input type="text" class="datetime" name="time" value="{{helpTime time}}" readonly/>
+                </td>
+                <td>
+                    <select name="yn">
+                        <option value="Y" {{#helpUse yn}}{{/helpUse}}>사용</option>
+                        <option value="N" {{#helpUse yn}}{{/helpUse}}>사용안함</option>
+                    </select>
+                </td>
             </tr>
             {{/each}}
         </script>
     </table>
-    </form>
+
     <div id="divPage"></div>
 
 
@@ -215,7 +234,7 @@
     <form id="formMultipart">
         <input type="text" name="id" placeholder="수정하려면 id입력"/><br/>
         <label for="chkBool">bool입력</label>
-            <input type="hidden" name="_bool" value="false"/>
+            <input type="hidden" name="_bool" value="false"/> <!-- for unchecked checkbox value false -->
             <input type="checkbox" id="chkBool" name="bool"/><br/>
         <input type="number" name="count" placeholder="count 입력"/><br/>
         <input type="text" name="name" placeholder="name 입력"/><br/>

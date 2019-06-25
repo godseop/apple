@@ -1,6 +1,7 @@
 package org.godseop.apple.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @Alias("dummy")
 @Entity(name = "T_DUMMY")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Dummy {
 
     @Id
