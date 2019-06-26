@@ -44,6 +44,12 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.0.1</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -157,14 +163,6 @@
             <artifactId>ojdbc6</artifactId>
             <version>12.1.0.1-atlassian-hosted</version>
         </dependency>
-
-        <!-- hikaricp connection pool -->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>3.2.0</version>
-        </dependency>
-
 
         <!-- jsp -->
         <dependency>

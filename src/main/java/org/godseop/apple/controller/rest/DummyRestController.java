@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.entity.Dummy;
 import org.godseop.apple.model.Condition;
+import org.godseop.apple.model.Error;
 import org.godseop.apple.model.Result;
 import org.godseop.apple.service.DummyService;
 import org.godseop.apple.service.S3Service;
@@ -75,12 +76,16 @@ public class DummyRestController {
 
     @PostMapping(value="/bigfile")
     public ResponseEntity<Result> testBigfile(
-            @RequestPart("file") MultipartFile file) {
+            @RequestPart("fileList") List<MultipartFile> fileList) {
         Result result = new Result();
 
-        if (!file.isEmpty()) {
-            String uploadPath = s3Service.uploadBigBucket(file);
-            result.put(file.getOriginalFilename(), uploadPath);
+        if (fileList.size() == 0) {
+            result.put(Error.WRONG_USER_INPUT);
+        } else {
+            fileList.forEach(file -> {
+                String uploadPath = s3Service.uploadBigBucket(file);
+                result.put(file.getOriginalFilename(), uploadPath);
+            });
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -25,6 +25,7 @@
         };
 
         $(function() {
+            setCountdown();
             setEvent();
         });
 
@@ -52,6 +53,12 @@
                 let _formData = new FormData($("#formMultipart")[0]);
                 ajaxMultipart("/dummy/multipart", _formData, multipartSuccess);
             });
+
+            $("#btnBigFileTest").on("click", function() {
+                let _formData = new FormData($("#formBigFile")[0]);
+                ajaxMultipart("/dummy/bigfile", _formData, multipartSuccess);
+            });
+
 
             $("#btnBucket").on("click", function() {
                 ajaxJson("/dummy/s3list", null, s3listSuccess);
@@ -124,6 +131,24 @@
             console.log(data);
         }
 
+        function setCountdown() {
+            let startTime = moment("20190626230000", "YYYYMMDDHHmmss");
+            let endTime = moment("20190626235500", "YYYYMMDDHHmmss");
+            let serverTime = moment("20190626233027", "YYYYMMDDHHmmss");
+
+            let diffTime = endTime.valueOf() - serverTime.valueOf();
+            let duration = moment.duration(diffTime, 'milliseconds');
+
+            var tiktok = setInterval(function() {
+                duration = moment.duration(duration.asMilliseconds() - 1000, 'milliseconds');
+
+                $("#countdown").text(
+                    "COUNTDOWN : " + moment.utc(moment(duration.asMilliseconds())).format("HH:mm:ss")
+                );
+            }, 1000);
+
+        }
+
         Handlebars.registerHelper({
             helpEmpty: function(data) {    // listing helper
                 if (data.list.length === 0) {
@@ -157,11 +182,14 @@
         <input type="hidden" name="yn" value="Y"/>
     </form>
 
+    <h1 id="countdown"></h1>
+
 
     <h1>테스트를 해볼까?</h1>
     <button type="button" id="btnJsonTest">ajaxJSON 테스트</button>
     <button type="button" id="btnEncodedTest">ajaxEncoded 테스트</button>
     <button type="button" id="btnMultipartTest">ajaxMultipart 테스트</button>
+    <button type="button" id="btnBigFileTest">대용량업로드 테스트</button>
     <button type="button" id="btnBucket">S3 버킷목록조회 테스트</button>
     <button type="button" id="btnLocal">서버 로컬목록조회 테스트</button>
     <button type="button" id="btnPaging">페이징 테스트</button>
@@ -243,7 +271,7 @@
         <label for="rdoY">Y</label><input type="radio" id="rdoY" name="yn" value="Y"/>
         <label for="rdoN">N</label><input type="radio" id="rdoN" name="yn" value="N"/><br/>
         S3 업로드(단일) <input type="file" name="fileOne"/><br/>
-        로컬 업로드(멀티) <input type="file" name="fileMultiple" multiple="multiple"/><br/>
+        로컬 업로드(멀티) <input type="file" name="fileMultiple" multiple/><br/>
     </form>
 
 
@@ -253,6 +281,12 @@
     <form id="formNothing">
         <input type="date" class="date" placeholder="nothing..."/><br/>
         <input type="email" placeholder="email 입력"/><br/>
+    </form>
+
+
+    <hr/>
+    <form id="formBigFile">
+        S3 업로드(대용량멀티) <input type="file" name="fileList" multiple/><br/>
     </form>
 
 </body>

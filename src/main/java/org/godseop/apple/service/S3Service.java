@@ -79,15 +79,22 @@ public class S3Service {
                     .withS3Client(amazonS3)
                     .build();
 
+//            TransferManagerConfiguration config = transferManager.getConfiguration();
+//            config.setMinimumUploadPartSize(50000L);
+//            config.setMultipartUploadThreshold(100000L);
+
             Upload upload = transferManager.upload(
                                 appleBucket,
                                 fileName,
                                 multipartFile.getInputStream(),
                                 getObjectMetadata(multipartFile));
 
+//            upload.addProgressListener((ProgressListener) progressEvent ->
+//                    log.warn("upload part {} / {}", progressEvent.getBytesTransferred(), progressEvent.getBytes()));
+
+
             // wait for upload complete
             upload.waitForCompletion();
-
             return amazonS3.getUrl(appleBucket, fileName).toString();
         } catch (IOException | InterruptedException exception) {
             throw new AppleException(Error.FILE_UPLOAD_TO_S3_FAIL);
