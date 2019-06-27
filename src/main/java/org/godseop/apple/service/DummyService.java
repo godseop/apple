@@ -7,18 +7,32 @@ import org.godseop.apple.exception.AppleException;
 import org.godseop.apple.model.Condition;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.repository.mapper.DummyMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
+@PropertySource("classpath:rest.properties")
 public class DummyService {
 
+    @Value("${test.api.url}")
+    private String testApiUrl;
+
     private final DummyMapper dummyMapper;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public int getDummyListCount(Condition condition) {
         return dummyMapper.selectDummyListCount(condition);
@@ -52,5 +66,19 @@ public class DummyService {
         if (dummyMapper.deleteDummy(id) != 1) {
             throw new AppleException(Error.WRONG_USER_INPUT);
         }
+    }
+
+    public Map testRestTemplate() {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(testApiUrl)
+                .queryParam("q", "isbn:0747532699");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<Map> responseEntity =
+                restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, Map.class);
+        return responseEntity.getBody();
     }
 }

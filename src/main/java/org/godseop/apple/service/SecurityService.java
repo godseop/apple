@@ -1,5 +1,6 @@
 package org.godseop.apple.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.entity.Member;
 import org.godseop.apple.exception.AppleException;
@@ -16,13 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class SecurityService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-
-    public SecurityService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
 
     @Transactional(readOnly = true)
     public Member authenticate(String uid, String password) {

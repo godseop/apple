@@ -33,19 +33,23 @@
 
 
     <!-- log everything at info level -->
-    <root level="info">
+    <root level="DEBUG">
         <appender-ref ref="consoleAppender"/>
         <appender-ref ref="dailyRollingFileAppender"/>
     </root>
 
     <!-- ERROR < WARN < INFO < DEBUG < TRACE -->
-    <logger name="jdbc" level="OFF" />
-    <logger name="jdbc.sqlonly" level="OFF" />
-    <logger name="jdbc.sqltiming" level="DEBUG" />
-    <logger name="jdbc.audit" level="OFF" />
-    <logger name="jdbc.resultset" level="OFF" />
-    <logger name="jdbc.resultsettable" level="DEBUG" />
-    <logger name="jdbc.connection" level="OFF" />
+    <logger name="jdbc" level="off"/>
+    <logger name="jdbc.sqlonly" level="off"/>
+    <logger name="jdbc.sqltiming" level="debug"/>
+    <logger name="jdbc.audit" level="off"/>
+    <logger name="jdbc.resultset" level="off"/>
+    <logger name="jdbc.resultsettable" level="debug"/>
+    <logger name="jdbc.connection" level="off"/>
+
+    <logger name="com.zaxxer.hikari" level="info"/>
+    <logger name="org.apache" level="error"/>
+    <logger name="httpClient" level="error"/>
 
 
 </configuration>

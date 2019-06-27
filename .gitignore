@@ -37,5 +37,4 @@ log/*.log
 
 application.properties
 aws.properties
-datasource.properties
-datasource-mysql.properties
+rest.properties

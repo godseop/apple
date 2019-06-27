@@ -82,7 +82,7 @@ async function hideLoadingBar() {
 
 // csrf 헤더 만들기
 function buildHeaders() {
-    //var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
+    //let csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
     let csrfToken = $("meta[name='_csrf']").attr("content");
     let csrfHeader = $("meta[name='_csrf_header']").attr("content");
     let headers = {};
@@ -93,21 +93,23 @@ function buildHeaders() {
 
 function formatLocalDateTime(localDateTime) {
     // localDateTime likely '2019-06-22T06:35:59'
+    if (localDateTime == null) return null;
     return moment(localDateTime).format("YYYY-MM-DD HH:mm");
 }
 
 function getDateStamp(offset) {
-    offset = (Number.isInteger(offset) ? offset : 0);
+    offset = Number.isInteger(offset) ? offset : 0;
     return moment().add(offset, 'days').format("YYYY-MM-DD");
 }
 
 function getDateTimeStamp(offset) {
-    offset = (Number.isInteger(offset) ? offset : 0);
+    offset = Number.isInteger(offset) ? offset : 0;
     return moment().add(offset, 'days').format("YYYY-MM-DD HH:mm");
 }
 
 
 function getDateTimeStampByMillis(milliseconds) {
+    if (!$.isInteger(milliseconds)) return null;
     return moment(milliseconds).format("YYYY-MM-DD HH:mm");
 }
 
@@ -130,21 +132,37 @@ $.fn.extend({
     },
     // jascript object ==> urlencoded string (e.g a=1&b=2&c[0].a=3&c[0].b=4&c[1].a=5 ...)
     serializeUrlEncoded: function(prefix) {
-        var obj = this[0];
-        if (obj == null || typeof obj !== "object")
+        let object = this[0];
+        if (object == null || typeof object !== "object")
             return;
 
-        let str = [], p;
-        for (p in obj) {
-            if (obj.hasOwnProperty(p)) {
-                let k = isNaN(p) ? (prefix ? prefix + "." + p : p) : (prefix ? prefix + "[" + p + "]" : p);
-                let v = obj[p];
+        let result = [], property;
+        for (property in object) {
+            if (object.hasOwnProperty(property)) {
+                let key = isNaN(property) ?
+                    (prefix ? prefix + "." + property : property)
+                  : (prefix ? prefix + "[" + property + "]" : property);
+                let value = object[property];
 
-                str.push((v !== null && typeof v === "object") ?
-                    v.serializeUrlEncoded(k) :
-                    encodeURIComponent(k) + "=" + encodeURIComponent(v));
+                result.push((value !== null && typeof value === "object") ?
+                                value.serializeUrlEncoded(key)
+                              : encodeURIComponent(key) + "=" + encodeURIComponent(value));
             }
         }
-        return str.join("&");
+        return result.join("&");
+    },
+
+    // table tbody element serialize... ==> [{tr1...}, {tr2...}]
+    serializeTable: function() {
+        let result = [];
+        let tr = {};
+        this.find("tr").each(function(trIndex, trElement) {
+            tr = {};
+            $(trElement).find("input, select").each(function(tdIndex, tdElement) {
+                tr[$(tdElement).attr("name")] = $(tdElement).val();
+            });
+            result.push(tr);
+        });
+        return result;
     },
 });
