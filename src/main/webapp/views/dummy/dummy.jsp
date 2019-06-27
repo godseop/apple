@@ -77,6 +77,11 @@
                 ajaxJson("/dummy/dummylist", _data, dummylistSuccess);
             });
 
+            $("#btnRest").on("click", function() {
+                let _data = {};
+                ajaxJson("/dummy/rest", _data, restSuccess);
+            });
+
             $(".date").flatpickr();
 
             $(".datetime").flatpickr({
@@ -131,20 +136,36 @@
             console.log(data);
         }
 
+        function restSuccess(data) {
+            console.log(data);
+        }
+
         function setCountdown() {
             let startTime = moment("20190626230000", "YYYYMMDDHHmmss");
             let endTime = moment("20190626235500", "YYYYMMDDHHmmss");
             let serverTime = moment("20190626233027", "YYYYMMDDHHmmss");
 
-            let diffTime = endTime.valueOf() - serverTime.valueOf();
-            let duration = moment.duration(diffTime, 'milliseconds');
+            let procTime = serverTime.valueOf() - startTime.valueOf();
+            let leftTime = endTime.valueOf() - serverTime.valueOf();
+            let totalTime = endTime.valueOf() - startTime.valueOf();
+
+            let procDuration = moment.duration(procTime, 'milliseconds');
+            let leftDuration = moment.duration(leftTime, 'milliseconds');
+            let totalDuration = moment.duration(totalTime, 'milliseconds');
 
             var tiktok = setInterval(function() {
-                duration = moment.duration(duration.asMilliseconds() - 1000, 'milliseconds');
+                procDuration = moment.duration(procDuration.asMilliseconds() + 1000, 'milliseconds');
+                leftDuration = moment.duration(leftDuration.asMilliseconds() - 1000, 'milliseconds');
 
-                $("#countdown").text(
-                    "COUNTDOWN : " + moment.utc(moment(duration.asMilliseconds())).format("HH:mm:ss")
+                let persentage = parseInt((procDuration / totalDuration) * 100);
+
+                $("#progress").text(
+                    "PROGRESS : " + moment.utc(moment(procDuration.asMilliseconds())).format("HH:mm:ss")
                 );
+                $("#countdown").text(
+                    "COUNTDOWN : " + moment.utc(moment(leftDuration.asMilliseconds())).format("HH:mm:ss")
+                );
+                $("#guage").css("width", persentage + "%").text(persentage + "%");
             }, 1000);
 
         }
@@ -182,7 +203,12 @@
         <input type="hidden" name="yn" value="Y"/>
     </form>
 
+    <div class="meter">
+        <span id="guage"></span>
+    </div>
+    <h1 id="progress"></h1>
     <h1 id="countdown"></h1>
+
 
 
     <h1>테스트를 해볼까?</h1>
@@ -194,6 +220,7 @@
     <button type="button" id="btnLocal">서버 로컬목록조회 테스트</button>
     <button type="button" id="btnPaging">페이징 테스트</button>
     <button type="button" id="btnSerial">직렬화 테스트</button>
+    <button type="button" id="btnRest">Rest 테스트</button>
 
     <table>
         <colgroup>
