@@ -19,4 +19,12 @@ public class DummyController {
         return modelAndView;
     }
 
+    @GetMapping(value="/chat")
+    public ModelAndView viewChatPage() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("dummy/chat");
+        return modelAndView;
+    }
+
 }

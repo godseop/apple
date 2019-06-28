@@ -25,6 +25,8 @@
     <script src="${context}/resources/js/moment-locales.min.js" type="text/javascript"></script>
     <script src="${context}/resources/js/flatpickr-4.5.7.min.js" type="text/javascript"></script>
     <script src="${context}/resources/js/flatpickr-locale.ko.js" type="text/javascript"></script>
+    <script src="${context}/resources/js/sockjs-client-1.3.0.min.js" type="text/javascript"></script>
+    <script src="${context}/resources/js/stomp.umd.min.js" type="text/javascript"></script>
     <script src="${context}/resources/js/common.js" type="text/javascript"></script>
     <!-- //javascript -->
 
