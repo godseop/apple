@@ -14,7 +14,9 @@
           , D.yn
         FROM
             T_DUMMY D
-        <include refid="dummyListCondition"/>
+        <where>
+            <include refid="dummyListCondition"/>
+        </where>
         <include refid="sorting"/>
         <include refid="paging"/>
     </select>
@@ -24,12 +26,13 @@
             COUNT(*)
         FROM
             T_DUMMY D
-        <include refid="dummyListCondition"/>
+        <where>
+            <include refid="dummyListCondition"/>
+        </where>
     </select>
 
     <sql id="dummyListCondition">
-        WHERE
-            1 = 1
+        AND 1=1
     </sql>
 
 
@@ -108,14 +111,14 @@
     <!-- int에 대해 startRowNumber != '' 테스트하지말것 0일때 예상치못한 결과가 나옴 -->
     <sql id="paging">
         <if test="startRowNumber != null and startRowNumber gte 0">
-        LIMIT #{startRowNumber}, #{pageSize}
+            LIMIT #{startRowNumber}, #{pageSize}
         </if>
     </sql>
 
 
     <sql id="sorting">
         <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(orderKey)">
-        ORDER BY ${orderKey} ${orderSort}
+            ORDER BY ${orderKey} ${orderSort}
         </if>
     </sql>
 
