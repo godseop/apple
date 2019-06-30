@@ -2,23 +2,35 @@ package org.godseop.apple.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Data
+@Entity
+@Table(name = "T_DUMMY")
 @Alias("dummy")
-@Entity(name = "T_DUMMY")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = {"id"})
+@ToString(exclude = "yn")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Dummy {
 
+    @Builder
+    public Dummy(String name) {
+        this.id = UUID.randomUUID().toString();
+        this.name = name;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private Integer count;
 

@@ -109,7 +109,7 @@ function getDateTimeStamp(offset) {
 
 
 function getDateTimeStampByMillis(milliseconds) {
-    if (!$.isInteger(milliseconds)) return null;
+    if (!Number.isInteger(milliseconds)) return null;
     return moment(milliseconds).format("YYYY-MM-DD HH:mm");
 }
 

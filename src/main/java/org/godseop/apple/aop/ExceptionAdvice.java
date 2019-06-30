@@ -39,7 +39,7 @@ public class ExceptionAdvice {
     public ModelAndView handleSystemException(
             final HttpServletRequest request,
             final HttpServletResponse response,
-            final Exception exception) {
+            final SystemException exception) {
 
         log.error("System Error occured... {}", exception.getMessage());
         // SYSTEM EXCEPTION SOME LOGICS HERE...

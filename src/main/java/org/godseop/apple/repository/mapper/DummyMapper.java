@@ -22,7 +22,7 @@ public interface DummyMapper {
 
     List<Dummy> selectDummyList(Condition condition);
 
-    Dummy selectDummy(Long id);
+    Dummy selectDummy(String id);
 
     int insertDummy(Dummy dummy);
 

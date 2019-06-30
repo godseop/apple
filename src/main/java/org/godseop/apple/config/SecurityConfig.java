@@ -42,7 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //http.authorizeRequests().anyRequest().permitAll();
         //http.csrf().disable();
 
-        http.authorizeRequests()
+        http
+
+
+//            .csrf()
+//                .ignoringAntMatchers("/chat")
+//
+//                .and()
+//
+//            .headers()
+//                .frameOptions().sameOrigin()
+//
+//                .and()
+
+                .authorizeRequests()
                 //.antMatchers("/**").hasIpAddress("1.1.1.1") // IP주소 한정 접근허용
                 //.antMatchers("/**").anonymous() // 인증되지않은 사용자만 접근
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // CORS preflight 요청은 인증처리 안함
