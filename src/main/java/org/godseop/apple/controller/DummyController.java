@@ -27,4 +27,11 @@ public class DummyController {
         return modelAndView;
     }
 
+    @GetMapping(value="/video")
+    public ModelAndView viewVideoPage() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("dummy/video");
+        return modelAndView;
+    }
 }

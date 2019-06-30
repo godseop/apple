@@ -5,15 +5,6 @@
 <html>
 <head>
     <%@include file="../include/header.jsp"%>
-
-    <style type="text/css">
-         input:read-only {
-            border: 0;
-            background-color: transparent;
-            outline: none;
-        }
-    </style>
-
     <script type="text/javascript">
         var dummy = {
             id    : 1,

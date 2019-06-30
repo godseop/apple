@@ -101,7 +101,7 @@
           , yn = #{yn}
     </update>
 
-    <delete id="deleteDummy" parameterType="long">
+    <delete id="deleteDummy" parameterType="string">
         DELETE FROM T_DUMMY
         WHERE
             id = #{id}

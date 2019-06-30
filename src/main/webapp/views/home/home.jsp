@@ -33,6 +33,9 @@
 
     <sec:authorize access="permitAll()">
         <p>누구에게나 보입니다</p>
+        <a href="${context}/dummy/">테스트페이지</a>
+        <a href="${context}/dummy/chat">채팅페이지</a>
+        <a href="${context}/dummy/video">비디오페이지</a>
     </sec:authorize>
 
     <sec:authorize access="hasAnyRole('AUTHOR', 'BASIC')">

@@ -6,7 +6,7 @@
 <head>
     <%@include file="../include/header.jsp"%>
 
-    <script>
+    <script type="text/javascript">
     // JAVASCRIPT HERE
     $(function() {
 

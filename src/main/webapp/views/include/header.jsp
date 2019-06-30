@@ -12,9 +12,10 @@
     <!-- //favicon -->
 
     <!-- css -->
-    <link rel="stylesheet" href="${context}/resources/css/common.css">
-    <link rel="stylesheet" href="${context}/resources/css/spinkit.css">
-    <link rel="stylesheet" href="${context}/resources/css/flatpickr-4.5.7.min.css">
+    <link rel="stylesheet" href="${context}/resources/css/common.css"/>
+    <link rel="stylesheet" href="${context}/resources/css/spinkit.css"/>
+    <link rel="stylesheet" href="${context}/resources/css/flatpickr-4.5.7.min.css"/>
+    <link rel="stylesheet" href="${context}/resources/css/video-7.6.0.min.css"/>
     <!-- //css -->
 
     <!-- javascript -->
@@ -26,7 +27,9 @@
     <script src="${context}/resources/js/flatpickr-4.5.7.min.js" type="text/javascript"></script>
     <script src="${context}/resources/js/flatpickr-locale.ko.js" type="text/javascript"></script>
     <script src="${context}/resources/js/sockjs-client-1.3.0.min.js" type="text/javascript"></script>
-    <script src="${context}/resources/js/stomp.umd.min.js" type="text/javascript"></script>
+    <script src="${context}/resources/js/stomp-5.4.2.min.js" type="text/javascript"></script>
+    <script src="${context}/resources/js/video-7.6.0.min.js" type="text/javascript"></script>
+    <script src="${context}/resources/js/video-locale.ko.js" type="text/javascript"></script>
     <script src="${context}/resources/js/common.js" type="text/javascript"></script>
     <!-- //javascript -->
 
@@ -44,6 +47,7 @@
         });
 
         moment.locale('ko');    // moment localization
+
         $.support.cors = true;  // permit cors
 
         Handlebars.registerHelper({

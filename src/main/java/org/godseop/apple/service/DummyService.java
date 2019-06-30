@@ -27,12 +27,11 @@ import java.util.Map;
 public class DummyService {
 
     @Value("${test.api.url}")
-    private String testApiUrl;
+    private final String TEST_API_URL;
 
     private final DummyMapper dummyMapper;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public int getDummyListCount(Condition condition) {
         return dummyMapper.selectDummyListCount(condition);
@@ -42,7 +41,7 @@ public class DummyService {
         return dummyMapper.selectDummyList(condition);
     }
 
-    public Dummy getDummy(Long id) {
+    public Dummy getDummy(String id) {
         return dummyMapper.selectDummy(id);
     }
 
@@ -69,7 +68,7 @@ public class DummyService {
     }
 
     public Map testRestTemplate() {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(testApiUrl)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(TEST_API_URL)
                 .queryParam("q", "isbn:0747532699");
 
         HttpHeaders httpHeaders = new HttpHeaders();
