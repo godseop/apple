@@ -1,6 +1,7 @@
 package org.godseop.apple.entity;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 import org.apache.ibatis.type.Alias;
 import org.godseop.apple.entity.type.BookGenre;
 import org.godseop.apple.entity.type.BookType;
@@ -8,15 +9,27 @@ import org.godseop.apple.entity.type.BookType;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Data
+@Entity
+@Table(name = "T_BOOK")
+@Getter
 @Alias("book")
-@Entity(name = "T_BOOK")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = {"id"})
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Book {
 
+    @Builder
+    protected Book(String title) {
+        this.id = UUID.randomUUID().toString();
+        this.title = title;
+    }
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false)
     @Size(min = 10)

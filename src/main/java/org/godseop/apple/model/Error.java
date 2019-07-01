@@ -18,9 +18,11 @@ public enum Error {
     LOGIN_FAIL("8001", "로그인에 실패했습니다."),
 
 
-    DATABASE_ERROR("9997", "데이터베이스 오류가 발생했습니다."),
-    SYSTEM_EXCEPTION("9998", "시스템 에러입니다. 관리자에게 문의해주세요."),
+    DATABASE_ERROR("9996", "데이터베이스 오류가 발생했습니다."),
+    SYSTEM_EXCEPTION("9997", "시스템 에러입니다. 관리자에게 문의해주세요."),
+    SERVICE_UNAVAILABLE("9998", "일시적인 서비스장애입니다. 관리자에게 문의해주세요."),
     INTERNAL_SERVER_ERROR("9999", "서버 에러입니다. 관리자에게 문의해주세요."),
+
     ;
 
     private final String code;

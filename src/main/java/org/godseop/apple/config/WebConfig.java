@@ -7,17 +7,22 @@ import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 import org.godseop.apple.security.HtmlCharacterEscapes;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.support.MultipartFilter;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.resource.PathResourceResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.MultipartConfigElement;
 import java.util.List;
 
 
@@ -60,6 +65,27 @@ public class WebConfig implements WebMvcConfigurer {
             .addResolver(pathResourceResolver());
     }
 
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/views/");
+        resolver.setSuffix(".jsp");
+        resolver.setViewClass(JstlView.class);
+        registry.viewResolver(resolver);
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedMethods("GET");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // add interceptors
+    }
+
+
     @Bean
     public HttpMessageConverter<?> htmlEscapingConveter() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -87,8 +113,12 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-        return restTemplateBuilder.build();
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize(DataSize.ofGigabytes(2));
+        factory.setMaxRequestSize(DataSize.ofGigabytes(4));
+
+        return factory.createMultipartConfig();
     }
 
 
