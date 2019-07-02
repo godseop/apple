@@ -20,7 +20,8 @@ public class DataSourceConfig {
     public SqlSessionFactory getSqlSessionFactory(DataSource datasource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(datasource);
-        sqlSessionFactory.setTypeAliasesPackage("org.godseop.apple");
+        // TODO 이거 고민해볼것
+        sqlSessionFactory.setTypeAliasesPackage("org.godseop.apple.entity");
         sqlSessionFactory.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("classpath:mybatis-config.xml"));
         sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*.xml"));
         return sqlSessionFactory.getObject();

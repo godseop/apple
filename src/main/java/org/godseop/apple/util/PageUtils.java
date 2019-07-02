@@ -1,7 +1,7 @@
 package org.godseop.apple.util;
 
 
-import org.godseop.apple.model.Condition;
+import org.godseop.apple.entity.Condition;
 import org.godseop.apple.model.Page;
 
 import java.util.stream.Collectors;

@@ -4,10 +4,12 @@
 <configuration>
 
     <settings>
-        <setting name="defaultExecutorType" value="REUSE" />
-        <setting name="defaultStatementTimeout" value="20000" />
+        <setting name="defaultExecutorType" value="REUSE"/>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="defaultStatementTimeout" value="20000"/>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <setting name="callSettersOnNulls" value="true" />
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <setting name="callSettersOnNulls" value="true"/>
     </settings>
 
 </configuration>
