@@ -34,4 +34,13 @@ public class DummyController {
         modelAndView.setViewName("dummy/video");
         return modelAndView;
     }
+
+    @GetMapping(value="/chart")
+    public ModelAndView viewChartPage() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("dummy/chart");
+        return modelAndView;
+    }
+
 }
