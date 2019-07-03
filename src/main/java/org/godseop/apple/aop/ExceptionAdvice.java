@@ -47,7 +47,7 @@ public class ExceptionAdvice {
 
         if (isAjaxRequest(request)) {
             modelAndView.setViewName("jsonView");
-            modelAndView.addObject("result", new Result(Error.INTERNAL_SERVER_ERROR).get("result"));
+            modelAndView.addObject("result", new Result(Error.SERVICE_UNAVAILABLE).get("result"));
         } else {
             modelAndView.setViewName("/error/503");
             request.setAttribute("message", exception.getMessage());

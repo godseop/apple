@@ -33,7 +33,6 @@ public class MemberService {
         this.memberMapper = memberMapper;
     }
 
-
     public List<Member> getMemberList() {
         return memberRepository.findAll();
     }

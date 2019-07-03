@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.entity.Dummy;
 import org.godseop.apple.exception.AppleException;
-import org.godseop.apple.model.Condition;
+import org.godseop.apple.entity.Condition;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.repository.mapper.DummyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.*;
@@ -26,12 +27,12 @@ import java.util.Map;
 @PropertySource("classpath:rest.properties")
 public class DummyService {
 
-    @Value("${test.api.url}")
-    private final String TEST_API_URL;
-
     private final DummyMapper dummyMapper;
 
-    private final RestTemplate restTemplate;
+    private final RestTemplate defaultRestTeamplate;
+
+    @Value("${test.api.url}")
+    private String TEST_API_URL;
 
     public int getDummyListCount(Condition condition) {
         return dummyMapper.selectDummyListCount(condition);
@@ -77,7 +78,7 @@ public class DummyService {
 
         HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<Map> responseEntity =
-                restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, Map.class);
+                defaultRestTeamplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, Map.class);
         return responseEntity.getBody();
     }
 }

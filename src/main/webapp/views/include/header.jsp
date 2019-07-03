@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="${context}/resources/css/spinkit.css"/>
     <link rel="stylesheet" href="${context}/resources/css/flatpickr-4.5.7.min.css"/>
     <link rel="stylesheet" href="${context}/resources/css/video-7.6.0.min.css"/>
+    <link rel="stylesheet" href="${context}/resources/css/Chart.min.css"/>
     <!-- //css -->
 
     <!-- javascript -->
@@ -30,6 +31,8 @@
     <script src="${context}/resources/js/stomp-5.4.2.min.js" type="text/javascript"></script>
     <script src="${context}/resources/js/video-7.6.0.min.js" type="text/javascript"></script>
     <script src="${context}/resources/js/video-locale.ko.js" type="text/javascript"></script>
+    <script src="${context}/resources/js/FileSaver.min.js" type="text/javascript"></script>
+    <script src="${context}/resources/js/Chart.bundle.min.js" type="text/javascript"></script>
     <script src="${context}/resources/js/common.js" type="text/javascript"></script>
     <!-- //javascript -->
 
