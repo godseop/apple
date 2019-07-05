@@ -69,14 +69,22 @@ public class DummyService {
     }
 
     public Map testRestTemplate() {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(TEST_API_URL)
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .newInstance().scheme("https").host("googleapis.com").port("443").path("{version}/volumes").build().expand("v1").encode().toUrl();
+
+                .fromHttpUrl(TEST_API_URL)
+                .port("8080")
                 .queryParam("q", "isbn:0747532699");
+
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
+
         HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
+
+
         ResponseEntity<Map> responseEntity =
                 defaultRestTeamplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, Map.class);
         return responseEntity.getBody();
