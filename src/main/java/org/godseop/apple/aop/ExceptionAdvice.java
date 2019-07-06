@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.godseop.apple.exception.AppleException;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.model.Result;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.SystemException;
-import java.sql.SQLException;
 
 @Slf4j
 @ControllerAdvice
@@ -27,6 +25,7 @@ public class ExceptionAdvice {
             final HttpServletRequest request,
             final HttpServletResponse response,
             final AppleException exception) {
+
         Result result = new Result();
         result.put(exception);
         exception.printStackTrace();
@@ -34,7 +33,7 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    // 시스템에러 예외처리(예상되는 예외처리 랩핑)
+    // 시스템에러 예외처리
     @ExceptionHandler({SystemException.class})
     public ModelAndView handleSystemException(
             final HttpServletRequest request,
@@ -47,29 +46,16 @@ public class ExceptionAdvice {
 
         if (isAjaxRequest(request)) {
             modelAndView.setViewName("jsonView");
-            modelAndView.addObject("result", new Result(Error.SERVICE_UNAVAILABLE).get("result"));
+            modelAndView.addObject("result", new Result(Error.SERVICE_UNAVAILABLE));
         } else {
-            modelAndView.setViewName("/error/503");
+            modelAndView.setViewName("error/503");
             request.setAttribute("message", exception.getMessage());
         }
 
         return modelAndView;
     }
 
-    // DB에러 예외처리
-    @ExceptionHandler({DataAccessException.class, SQLException.class})
-    public void handleDatabaseException(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
-            final Exception exception) {
-
-        log.error("Database Error occured... {}", exception.getMessage());
-        // DATABASE EXCEPTION SOME LOGICS HERE...
-
-        this.handleException(request, response, exception);
-    }
-
-    // 예외처리(예상치못한 예외케이스)
+    // 예외처리(그 외)
     @ExceptionHandler({Exception.class})
     public ModelAndView handleException(
             final HttpServletRequest request,
@@ -83,9 +69,9 @@ public class ExceptionAdvice {
 
         if (isAjaxRequest(request)) {
             modelAndView.setViewName("jsonView");
-            modelAndView.addObject("result", new Result(Error.INTERNAL_SERVER_ERROR).get("result"));
+            modelAndView.addObject("result", new Result(Error.INTERNAL_SERVER_ERROR));
         } else {
-            modelAndView.setViewName("/error/500");
+            modelAndView.setViewName("error/500");
             request.setAttribute("message", exception.getMessage());
         }
 

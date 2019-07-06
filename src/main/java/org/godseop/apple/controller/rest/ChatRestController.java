@@ -15,7 +15,7 @@ public class ChatRestController {
 
     @MessageMapping("/apple")
     @SendTo("/chat/roomId")
-    public String broadcast(ChatMessage inMessage) throws Exception {
+    public String broadcast(ChatMessage inMessage) {
         // 단순 메세지만 브로드캐스트
         return inMessage.getContent();
     }

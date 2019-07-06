@@ -1,17 +1,22 @@
 package org.godseop.apple.model;
 
+import lombok.Getter;
 import org.godseop.apple.exception.AppleException;
+import org.godseop.apple.exception.SystemException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Result extends HashMap<String, Object> {
+@Getter
+public class Result {
 
-    private Map<String, Object> responseMap;
+    private String code;
+    private String message;
+
+    private Map<String, Object> data;
 
     public Result() {
-        responseMap = new HashMap<>();
-        super.put("response", this.responseMap);
+        data = new HashMap<>();
         this.put(Error.OK);
     }
 
@@ -19,32 +24,25 @@ public class Result extends HashMap<String, Object> {
         this.put(error);
     }
 
-    public Object put(String key, Object value) {
-        responseMap.put(key, value);
-        super.put("response", this.responseMap);
-        return value;
+    public void put(String key, Object value) {
+        data.put(key, value);
     }
 
     public void put(Error error) {
-        Map<String, String> result = new HashMap<>();
-
-        result.put("code", error.getCode());
-        result.put("message", error.getMessage());
-
-        super.put("result", result);
+        this.code = error.getCode();
+        this.message = error.getMessage();
     }
 
     public <E extends Exception> void put(E exception) {
-        Map<String, String> result = new HashMap<>();
-
         if (exception instanceof AppleException) {
-            result.put("code", ((AppleException)exception).getCode());
-            result.put("message", exception.getMessage());
+            this.code = ((AppleException) exception).getCode();
+            this.message = exception.getMessage();
+        } else if (exception instanceof SystemException) {
+            this.put(Error.SERVICE_UNAVAILABLE);
         } else {
-            this.put(Error.SYSTEM_EXCEPTION);
+            this.put(Error.INTERNAL_SERVER_ERROR);
         }
-
-        super.put("result", result);
     }
-
 }
+
+

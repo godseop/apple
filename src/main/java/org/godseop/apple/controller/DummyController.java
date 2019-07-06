@@ -43,4 +43,12 @@ public class DummyController {
         return modelAndView;
     }
 
+    @GetMapping(value="/rest")
+    public ModelAndView viewRestPage() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("dummy/rest");
+        return modelAndView;
+    }
+
 }

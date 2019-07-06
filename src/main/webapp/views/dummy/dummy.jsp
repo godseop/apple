@@ -7,7 +7,7 @@
     <%@include file="../include/header.jsp"%>
     <script type="text/javascript">
         var dummy = {
-            id    : 1,
+            id    : "1",
             bool  : false,
             count : 10,
             name  : "더미",
@@ -68,11 +68,6 @@
                 ajaxJson("/dummy/dummylist", _data, dummylistSuccess);
             });
 
-            $("#btnRest").on("click", function() {
-                let _data = {id: "godseop"};
-                ajaxEncoded("/dummy/rest", _data, restSuccess);
-            });
-
             $(".date").flatpickr();
 
             $(".datetime").flatpickr({
@@ -124,10 +119,6 @@
         }
 
         function dummylistSuccess(data) {
-            console.log(data);
-        }
-
-        function restSuccess(data) {
             console.log(data);
         }
 
@@ -211,7 +202,6 @@
     <button type="button" id="btnLocal">서버 로컬목록조회 테스트</button>
     <button type="button" id="btnPaging">페이징 테스트</button>
     <button type="button" id="btnSerial">직렬화 테스트</button>
-    <button type="button" id="btnRest">Rest 테스트</button>
 
     <table>
         <colgroup>

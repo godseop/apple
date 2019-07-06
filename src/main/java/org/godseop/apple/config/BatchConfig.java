@@ -12,11 +12,12 @@ public class BatchConfig {
 
     @Bean
     public TaskScheduler taskScheduler() {
+        // 단일스레드 스케쥴러
+        //return new ConcurrentTaskScheduler();
+
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(10);
         return taskScheduler;
-
-        //return new ConcurrentTaskScheduler(); 단일 스케쥴러
     }
 
 }

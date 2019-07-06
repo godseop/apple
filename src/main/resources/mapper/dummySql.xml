@@ -36,7 +36,7 @@
     </sql>
 
 
-    <select id="selectDummy" parameterType="long" resultType="dummy">
+    <select id="selectDummy" parameterType="string" resultType="dummy">
         SELECT
             D.id
           , D.bool
