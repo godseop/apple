@@ -69,8 +69,8 @@
             });
 
             $("#btnRest").on("click", function() {
-                let _data = {};
-                ajaxJson("/dummy/rest", _data, restSuccess);
+                let _data = {id: "godseop"};
+                ajaxEncoded("/dummy/rest", _data, restSuccess);
             });
 
             $(".date").flatpickr();

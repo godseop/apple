@@ -63,7 +63,7 @@ public class RestTemplateConfig {
                         log.info("defaultRestTemplate Response intercept ===============================================");
                         log.info("Headers         : {}", response.getHeaders());
                         log.info("Response Status : {}", response.getRawStatusCode());
-                        log.info("Response Body   : {}", IOUtils.toString(response.getBody()));
+//                        log.info("Response Body   : {}", IOUtils.toString(response.getBody())); response getbody loss...
                         log.info("======================================================================================");
                     }
 

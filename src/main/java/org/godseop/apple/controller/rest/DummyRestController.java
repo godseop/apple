@@ -132,10 +132,10 @@ public class DummyRestController {
     }
 
     @PostMapping(value="/rest")
-    public ResponseEntity<Result> testRestTemplate() {
+    public ResponseEntity<Result> testRestTemplate(@RequestParam("id") String id) {
         Result result = new Result();
 
-        result.put("rest", dummyService.testRestTemplate());
+        result.put("rest", dummyService.testRestTemplate(id));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
