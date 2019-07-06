@@ -131,12 +131,4 @@ public class DummyRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping(value="/rest")
-    public ResponseEntity<Result> testRestTemplate() {
-        Result result = new Result();
-
-        result.put("rest", dummyService.testRestTemplate());
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
 }

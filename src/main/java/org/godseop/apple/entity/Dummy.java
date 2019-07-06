@@ -24,8 +24,12 @@ import java.util.UUID;
 public class Dummy {
 
     @Builder
-    public Dummy(String name) {
-        this.id = UUID.randomUUID().toString();
+    public Dummy(String id, String name) {
+        if (id == null)
+            this.id = UUID.randomUUID().toString();
+        else
+            this.id = id;
+
         this.name = name;
     }
 

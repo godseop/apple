@@ -19,29 +19,31 @@ public class AppleErrorController implements ErrorController {
 
     @Override
     public String getErrorPath() {
-        return "/error";
+        return "error";
     }
 
-    @GetMapping("/error")
+    @GetMapping("error")
     public String handleError(HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if (status != null) {
             int statusCode = Integer.valueOf(status.toString());
 
-            if(statusCode == HttpStatus.NOT_FOUND.value()) {
+            if (statusCode == HttpStatus.FORBIDDEN.value()) {
+                return "error/403";
+            } else if(statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "error/404";
-            }
-            else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "error/500";
+            } else if(statusCode == HttpStatus.SERVICE_UNAVAILABLE.value()) {
+                return "error/503";
             }
         }
-        return "error/503";
+        // HttpStatus.INTERNAL_SERVER_ERROR
+        return "error/500";
     }
 
 
 
-    @GetMapping(value="/403")
+    @GetMapping(value="error/403")
     public ModelAndView viewForbiddenErrorPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/403");
@@ -49,7 +51,7 @@ public class AppleErrorController implements ErrorController {
         return modelAndView;
     }
 
-    @GetMapping(value="/404")
+    @GetMapping(value="error/404")
     public ModelAndView viewNotFoundErrorPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/404");
@@ -57,16 +59,7 @@ public class AppleErrorController implements ErrorController {
         return modelAndView;
     }
 
-    @GetMapping(value="/500")
-    public ModelAndView viewInternalServerErrorPage(@RequestAttribute("exception") String exception) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("error/500");
-        modelAndView.addObject("exception", exception);
-
-        return modelAndView;
-    }
-
-    @GetMapping(value="/503")
+    @GetMapping(value="error/503")
     public ModelAndView viewServiceUnavailableErrorPage(@RequestAttribute("exception") String exception) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/503");
@@ -75,14 +68,13 @@ public class AppleErrorController implements ErrorController {
         return modelAndView;
     }
 
-    @GetMapping(value="/test")
-    public void testResponseStatusException() {
-        try {
-            log.error("some code here that exception throwable...");
-        } catch(Exception exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT, "Testing ResponseStatusException", exception);
-        }
+    @GetMapping(value="error/500")
+    public ModelAndView viewInternalServerErrorPage(@RequestAttribute("exception") String exception) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error/500");
+        modelAndView.addObject("exception", exception);
+
+        return modelAndView;
     }
 
 }

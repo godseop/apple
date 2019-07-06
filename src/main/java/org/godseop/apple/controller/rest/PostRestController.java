@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value="/post")
 public class PostRestController {
 
-    private PostService postService;
+    private final PostService postService;
 
     @GetMapping(value="/test")
     public void test() {

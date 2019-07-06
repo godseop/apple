@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
@@ -29,7 +30,13 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplate defaultRestTemplate() {
-        return restTemplateBuilder.rootUri("http://localhost:8080")
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        factory.setBufferRequestBody(true);
+        factory.setConnectTimeout(10000);
+
+        return restTemplateBuilder
+                .requestFactory(() -> factory)
+                //.rootUri("http://localhost:8080")
                 .additionalInterceptors(new ClientHttpRequestInterceptor() {
                     @Override
                     public ClientHttpResponse intercept(@NonNull final HttpRequest request,
@@ -56,7 +63,7 @@ public class RestTemplateConfig {
                         log.info("defaultRestTemplate Response intercept ===============================================");
                         log.info("Headers         : {}", response.getHeaders());
                         log.info("Response Status : {}", response.getRawStatusCode());
-                        log.info("Response Body   : {}", IOUtils.toString(response.getBody()));
+//                        log.info("Response Body   : {}", IOUtils.toString(response.getBody())); response getbody loss...
                         log.info("======================================================================================");
                     }
 
@@ -66,6 +73,11 @@ public class RestTemplateConfig {
                     @Override
                     public boolean hasError(@NonNull final ClientHttpResponse response) throws IOException {
                         final HttpStatus statusCode = response.getStatusCode();
+
+                        if (statusCode.series() == HttpStatus.Series.SERVER_ERROR) {
+                            log.error("SERVER_ERROR Occured");
+                        }
+
                         // 200번대 성공코드가 아닐때 return true
                         return !statusCode.is2xxSuccessful();
                     }

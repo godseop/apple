@@ -2,20 +2,17 @@ package org.godseop.apple.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.godseop.apple.entity.Condition;
 import org.godseop.apple.entity.Dummy;
 import org.godseop.apple.exception.AppleException;
-import org.godseop.apple.entity.Condition;
+import org.godseop.apple.external.github.GitHubRest;
+import org.godseop.apple.external.google.GoogleRest;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.repository.mapper.DummyMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -24,15 +21,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@PropertySource("classpath:rest.properties")
 public class DummyService {
 
     private final DummyMapper dummyMapper;
 
-    private final RestTemplate defaultRestTeamplate;
+    private final GitHubRest gitHubRest;
 
-    @Value("${test.api.url}")
-    private String TEST_API_URL;
+    private final GoogleRest googleRest;
 
     public int getDummyListCount(Condition condition) {
         return dummyMapper.selectDummyListCount(condition);
@@ -59,7 +54,7 @@ public class DummyService {
     }
 
     public void mergeDummy(Dummy dummy) {
-        log.error("count: {}", dummyMapper.upsertDummy(dummy));
+         dummyMapper.upsertDummy(dummy);
     }
 
     public void removeDummy(Long id) {
@@ -68,17 +63,11 @@ public class DummyService {
         }
     }
 
-    public Map testRestTemplate() {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(TEST_API_URL)
-                .queryParam("q", "isbn:0747532699");
+    public Map getBookInfo(String isbn) {
+        return googleRest.getBookInfoByIsbn(isbn);
+    }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-
-        HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<Map> responseEntity =
-                defaultRestTeamplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, Map.class);
-        return responseEntity.getBody();
+    public Map getGithubUserInfo(String githubId) {
+        return gitHubRest.getSingleUser(githubId);
     }
 }

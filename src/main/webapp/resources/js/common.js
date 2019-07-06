@@ -10,11 +10,11 @@ function ajaxJson(url, object, callback, isLoadingBar=true) {
         headers:     buildHeaders(),
         data:        JSON.stringify(object),
         beforeSend:  isLoadingBar && showLoadingBar,
-        success: function(data) {
-            if (data.result.code !== "0000") {
-                alert("[" + data.result.code + "] " + data.result.message);
+        success: function(response) {
+            if (response.code !== "0000") {
+                alert("[" + response.code + "] " + response.message);
             } else {
-                callback.call(this, data.response);
+                callback.call(this, response.data);
             }
         },
         error: function(request, status, error) {
@@ -31,11 +31,11 @@ function ajaxEncoded(url, object, callback, isLoadingBar=true) {
         headers:     buildHeaders(),
         data:        object,
         beforeSend:  isLoadingBar && showLoadingBar,
-        success: function(data) {
-            if (data.result.code !== "0000") {
-                alert("[" + data.result.code + "] " + data.result.message);
+        success: function(response) {
+            if (response.code !== "0000") {
+                alert("[" + response.code + "] " + response.message);
             } else {
-                callback.call(this, data.response);
+                callback.call(this, response.data);
             }
         },
         error: function(request, status, error) {
@@ -56,11 +56,11 @@ function ajaxMultipart(url, formData, callback, isLoadingBar=true) {
         enctype:     "multipart/form-data",
         data:        formData,
         beforeSend:  isLoadingBar && showLoadingBar,
-        success: function(data) {
-            if (data.result.code !== "0000") {
-                alert("[" + data.result.code + "] " + data.result.message);
+        success: function(response) {
+            if (response.code !== "0000") {
+                alert("[" + response.code + "] " + response.message);
             } else {
-                callback.call(this, data.response);
+                callback.call(this, response.data);
             }
         },
         error: function(request, status, error) {

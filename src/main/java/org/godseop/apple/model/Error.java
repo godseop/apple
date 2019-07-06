@@ -1,5 +1,12 @@
 package org.godseop.apple.model;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
+@Getter
+@RequiredArgsConstructor
+@ToString
 public enum Error {
 
     OK("0000", "정상"),
@@ -18,8 +25,6 @@ public enum Error {
     LOGIN_FAIL("8001", "로그인에 실패했습니다."),
 
 
-    DATABASE_ERROR("9996", "데이터베이스 오류가 발생했습니다."),
-    SYSTEM_EXCEPTION("9997", "시스템 에러입니다. 관리자에게 문의해주세요."),
     SERVICE_UNAVAILABLE("9998", "일시적인 서비스장애입니다. 관리자에게 문의해주세요."),
     INTERNAL_SERVER_ERROR("9999", "서버 에러입니다. 관리자에게 문의해주세요."),
 
@@ -27,23 +32,5 @@ public enum Error {
 
     private final String code;
     private final String message;
-
-    Error(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-    public String getCode() {
-        return this.code;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    @Override
-    public String toString() {
-        return this.code + ":" + this.message;
-    }
 
 }
