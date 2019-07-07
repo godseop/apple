@@ -11,6 +11,7 @@ import org.godseop.apple.model.Error;
 import org.godseop.apple.repository.mapper.DummyMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,4 +71,18 @@ public class DummyService {
     public Map getGithubUserInfo(String githubId) {
         return gitHubRest.getSingleUser(githubId);
     }
+
+
+    @Scheduled(fixedDelay = 30000)
+    public void batchTest() {
+        log.debug("==========BATCH START============");
+    }
+
+
+    @Scheduled(cron = "0 0/1 * * * *")
+    public void batchTest2() {
+        log.debug("==========BATCH START2============");
+    }
+
+
 }
