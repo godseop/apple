@@ -13,11 +13,11 @@
 
         function setEvent() {
             $("#btnBook").on("click", function() {
-                ajaxEncoded("/external/google/book", {isbn: $("input[name=isbn]").val()}, successFunction);
+                ajaxEncoded("/rest/google/book", {isbn: $("input[name=isbn]").val()}, successFunction);
             });
 
             $("#btnUser").on("click", function() {
-                ajaxEncoded("/external/github/user", {githubId: $("input[name=githubId]").val()}, successFunction);
+                ajaxEncoded("/rest/github/user", {githubId: $("input[name=githubId]").val()}, successFunction);
             });
         }
 

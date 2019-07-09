@@ -1,4 +1,4 @@
-package org.godseop.apple.external.google;
+package org.godseop.apple.rest.google;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;

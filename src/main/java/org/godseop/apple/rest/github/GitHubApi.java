@@ -1,4 +1,4 @@
-package org.godseop.apple.external.github;
+package org.godseop.apple.rest.github;
 
 import org.springframework.http.HttpMethod;
 

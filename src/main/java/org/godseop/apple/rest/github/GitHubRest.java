@@ -1,4 +1,4 @@
-package org.godseop.apple.external.github;
+package org.godseop.apple.rest.github;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

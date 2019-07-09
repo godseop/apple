@@ -1,4 +1,4 @@
-package org.godseop.apple.interceptor;
+package org.godseop.apple.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
