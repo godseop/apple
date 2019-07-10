@@ -2,15 +2,14 @@ package org.godseop.apple.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.entity.Condition;
-import org.godseop.apple.entity.Dummy;
+import org.godseop.apple.entity.mysql.Condition;
+import org.godseop.apple.entity.mysql.Dummy;
 import org.godseop.apple.exception.AppleException;
-import org.godseop.apple.external.github.GitHubRest;
-import org.godseop.apple.external.google.GoogleRest;
+import org.godseop.apple.rest.github.GitHubRest;
+import org.godseop.apple.rest.google.GoogleRest;
 import org.godseop.apple.model.Error;
-import org.godseop.apple.repository.mapper.DummyMapper;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.godseop.apple.mapper.mysql.DummyMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,4 +69,18 @@ public class DummyService {
     public Map getGithubUserInfo(String githubId) {
         return gitHubRest.getSingleUser(githubId);
     }
+
+
+    @Scheduled(fixedDelay = 30000)
+    public void batchTest() {
+        log.debug("==========BATCH START============");
+    }
+
+
+    @Scheduled(cron = "0 0/1 * * * *")
+    public void batchTest2() {
+        log.debug("==========BATCH START2============");
+    }
+
+
 }

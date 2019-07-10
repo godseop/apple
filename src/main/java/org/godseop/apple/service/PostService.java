@@ -3,10 +3,10 @@ package org.godseop.apple.service;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import org.godseop.apple.entity.Comment;
-import org.godseop.apple.entity.Post;
-import org.godseop.apple.repository.CommentRepository;
-import org.godseop.apple.repository.PostRepository;
+import org.godseop.apple.entity.mysql.Comment;
+import org.godseop.apple.entity.mysql.Post;
+import org.godseop.apple.repository.mysql.CommentRepository;
+import org.godseop.apple.repository.mysql.PostRepository;
 import org.springframework.stereotype.Service;
 
 @Service
