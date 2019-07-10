@@ -1,4 +1,4 @@
-package org.godseop.apple.entity.type;
+package org.godseop.apple.entity.mysql.type;
 
 public enum BookGenre {
 

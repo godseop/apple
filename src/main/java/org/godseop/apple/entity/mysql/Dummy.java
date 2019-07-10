@@ -1,4 +1,4 @@
-package org.godseop.apple.entity;
+package org.godseop.apple.entity.mysql;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

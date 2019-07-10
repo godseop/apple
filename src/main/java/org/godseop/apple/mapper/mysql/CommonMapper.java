@@ -1,4 +1,4 @@
-package org.godseop.apple.repository.mapper;
+package org.godseop.apple.mapper.mysql;
 
 
 import org.apache.ibatis.annotations.Mapper;

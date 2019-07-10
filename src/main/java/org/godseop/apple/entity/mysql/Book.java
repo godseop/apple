@@ -1,10 +1,10 @@
-package org.godseop.apple.entity;
+package org.godseop.apple.entity.mysql;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
-import org.godseop.apple.entity.type.BookGenre;
-import org.godseop.apple.entity.type.BookType;
+import org.godseop.apple.entity.mysql.type.BookGenre;
+import org.godseop.apple.entity.mysql.type.BookType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

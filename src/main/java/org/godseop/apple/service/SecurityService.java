@@ -2,11 +2,11 @@ package org.godseop.apple.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.entity.Member;
+import org.godseop.apple.entity.mysql.Member;
 import org.godseop.apple.exception.AppleException;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.model.SecurityMember;
-import org.godseop.apple.repository.MemberRepository;
+import org.godseop.apple.repository.mysql.MemberRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,7 +1,7 @@
-package org.godseop.apple.repository.mapper;
+package org.godseop.apple.mapper.mysql;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.godseop.apple.entity.Member;
+import org.godseop.apple.entity.mysql.Member;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

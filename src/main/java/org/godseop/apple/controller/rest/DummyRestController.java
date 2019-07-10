@@ -2,8 +2,8 @@ package org.godseop.apple.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.entity.Dummy;
-import org.godseop.apple.entity.Condition;
+import org.godseop.apple.entity.mysql.Dummy;
+import org.godseop.apple.entity.mysql.Condition;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.model.Result;
 import org.godseop.apple.service.DummyService;

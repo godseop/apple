@@ -1,7 +1,7 @@
 package org.godseop.apple.config;
 
+
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -14,7 +14,6 @@ import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -25,29 +24,25 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-@Slf4j
 @Configuration
-@MapperScan(basePackages="org.godseop.apple.mapper.mysql", sqlSessionTemplateRef="sqlSessionTemplateMysql")
+@MapperScan(basePackages="org.godseop.apple.mapper.postgresql", sqlSessionTemplateRef="sqlSessionTemplatePostgresql")
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManagerFactoryMysql",
-        transactionManagerRef = "transactionManagerMysql",
-        basePackages="org.godseop.apple.repository.mysql"
+        entityManagerFactoryRef = "entityManagerFactoryPostgresql",
+        transactionManagerRef = "transactionManagerPostgresql",
+        basePackages="org.godseop.apple.repository.postgresql"
 )
 @EnableTransactionManagement
-public class MysqlConfig {
+public class PostgresqlConfig {
 
-
-    @Primary
-    @Bean(name = "mysqlDataSourceProperties")
-    @ConfigurationProperties("spring.datasource.mysql")
-    public DataSourceProperties mysqlDataSourceProperties() {
+    @Bean(name = "postgresqlDataSourceProperties")
+    @ConfigurationProperties("spring.datasource.postgresql")
+    public DataSourceProperties postgresqlDataSourceProperties() {
         return new DataSourceProperties();
     }
 
 
-    @Primary
-    @Bean(name = "mysqlDataSource")
-    public DataSource mysqlDataSource(@Qualifier("mysqlDataSourceProperties") DataSourceProperties dataSourceProperties) {
+    @Bean(name = "postgresqlDataSource")
+    public DataSource postgresqlDataSource(@Qualifier("postgresqlDataSourceProperties") DataSourceProperties dataSourceProperties) {
         return DataSourceBuilder
                 .create(dataSourceProperties.getClassLoader())
                 .type(HikariDataSource.class)
@@ -58,39 +53,40 @@ public class MysqlConfig {
                 .build();
     }
 
-    @Primary
-    @Bean(name = "entityManagerFactoryMysql")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryMysql(
-            EntityManagerFactoryBuilder builder, @Qualifier("mysqlDataSource") DataSource dataSource) {
+
+    @Bean(name = "entityManagerFactoryPostgresql")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryPostgresql(
+            EntityManagerFactoryBuilder builder, @Qualifier("postgresqlDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("org.godseop.apple.entity.mysql")
-                .persistenceUnit("mysql")
+                .packages("org.godseop.apple.entity.postgresql")
+                .persistenceUnit("postgresql")
                 .build();
     }
 
-    @Primary
-    @Bean(name = "transactionManagerMysql")
-    public PlatformTransactionManager transactionManagerMysql(
-            @Qualifier("entityManagerFactoryMysql") EntityManagerFactory entityManagerFactory) {
+
+    @Bean(name = "transactionManagerPostgresql")
+    public PlatformTransactionManager transactionManagerPostgresql(
+            @Qualifier("entityManagerFactoryPostgresql") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
 
-    @Primary
-    @Bean(name = "sqlSessionFactoryMysql")
-    public SqlSessionFactory sqlSessionFactoryMysql(@Qualifier("mysqlDataSource") DataSource dataSource, ApplicationContext applicationContext) throws Exception {
+
+
+    @Bean(name = "sqlSessionFactoryPostgresql")
+    public SqlSessionFactory sqlSessionFactoryPostgresql(@Qualifier("postgresqlDataSource") DataSource dataSource, ApplicationContext applicationContext) throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
-        sqlSessionFactory.setTypeAliasesPackage("org.godseop.apple.entity.mysql");
+        sqlSessionFactory.setTypeAliasesPackage("org.godseop.apple.entity.postgresql");
         sqlSessionFactory.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("classpath:mybatis-config.xml"));
-        sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/mysql/*.xml"));
+        sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/postgresql/*.xml"));
         return sqlSessionFactory.getObject();
     }
 
-    @Primary
-    @Bean(name = "sqlSessionTemplateMysql")
-    public SqlSessionTemplate sqlSessionTemplateMysql(@Qualifier("sqlSessionFactoryMysql") SqlSessionFactory sqlSessionFactory) {
+
+    @Bean(name = "sqlSessionTemplatePostgresql")
+    public SqlSessionTemplate sqlSessionTemplatePostgresql(@Qualifier("sqlSessionFactoryPostgresql") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 

@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@PropertySource("classpath:aws.properties")
 public class S3Service {
 
     private final AmazonS3 amazonS3;
