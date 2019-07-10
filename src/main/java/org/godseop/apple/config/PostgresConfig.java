@@ -13,23 +13,19 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages="org.godseop.apple", sqlSessionFactoryRef="sqlSessionFactory", sqlSessionTemplateRef="sqlSessionTemplate")
+@MapperScan(basePackages="org.godseop.apple.repository.mapper.postgresql", sqlSessionTemplateRef="sqlSessionTemplatePostgresql")
 @EnableTransactionManagement
-@PropertySource("classpath:datasource.properties")
 public class PostgresConfig {
 
     @Bean(name = "postgresDataSource")
-    @Primary
     @ConfigurationProperties(prefix = "spring.datasource.postgres")
-    public DataSource dataSource(DataSourceProperties dataSourceProperties) {
+    public DataSource postgresDataSource(DataSourceProperties dataSourceProperties) {
         return DataSourceBuilder
                 .create(dataSourceProperties.getClassLoader())
                 .type(HikariDataSource.class)
@@ -40,8 +36,8 @@ public class PostgresConfig {
                 .build();
     }
 
-    @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactory(@Qualifier("postgresDataSource") DataSource dataSource, ApplicationContext applicationContext) throws Exception {
+    @Bean(name = "sqlSessionFactoryPostgresql")
+    public SqlSessionFactory sqlSessionFactoryPostgresql(@Qualifier("postgresDataSource") DataSource dataSource, ApplicationContext applicationContext) throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
         sqlSessionFactory.setTypeAliasesPackage("org.godseop.apple");
@@ -50,12 +46,9 @@ public class PostgresConfig {
         return sqlSessionFactory.getObject();
     }
 
-    @Bean(name = "sqlSessionTemplate")
-    public SqlSessionTemplate sqlSessionTemplate(@Qualifier("sqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+    @Bean(name = "sqlSessionTemplatePostgresql")
+    public SqlSessionTemplate sqlSessionTemplatePostgresql(@Qualifier("sqlSessionFactoryPostgresql") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
-
-
-
 
 }
