@@ -2,8 +2,8 @@ package org.godseop.apple.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.interceptor.AppleRestRequestInterceptor;
-import org.godseop.apple.interceptor.AppleRestResponseErrorHandler;
+import org.godseop.apple.rest.AppleRestRequestInterceptor;
+import org.godseop.apple.rest.AppleRestResponseErrorHandler;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

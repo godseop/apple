@@ -2,7 +2,7 @@ package org.godseop.apple.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.repository.mapper.CommonMapper;
+import org.godseop.apple.mapper.mysql.CommonMapper;
 import org.springframework.stereotype.Service;
 
 @Slf4j
