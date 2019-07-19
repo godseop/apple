@@ -1,10 +1,13 @@
 package org.godseop.apple.model;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Page {
     // 페이지당 보여줄 항목 갯수
     private int pageSize;

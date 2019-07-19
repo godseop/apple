@@ -1,9 +1,9 @@
-package org.godseop.apple.mapper.mysql;
+package org.godseop.apple.mapper;
 
 
 import org.apache.ibatis.annotations.Mapper;
-import org.godseop.apple.entity.mysql.Dummy;
-import org.godseop.apple.entity.mysql.Condition;
+import org.godseop.apple.entity.Dummy;
+import org.godseop.apple.entity.Condition;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -18,7 +18,7 @@ function ajaxJson(url, object, callback, isLoadingBar=true) {
             }
         },
         error: function(request, status, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });
@@ -39,7 +39,7 @@ function ajaxEncoded(url, object, callback, isLoadingBar=true) {
             }
         },
         error: function(request, status, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });
@@ -64,7 +64,7 @@ function ajaxMultipart(url, formData, callback, isLoadingBar=true) {
             }
         },
         error: function(request, status, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });

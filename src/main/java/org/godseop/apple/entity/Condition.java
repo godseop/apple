@@ -1,4 +1,4 @@
-package org.godseop.apple.entity.mysql;
+package org.godseop.apple.entity;
 
 import lombok.Data;
 import org.apache.ibatis.type.Alias;

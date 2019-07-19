@@ -1,7 +1,7 @@
 package org.godseop.apple.model;
 
 
-import org.godseop.apple.entity.mysql.Member;
+import org.godseop.apple.entity.Member;
 import org.springframework.security.core.userdetails.User;
 
 public class SecurityMember extends User {
