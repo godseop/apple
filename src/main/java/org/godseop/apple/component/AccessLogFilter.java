@@ -20,19 +20,23 @@ public class AccessLogFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
         String remoteAddress = StringUtils.defaultString(request.getRemoteAddr(), "-");
-        String url = (request.getRequestURL() == null) ? "" : request.getRequestURL().toString();
-        String queryString = StringUtils.defaultIfEmpty(request.getQueryString(), "");
-        String refer = StringUtils.defaultString(request.getHeader("Refer"), "-");
-        String agent = StringUtils.defaultString(request.getHeader("User-Agent"), "-");
-        String fullUrl = url + (StringUtils.isNotEmpty(queryString) ? "?" + queryString : queryString);
+        String uri           = request.getRequestURI();
+        String url           = (request.getRequestURL() == null) ? "" : request.getRequestURL().toString();
+        String queryString   = StringUtils.defaultIfEmpty(request.getQueryString(), "");
+        String referer       = StringUtils.defaultString(request.getHeader("Referer"), "-");
+        String agent         = StringUtils.defaultString(request.getHeader("User-Agent"), "-");
+        String fullUrl       = url + (StringUtils.isNotEmpty(queryString) ? "?" + queryString : queryString);
 
-        log.info("Access Log : {}:{}:{}:{}", remoteAddress, fullUrl, refer, agent);
-
+        log.info("Access Log ====================================");
+        log.info("REMOTE ADDR : {}", remoteAddress);
+        log.info("URI         : {}", uri);
+        log.info("URL         : {}", fullUrl);
+        log.info("REFERER     : {}", referer);
+        log.info("AGENT       : {}", agent);
         long startDate = System.currentTimeMillis();
         filterChain.doFilter(request, servletResponse);
         long endDate = System.currentTimeMillis();
-
-        log.info("Access Time : {}초 -> {}", (double) (endDate - startDate) / 1000, request.getRequestURI());
+        log.info("Access Time : {}초 ============================", (double) (endDate - startDate) / 1000);
     }
 
     @Override

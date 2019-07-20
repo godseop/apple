@@ -55,6 +55,7 @@ public class WebConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<AccessLogFilter> registerAccessLogFilter() {
         FilterRegistrationBean<AccessLogFilter> accessLogFilter = new FilterRegistrationBean<>();
         accessLogFilter.setFilter(new AccessLogFilter());
+        accessLogFilter.addUrlPatterns("/dummy/*");
         return accessLogFilter;
     }
 
@@ -66,12 +67,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
         registry
             .addResourceHandler("/webapp/resources/**")
-            .addResourceLocations("/css", "/js", "/images")
-            .setCachePeriod(3600)
-            .resourceChain(true)
-            .addResolver(new PathResourceResolver());
+            .addResourceLocations("classpath:/resources/")
+            .setCachePeriod(3600);
+            //.resourceChain(true);
+            //.addResolver(new PathResourceResolver());
     }
 
     @Override
@@ -93,7 +95,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(certificationInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/login", "/join", "/error/**");
+                .excludePathPatterns("/", "/login", "/join", "/error/**", "/resources/**");
     }
 
 
