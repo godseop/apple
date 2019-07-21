@@ -16,6 +16,10 @@
         };
 
         $(function() {
+            Apple.init({token: "8ksle5kj4490fndkfo1lk2jt"});
+            Apple.talk({message: "하이"});
+
+
             setCountdown();
             setEvent();
         });
@@ -49,7 +53,6 @@
                 let _formData = new FormData($("#formBigFile")[0]);
                 ajaxMultipart("/dummy/bigfile", _formData, multipartSuccess);
             });
-
 
             $("#btnBucket").on("click", function() {
                 ajaxJson("/dummy/s3list", null, s3listSuccess);
@@ -161,7 +164,7 @@
                 }
             },
             helpTime: function(time) {
-                return formatLocalDateTime(time);
+                return Utils.formatLocalDateTime(time);
             },
             helpUse: function(yn) {
                 return yn === "Y" ? "selected" : "";

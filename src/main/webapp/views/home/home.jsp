@@ -12,7 +12,7 @@
             $("#btnNow").on("click", function() {
                 ajaxJson("/common/now", null, function(data) {
                     console.log(data.now * 1000);
-                    alert("현재시간은 " + getDateTimeStampByMillis(data.now * 1000));
+                    alert("현재시간은 " + Utils.getDateTimeStampByMillis(data.now * 1000));
                 });
             });
 
