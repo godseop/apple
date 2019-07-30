@@ -12,4 +12,9 @@
         <setting name="callSettersOnNulls" value="true"/>
     </settings>
 
+    <plugins>
+        <plugin interceptor="org.godseop.apple.component.QueryLogInterceptor">
+        </plugin>
+    </plugins>
+
 </configuration>

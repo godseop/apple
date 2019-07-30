@@ -7,7 +7,7 @@
     <select id="selectDummyList" parameterType="condition" resultType="dummy">
         SELECT
             D.id
-          , D.bool  -- IF(D.bool, 'true', 'false') AS bool
+          , D.bool
           , D.count
           , D.name
           , D.time
