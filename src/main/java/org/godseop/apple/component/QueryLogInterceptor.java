@@ -1,11 +1,16 @@
 package org.godseop.apple.component;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.cache.CacheKey;
+import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.RowBounds;
+import org.godseop.apple.entity.Dummy;
 
 import java.lang.reflect.Field;
 import java.sql.Statement;
@@ -14,12 +19,47 @@ import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
-@Intercepts({@Signature(type=StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class})})
+@Intercepts(
+    {
+        //@Signature(type=StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class})
+//        @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
+        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class}),
+        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})
+    }
+)
 public class QueryLogInterceptor implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        StatementHandler handler = (StatementHandler)invocation.getTarget();
+
+        //StatementHandler handler = (StatementHandler)invocation.getTarget();
+        //Object param = handler.getParameterHandler().getParameterObject();
+
+        Object[] args = invocation.getArgs();
+        MappedStatement ms = (MappedStatement)args[0];
+        Object param = (Object)args[1];
+        BoundSql boundSql = ms.getBoundSql(param);
+        String sql = boundSql.getSql();
+
+
+
+        System.out.println("====================================");
+        System.out.println(invocation.getMethod().getName());
+        System.out.println("====================================");
+        System.out.println(ms.getId());
+        System.out.println("====================================");
+        System.out.println(boundSql.getSql());
+        System.out.println("====================================");
+        System.out.println(param);
+        System.out.println("====================================");
+
+        //log.error("SEQ : {}", param.getClass().getDeclaredMethod("seq", Integer.class).invoke(param, null).toString());
+        log.error("SEQ : {}", ((Dummy) param).getSeq());
+/*
+
+
+        //MetaObject metaObject = MetaObject.forObject(handler, SystemMetaObject.DEFAULT_OBJECT_FACTORY, SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY);
+        //MappedStatement mappedStatement = (MappedStatement)metaObject.getValue("delegate.mappedStatement");
 
         // 쿼리
         BoundSql boundSql = handler.getBoundSql();
@@ -31,6 +71,7 @@ public class QueryLogInterceptor implements Interceptor {
 
         Object param = handler.getParameterHandler().getParameterObject();
 
+*/
         if (param == null) {
             sql = sql.replaceFirst("\\?", "''");
         } else {
@@ -44,6 +85,12 @@ public class QueryLogInterceptor implements Interceptor {
                 for (ParameterMapping mapping : parameterMappingList) {
                     String propValue = mapping.getProperty();
                     Object value = ((Map) param).get(propValue);
+
+//                    if (StringUtils.equalsIgnoreCase("seq", propValue)) {
+//                        id = value.toString();
+//                        continue;
+//                    }
+                    log.error("PARAM : {} - {}", propValue, value.toString());
                     if (value instanceof String) {
                         sql = sql.replaceFirst("\\?", "'" + value + "'");
                     } else {
@@ -53,14 +100,18 @@ public class QueryLogInterceptor implements Interceptor {
             } else {
                 List<ParameterMapping> parameterMappingList = boundSql.getParameterMappings();
 
-                Class<? extends  Object> paramClass = param.getClass();
-
+                Class<?> paramClass = param.getClass();
                 for (ParameterMapping mapping : parameterMappingList) {
                     String propValue = mapping.getProperty();
 
                     Field field = paramClass.getDeclaredField(propValue);
                     field.setAccessible(true);
 
+//                    if (StringUtils.equalsIgnoreCase("seq", propValue)) {
+//                        id = field.get(param).toString();
+//                        continue;
+//                    }
+                    log.error("PARAM : {} - {}", propValue, field.get(param));
                     Class<?> javaType = mapping.getJavaType();
 
                     if (String.class == javaType) {
