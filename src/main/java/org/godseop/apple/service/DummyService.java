@@ -34,8 +34,7 @@ public class DummyService {
 
     private final GoogleRest googleRest;
 
-    @Autowired
-    private TaskScheduler taskScheduler;
+    private final TaskScheduler taskScheduler;
 
     private static Map<String, ScheduledFuture<?>> scheduledFutureMap = new ConcurrentHashMap<>();
 

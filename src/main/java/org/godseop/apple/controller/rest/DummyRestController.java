@@ -2,25 +2,20 @@ package org.godseop.apple.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.entity.Dummy;
 import org.godseop.apple.entity.Condition;
+import org.godseop.apple.entity.Dummy;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.model.Result;
 import org.godseop.apple.service.DummyService;
 import org.godseop.apple.service.S3Service;
 import org.godseop.apple.util.PageUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j

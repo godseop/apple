@@ -71,6 +71,10 @@
                 ajaxJson("/dummy/dummylist", _data, dummylistSuccess);
             });
 
+            $("#btnTrigger").on("click", function() {
+                ajaxJson("/dummy/trigger", null, dummylistSuccess);
+            });
+
             $(".date").flatpickr();
 
             $(".datetime").flatpickr({
@@ -205,6 +209,7 @@
     <button type="button" id="btnLocal">서버 로컬목록조회 테스트</button>
     <button type="button" id="btnPaging">페이징 테스트</button>
     <button type="button" id="btnSerial">직렬화 테스트</button>
+    <button type="button" id="btnTrigger">스케쥴맵 테스트</button>
 
     <table>
         <colgroup>
