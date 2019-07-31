@@ -22,13 +22,13 @@ public interface DummyMapper {
 
     List<Dummy> selectDummyList(Condition condition);
 
-    Dummy selectDummy(String id);
+    List<Dummy> selectDummy(Dummy dummy);
 
     int insertDummy(Dummy dummy);
 
     int updateDummy(Dummy dummy);
 
-    int upsertDummy(Dummy dummy);
+    void upsertDummy(Dummy dummy);
 
     int deleteDummy(Long id);
 }

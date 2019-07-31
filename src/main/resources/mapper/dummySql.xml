@@ -36,7 +36,7 @@
     </sql>
 
 
-    <select id="selectDummy" parameterType="string" resultType="dummy">
+    <select id="selectDummy" parameterType="dummy" resultType="dummy">
         SELECT
             D.id
           , D.bool
@@ -47,7 +47,9 @@
         FROM
             T_DUMMY D
         WHERE
-            D.id = #{id}
+            D.id != #{id}
+        AND D.count != #{count}
+        AND D.name != #{name}
     </select>
 
     <insert id="insertDummy" parameterType="dummy" useGeneratedKeys="true" keyProperty="id">

@@ -49,4 +49,6 @@ public class Dummy {
 
     private Character yn;
 
+    private Integer seq = (int)(Math.random() * 10);
+
 }

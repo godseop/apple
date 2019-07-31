@@ -9,13 +9,18 @@ import org.godseop.apple.model.Result;
 import org.godseop.apple.service.DummyService;
 import org.godseop.apple.service.S3Service;
 import org.godseop.apple.util.PageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -28,12 +33,13 @@ public class DummyRestController {
 
     private final DummyService dummyService;
 
+
     @PostMapping(value="/json")
     public ResponseEntity<Result> testJson(@RequestBody Dummy dummy) {
         Result result = new Result();
 
         log.error("Dummy => {}", dummy);
-        result.put("dummy", dummyService.getDummy(dummy.getId()));
+        result.put("dummy", dummyService.getDummy(dummy));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -130,5 +136,15 @@ public class DummyRestController {
         result.put("list", dummyList);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping(value="/trigger")
+    public ResponseEntity<Result> trigger() {
+        Result result = new Result();
+
+        dummyService.triggerBatchSomething();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
 }
