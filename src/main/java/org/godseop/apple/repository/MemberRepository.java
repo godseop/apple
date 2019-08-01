@@ -1,6 +1,6 @@
-package org.godseop.apple.repository.mysql;
+package org.godseop.apple.repository;
 
-import org.godseop.apple.entity.mysql.Member;
+import org.godseop.apple.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {

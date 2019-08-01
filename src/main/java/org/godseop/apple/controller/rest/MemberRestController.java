@@ -2,7 +2,7 @@ package org.godseop.apple.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.entity.mysql.Member;
+import org.godseop.apple.entity.Member;
 import org.godseop.apple.model.Result;
 import org.godseop.apple.service.MemberService;
 import org.springframework.http.HttpStatus;

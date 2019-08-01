@@ -2,7 +2,7 @@ package org.godseop.apple.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.entity.mysql.Member;
+import org.godseop.apple.entity.Member;
 import org.godseop.apple.model.Result;
 import org.godseop.apple.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -25,10 +25,6 @@ public class PublicController {
     @GetMapping(value="/login")
     public ModelAndView viewLoginPage(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
-
-        String referer = request.getHeader("Referer");
-        request.getSession().setAttribute("prevPage", referer);
-        log.info("REFERER : {}", referer); // 주소 직접 입력 or 즐겨찾기로 접근시 NULL
 
         modelAndView.setViewName("public/login");
         return modelAndView;

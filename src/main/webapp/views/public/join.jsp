@@ -13,7 +13,7 @@
     });
 
     function setEvent() {
-        $("#btnJoin").on("click", function() {
+        $("#btnJoin").on("click", () => {
             let data = $("#formJoin").serializeObject();
             ajaxJson("/join", data, successJoin);
         });

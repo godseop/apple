@@ -16,7 +16,6 @@ import org.godseop.apple.exception.SystemException;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.util.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

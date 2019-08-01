@@ -2,12 +2,12 @@ package org.godseop.apple.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.entity.mysql.Member;
-import org.godseop.apple.entity.mysql.MemberRole;
+import org.godseop.apple.entity.Member;
+import org.godseop.apple.entity.MemberRole;
 import org.godseop.apple.exception.AppleException;
 import org.godseop.apple.model.Error;
-import org.godseop.apple.mapper.mysql.MemberMapper;
-import org.godseop.apple.repository.mysql.MemberRepository;
+import org.godseop.apple.mapper.MemberMapper;
+import org.godseop.apple.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

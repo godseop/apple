@@ -2,8 +2,8 @@ package org.godseop.apple.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.godseop.apple.entity.mysql.Dummy;
-import org.godseop.apple.entity.mysql.Condition;
+import org.godseop.apple.entity.Condition;
+import org.godseop.apple.entity.Dummy;
 import org.godseop.apple.model.Error;
 import org.godseop.apple.model.Result;
 import org.godseop.apple.service.DummyService;
@@ -28,12 +28,13 @@ public class DummyRestController {
 
     private final DummyService dummyService;
 
+
     @PostMapping(value="/json")
     public ResponseEntity<Result> testJson(@RequestBody Dummy dummy) {
         Result result = new Result();
 
         log.error("Dummy => {}", dummy);
-        result.put("dummy", dummyService.getDummy(dummy.getId()));
+        result.put("dummy", dummyService.getDummy(dummy));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -130,5 +131,15 @@ public class DummyRestController {
         result.put("list", dummyList);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping(value="/trigger")
+    public ResponseEntity<Result> trigger() {
+        Result result = new Result();
+
+        dummyService.triggerBatchSomething();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
 }

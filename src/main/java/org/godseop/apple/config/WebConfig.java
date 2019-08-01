@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
+import lombok.RequiredArgsConstructor;
+import org.godseop.apple.component.AccessLogFilter;
+import org.godseop.apple.component.CertificationInterceptor;
 import org.godseop.apple.security.HtmlCharacterEscapes;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -17,14 +20,16 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.MultipartConfigElement;
 import java.util.List;
 
 
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+
+    private final CertificationInterceptor certificationInterceptor;
 
     @Bean
     public FilterRegistrationBean<MultipartFilter> registerMultipartFilter() {
@@ -46,6 +51,14 @@ public class WebConfig implements WebMvcConfigurer {
         return xssFilter;
     }
 
+    @Bean
+    public FilterRegistrationBean<AccessLogFilter> registerAccessLogFilter() {
+        FilterRegistrationBean<AccessLogFilter> accessLogFilter = new FilterRegistrationBean<>();
+        accessLogFilter.setFilter(new AccessLogFilter());
+        accessLogFilter.addUrlPatterns("/dummy/*");
+        return accessLogFilter;
+    }
+
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -54,12 +67,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
         registry
             .addResourceHandler("/webapp/resources/**")
-            .addResourceLocations("/css", "/js", "/images")
-            .setCachePeriod(3600)
-            .resourceChain(true)
-            .addResolver(pathResourceResolver());
+            .addResourceLocations("classpath:/resources/")
+            .setCachePeriod(3600);
+            //.resourceChain(true);
+            //.addResolver(new PathResourceResolver());
     }
 
     @Override
@@ -79,7 +93,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // add interceptors
+        registry.addInterceptor(certificationInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/", "/login", "/join", "/error/**", "/resources/**");
     }
 
 
@@ -97,16 +113,6 @@ public class WebConfig implements WebMvcConfigurer {
         converter.setObjectMapper(objectMapper);
 
         return converter;
-    }
-
-//    @Bean
-//    public MappingJackson2JsonView jsonView(){
-//        return new MappingJackson2JsonView();
-//    }
-
-    @Bean
-    public PathResourceResolver pathResourceResolver() {
-        return new PathResourceResolver();
     }
 
     @Bean

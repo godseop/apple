@@ -1,4 +1,4 @@
-package org.godseop.apple.entity.mysql;
+package org.godseop.apple.entity;
 
 import java.time.LocalDateTime;
 import java.util.*;

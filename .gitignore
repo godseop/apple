@@ -33,6 +33,7 @@ mvnw.cmd
 
 ### log file ###
 log/*.log
+log/error/*.log
 
 
 application.properties

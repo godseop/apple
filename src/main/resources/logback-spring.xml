@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
 
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
     <property name="LOG_PATH" value="./log"/>
+    <property name="ERROR_LOG_PATH" value="./log/error"/>
 
     <!-- CONSOLE APPENDER -->
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>
-                <!--<pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>-->
-                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
-            </pattern>
+            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable</pattern>
         </layout>
     </appender>
 
     <!-- FILE APPENDER(DAILY) -->
     <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <charset>UTF-8</charset>
-            <!--<pattern>%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level -&#45;&#45; [%thread] %logger{35} : %msg %n</pattern>-->
             <pattern>%d %p %C{1.} [%t] %m%n</pattern>
         </encoder>
 
@@ -28,28 +33,51 @@
                 <maxFileSize>2MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
-
     </appender>
 
 
-    <!-- log everything at info level -->
+    <!-- FILE APPENDER(WARN & ERROR) -->
+    <appender name="errorRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level [%thread] %logger{35} : %msg %n</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ERROR_LOG_PATH}/error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <!-- keep 60 days history, each file size less than 1GB, at most 10GB -->
+            <maxHistory>60</maxHistory>
+            <maxFileSize>1GB</maxFileSize>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+
     <root level="DEBUG">
         <appender-ref ref="consoleAppender"/>
         <appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="errorRollingFileAppender"/>
     </root>
 
     <!-- ERROR < WARN < INFO < DEBUG < TRACE -->
-    <logger name="jdbc" level="off"/>
-    <logger name="jdbc.sqlonly" level="off"/>
-    <logger name="jdbc.sqltiming" level="debug"/>
-    <logger name="jdbc.audit" level="off"/>
-    <logger name="jdbc.resultset" level="off"/>
-    <logger name="jdbc.resultsettable" level="debug"/>
-    <logger name="jdbc.connection" level="off"/>
+    <logger name="jdbc" level="OFF"/>
+    <logger name="jdbc.sqlonly" level="OFF"/>
+    <logger name="jdbc.sqltiming" level="DEBUG"/>
+    <logger name="jdbc.audit" level="OFF"/>
+    <logger name="jdbc.resultset" level="OFF"/>
+    <logger name="jdbc.resultsettable" level="DEBUG"/>
+    <logger name="jdbc.connection" level="OFF"/>
 
-    <logger name="com.zaxxer.hikari" level="info"/>
-    <logger name="org.apache" level="error"/>
-    <logger name="httpClient" level="error"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <logger name="org.apache" level="ERROR"/>
+    <logger name="httpClient" level="ERROR"/>
+    <logger name="org.springframework" level="INFO"/>
 
 
 </configuration>

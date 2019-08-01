@@ -18,7 +18,7 @@ function ajaxJson(url, object, callback, isLoadingBar=true) {
             }
         },
         error: function(request, status, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });
@@ -39,7 +39,7 @@ function ajaxEncoded(url, object, callback, isLoadingBar=true) {
             }
         },
         error: function(request, status, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });
@@ -64,7 +64,7 @@ function ajaxMultipart(url, formData, callback, isLoadingBar=true) {
             }
         },
         error: function(request, status, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         },
         complete:    isLoadingBar && hideLoadingBar,
     });
@@ -89,28 +89,6 @@ function buildHeaders() {
     headers[csrfHeader] = csrfToken;
 
     return headers;
-}
-
-function formatLocalDateTime(localDateTime) {
-    // localDateTime likely '2019-06-22T06:35:59'
-    if (localDateTime == null) return null;
-    return moment(localDateTime).format("YYYY-MM-DD HH:mm");
-}
-
-function getDateStamp(offset) {
-    offset = Number.isInteger(offset) ? offset : 0;
-    return moment().add(offset, 'days').format("YYYY-MM-DD");
-}
-
-function getDateTimeStamp(offset) {
-    offset = Number.isInteger(offset) ? offset : 0;
-    return moment().add(offset, 'days').format("YYYY-MM-DD HH:mm");
-}
-
-
-function getDateTimeStampByMillis(milliseconds) {
-    if (!Number.isInteger(milliseconds)) return null;
-    return moment(milliseconds).format("YYYY-MM-DD HH:mm");
 }
 
 $.fn.extend({
